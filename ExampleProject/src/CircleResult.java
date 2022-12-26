@@ -3,12 +3,10 @@ public class CircleResult {
 
 	private int[] mHist;
 	private int[] mInnerHist;
-	private int[] mInnermostHist;
 
-	public CircleResult(int[] hist, int[] innerHist, int[] innermostHist) {
+	public CircleResult(int[] hist, int[] innerHist) {
 		mHist = hist;
 		mInnerHist = innerHist;
-		mInnermostHist = innermostHist;
 	}
 
 	public int[] getHist() {
@@ -17,9 +15,5 @@ public class CircleResult {
 
 	public int[] getInnerHist() {
 		return mInnerHist;
-	}
-
-	public int[] getInnermostHist() {
-		return mInnermostHist;
 	}
 }
