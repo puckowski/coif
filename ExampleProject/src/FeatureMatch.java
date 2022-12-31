@@ -6,6 +6,8 @@ public class FeatureMatch {
 
 	public int mX2;
 	public int mY2;
+	
+	public int roughBinDistance;
 
 	public FeatureMatch(int x1, int y1, int x2, int y2) {
 		mX1 = x1;
