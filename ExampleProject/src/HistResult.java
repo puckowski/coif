@@ -11,7 +11,9 @@ public class HistResult {
 	private int mSsd;
 
 	public int mDistinctiveness;
-
+	public int mMinDistinctiveness;
+	public int mMaxDistinctiveness;
+	
 	public HistResult(int[] hist, int[] innerHist, int x, int y, int[] centerHist) {
 		mHist = hist;
 		mInnerHist = innerHist;
@@ -62,6 +64,8 @@ public class HistResult {
 		}
 
 		mDistinctiveness = 256 - score;
+		mMinDistinctiveness = mDistinctiveness - 10;
+		mMaxDistinctiveness = mDistinctiveness + 10;
 	}
 
 	public void computeDistances(int mergeBinCount) {
