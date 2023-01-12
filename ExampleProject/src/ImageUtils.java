@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -60,9 +62,31 @@ public class ImageUtils {
 		return dimg;
 	}
 
+	private BufferedImage resize(BufferedImage src, int targetSize) {
+	    if (targetSize <= 0) {
+	        return src; //this can't be resized
+	    }
+	    int targetWidth = targetSize;
+	    int targetHeight = targetSize;
+	    float ratio = ((float) src.getHeight() / (float) src.getWidth());
+	    if (ratio <= 1) { //square or landscape-oriented image
+	        targetHeight = (int) Math.ceil((float) targetWidth * ratio);
+	    } else { //portrait image
+	        targetWidth = Math.round((float) targetHeight / ratio);
+	    }
+	    BufferedImage bi = new BufferedImage(targetWidth, targetHeight, src.getTransparency() == Transparency.OPAQUE ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g2d = bi.createGraphics();
+	    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR); //produces a balanced resizing (fast and decent quality)
+	    g2d.drawImage(src, 0, 0, targetWidth, targetHeight, null);
+	    g2d.dispose();
+	    return bi;
+	}
+	
 	public int[][] localGrayscaleArray(final String absoluteFileName) throws IOException {
 		BufferedImage image = ImageIO.read(new File(absoluteFileName));
 
+		//image = resize(image, 1000);
+		
 		int[][] redValues = new int[image.getWidth()][image.getHeight()];
 		int[][] greenValues = new int[image.getWidth()][image.getHeight()];
 		int[][] blueValues = new int[image.getWidth()][image.getHeight()];

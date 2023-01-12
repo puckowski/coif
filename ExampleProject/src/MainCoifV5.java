@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -115,7 +116,7 @@ public class MainCoifV5 {
 
 		int thresholdmor = 1000;
 		int ptsmor = 20;
-
+		
 		MoravecProcessor moravecProcessor = new MoravecProcessor(thresholdmor, ptsmor, 0.02);
 		List<MoravecResult> morResults;
 		MoravecProcessor moravecProcessor2 = new MoravecProcessor(thresholdmor, ptsmor, 0.02);
@@ -133,7 +134,23 @@ public class MainCoifV5 {
 
 			return;
 		}
-
+/*
+		long startTime = System.currentTimeMillis();
+		
+		Collections.sort(morResults, Comparator.comparingDouble(MoravecResult::getMinSsd));
+		Collections.sort(morResults2, Comparator.comparingDouble(MoravecResult::getMinSsd));
+				
+		while(morResults.size() > 5000) {
+			morResults.remove(0);
+		}
+		
+		while(morResults2.size() > 5000) {
+			morResults2.remove(0);
+		}
+		
+		long estimatedTime = System.currentTimeMillis() - startTime;
+		TimeData.moravec += estimatedTime;
+*/
 		int[][] image = moravecProcessor.getGrayscaleData();
 		int[][] image2 = moravecProcessor2.getGrayscaleData();
 
@@ -185,7 +202,6 @@ public class MainCoifV5 {
 
 		List<FeatureMatch> featureMatches = new ArrayList<FeatureMatch>();
 		int binMergeCount = 1;
-		int binCount = 0;
 
 		do {
 			System.out.println("Circles step...");
@@ -266,11 +282,14 @@ public class MainCoifV5 {
 
 			System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
 
+			double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
+			int i;
+			
 			for (HistResult hr : hrlist) {
 				distancesFirst = hr.getDistances();
 				dist21 = hr.getDistances2();
 
-				for (HistResult hr2 : hrlist2) {
+				for (HistResult hr2 : hrlist2) {					
 					if (hr2.mDistinctiveness < hr.mMinDistinctiveness
 							|| hr2.mDistinctiveness > hr.mMaxDistinctiveness) {
 						continue;
@@ -280,20 +299,18 @@ public class MainCoifV5 {
 					dist22 = hr2.getDistances2();
 					binDistance = 0;
 
-					for (int i = 0; i < distancesFirst.length; ++i) {
-						double val = distancesFirst[i];
-						double val2 = distancesSecond[i];
+					for (i = 0; i < distancesFirst.length; ++i) {
+						val = distancesFirst[i];
+						val2 = distancesSecond[i];
 
-						double valLow = (val * binLowerBoundPercent);
-						double valThresholdCheck = Math.abs(val - valLow);
+						valLow = (val * binLowerBoundPercent);
+						valThresholdCheck = Math.abs(val - valLow);
 						if (valThresholdCheck > maximumDifferenceThreshold)
 							valLow = val - maximumDifferenceThreshold;
-						double valHigh = (val * binUpperBoundPercent);
-						double valThresholdCheckHigh = Math.abs(val - valHigh);
+						valHigh = (val * binUpperBoundPercent);
+						valThresholdCheckHigh = Math.abs(val - valHigh);
 						if (valThresholdCheckHigh > maximumDifferenceThreshold)
 							valHigh = val + maximumDifferenceThreshold;
-
-						binCount++;
 
 						if (val2 < valLow || val2 > valHigh) {
 							binDistance++;
@@ -308,20 +325,18 @@ public class MainCoifV5 {
 						}
 					}
 
-					for (int i = 0; i < dist21.length; ++i) {
-						double val = dist21[i];
-						double val2 = dist22[i];
+					for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
+						val = dist21[i];
+						val2 = dist22[i];
 
-						double valLow = (val * binLowerBoundPercent);
-						double valThresholdCheck = Math.abs(val - valLow);
+						valLow = (val * binLowerBoundPercent);
+						valThresholdCheck = Math.abs(val - valLow);
 						if (valThresholdCheck > maximumDifferenceThreshold)
 							valLow = val - maximumDifferenceThreshold;
-						double valHigh = (val * binUpperBoundPercent);
-						double valThresholdCheckHigh = Math.abs(val - valHigh);
+						valHigh = (val * binUpperBoundPercent);
+						valThresholdCheckHigh = Math.abs(val - valHigh);
 						if (valThresholdCheckHigh > maximumDifferenceThreshold)
 							valHigh = val + maximumDifferenceThreshold;
-
-						binCount++;
 
 						if (val2 < valLow || val2 > valHigh) {
 							binDistance++;
@@ -436,25 +451,25 @@ public class MainCoifV5 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "Test3000.jpg", "Test3000.jpg", "Test1500.jpg", "Test1310.PNG", "Test1199.PNG",
-				"Test1000.jpg", "Test2120.jpg", "Test1999.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg", "Test34.jpg",
-				"Test37.jpg", "Test47.jpg", "Test48.png", "Test65.jpg", "Test70.jpg", "Test99.jpg", "Test120.jpeg",
-				"Test121.png", "Test122.png", "Test123.jpg", "Test200.jpg", "Test211.jpg", "Test240.jpg", "Test300.jpg",
-				"Test400.jpg", "Test600.jpg", "Test800.jpg" };
-		final String[] files2 = { "Test3002.jpg", "Test3001.jpg", "Test1501.jpg", "Test1311.PNG", "Test1200.PNG",
-				"Test1001.jpg", "Test2121.jpg", "Test2000.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35.jpg",
-				"Test38.jpg", "Test48.jpg", "Test49.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124.jpeg",
-				"Test125.png", "Test126.png", "Test127.jpg", "Test201.jpg", "Test212.jpg", "Test241.jpg", "Test310.jpg",
-				"Test410.jpg", "Test610.jpg", "Test810.jpg" };
+		final String[] files1 = { "Test5000.jpg", "Test3000.jpg", "Test3000.jpg", "Test1500.jpg", "Test1310.PNG",
+				"Test1199.PNG", "Test1000.jpg", "Test2120.jpg", "Test1999.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg",
+				"Test34.jpg", "Test37.jpg", "Test47.jpg", "Test48.png", "Test65.jpg", "Test70.jpg", "Test99.jpg",
+				"Test120.jpeg", "Test121.png", "Test122.png", "Test123.jpg", "Test200.jpg", "Test211.jpg",
+				"Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
+		final String[] files2 = { "Test5001.jpg", "Test3002.jpg", "Test3001.jpg", "Test1501.jpg", "Test1311.PNG",
+				"Test1200.PNG", "Test1001.jpg", "Test2121.jpg", "Test2000.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg",
+				"Test35.jpg", "Test38.jpg", "Test48.jpg", "Test49.png", "Test66.jpg", "Test71.jpg", "Test100.jpg",
+				"Test124.jpeg", "Test125.png", "Test126.png", "Test127.jpg", "Test201.jpg", "Test212.jpg",
+				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
 			process(files1[i], files2[i], i);
 		}
 
-		System.out.println(TimeData.imageLoad / 1000 + "s loading images");
-		System.out.println(TimeData.moravec / 1000 + "s finding corners");
-		System.out.println(TimeData.matching / 1000 + "s matching features");
+		System.out.println((double) TimeData.imageLoad / 1000.0 + "s loading images");
+		System.out.println((double) TimeData.moravec / 1000.0 + "s finding corners");
+		System.out.println((double) TimeData.matching / 1000.0 + "s matching features");
 		System.out.println((TimeData.imageLoad) / files1.length + "ms loading image average");
 		System.out.println((TimeData.moravec) / files1.length + "ms finding corner average");
 		System.out.println((TimeData.matching) / files1.length + "ms matching feature average");

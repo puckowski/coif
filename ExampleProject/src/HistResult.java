@@ -104,7 +104,7 @@ public class HistResult {
 		angleIndex = 0;
 
 		for (int i = 0; i < 256; ++i) {
-			sum1 += mHist[i];
+			sum1 += mInnerHist[i];
 			sum2 += mCenterHist[i];
 			binIndex++;
 
