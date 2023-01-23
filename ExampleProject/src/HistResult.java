@@ -8,8 +8,7 @@ public class HistResult {
 	private int mY;
 	private int[] mDistances;
 	private int[] mDistances2;
-	private int mSsd;
-
+	
 	public int mDistinctiveness;
 	public int mMinDistinctiveness;
 	public int mMaxDistinctiveness;
@@ -39,13 +38,9 @@ public class HistResult {
 	public int[] getInnerHist() {
 		return mInnerHist;
 	}
-
-	public int getSsd() {
-		return mSsd;
-	}
-
-	public void setSsd(int ssd) {
-		mSsd = ssd;
+	
+	public int[] getCenterHist() {
+		return mCenterHist;
 	}
 
 	public int[] getDistances() {
@@ -62,19 +57,16 @@ public class HistResult {
 			if (mHist[n] < modifier)
 				score++;
 		}
-
-		mDistinctiveness = 256 - score;
-		mMinDistinctiveness = mDistinctiveness - 10;
-		mMaxDistinctiveness = mDistinctiveness + 10;
+		
+		mDistinctiveness = 256 - score;	
+		mMinDistinctiveness = mDistinctiveness - 2; // or 4 or 10;
+		mMaxDistinctiveness = mDistinctiveness + 2; // or 4 or 10;
 	}
 
 	public void computeDistances(int mergeBinCount) {
 		final int histLength = 256 / mergeBinCount;
 		
 		mDistances = new int[histLength];
-		for (int i = 0; i < histLength; ++i) {
-			mDistances[i] = 0;
-		}
 
 		int sum1 = 0;
 		int sum2 = 0;
@@ -87,16 +79,13 @@ public class HistResult {
 			binIndex++;
 
 			if (binIndex == mergeBinCount) {
-				mDistances[angleIndex] = Math.abs(sum1 - sum2);
+				mDistances[angleIndex] = sum1 - sum2;//sum1 - sum2;Math.abs(sum1 - sum2);
 				angleIndex++;
 				binIndex = 0;
 			}
 		}
 		
 		mDistances2 = new int[histLength];
-		for (int i = 0; i < histLength; ++i) {
-			mDistances2[i] = 0;
-		}
 
 		sum1 = 0;
 		sum2 = 0;
@@ -109,7 +98,7 @@ public class HistResult {
 			binIndex++;
 
 			if (binIndex == mergeBinCount) {
-				mDistances2[angleIndex] = Math.abs(sum1 - sum2);
+				mDistances2[angleIndex] = sum1 - sum2;//Math.abs(sum1 - sum2);
 				angleIndex++;
 				binIndex = 0;
 			}

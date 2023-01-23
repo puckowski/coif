@@ -3,12 +3,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -20,7 +23,7 @@ import javax.imageio.ImageIO;
  */
 public class MainCoifV5 {
 	public static int pixelCount = 0;
-
+	 
 	public static List<HistResult> performCircles2(int[][] image, int radius, List<MoravecResult> results,
 			final int binMergeCount) {
 		List<HistResult> histResult = new ArrayList<HistResult>();
@@ -32,8 +35,6 @@ public class MainCoifV5 {
 			int[] center = cr.getCenterHist();
 
 			HistResult hr = new HistResult(hist, hist2, mr.getX(), mr.getY(), center);
-			int ssd = sumSquareDiff2(hr);
-			hr.setSsd(ssd);
 			hr.computeDistances(binMergeCount);
 			hr.computeDistinctiveness(2);
 
@@ -48,7 +49,7 @@ public class MainCoifV5 {
 		final int height = image[0].length;
 		final int radiusSquared = radius * radius;
 		final int radiusSquaredHalf = radiusSquared / 3;
-
+		
 		final int radiusSquaredHalf2 = radiusSquared / 7;
 
 		int[] hist = new int[256];
@@ -84,7 +85,7 @@ public class MainCoifV5 {
 
 					if (distanceSquared <= (radiusSquaredHalf)) {
 						hist2[val]++;
-
+							
 						if (distanceSquared <= (radiusSquaredHalf2)) {
 							hist3[val]++;
 						}
@@ -94,38 +95,33 @@ public class MainCoifV5 {
 		}
 
 		CircleResult circleResult = new CircleResult(hist, hist2, hist3);
-
+		
 		return circleResult;
 	}
-
-	public static int sumSquareDiff2(HistResult res1) {
-		int[] hist1 = res1.getHist();
-		int[] hist2 = res1.getInnerHist();
-
-		int ssd = 0;
-		for (int i = 0; i < hist1.length; ++i) {
-			int diff = hist1[i] - hist2[i];
-			ssd += diff * diff;
-		}
-
-		return ssd;
-	}
-
-	public static void process(final String file1, final String file2, final int fileIndex) {
+	
+	public static void process(final String file1, final String file2, final int fileIndex)
+			throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println("Moravec step...");
 
-		int thresholdmor = 1000;
-		int ptsmor = 20;
-		
+		int thresholdmor = 100;
+		int ptsmor = 40;
+
 		MoravecProcessor moravecProcessor = new MoravecProcessor(thresholdmor, ptsmor, 0.02);
 		List<MoravecResult> morResults;
 		MoravecProcessor moravecProcessor2 = new MoravecProcessor(thresholdmor, ptsmor, 0.02);
 		List<MoravecResult> morResults2;
 		try {
 			moravecProcessor.process(file1);
-			morResults = moravecProcessor.getResults();
-
 			moravecProcessor2.process(file2);
+
+			if (!file1.contains("_rot") && !file2.contains("_rot")) {
+				moravecProcessor.average(moravecProcessor2.getGrayscaleData());
+			}
+
+			moravecProcessor.process2();
+			moravecProcessor2.process2();
+
+			morResults = moravecProcessor.getResults();
 			morResults2 = moravecProcessor2.getResults();
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
@@ -134,23 +130,7 @@ public class MainCoifV5 {
 
 			return;
 		}
-/*
-		long startTime = System.currentTimeMillis();
-		
-		Collections.sort(morResults, Comparator.comparingDouble(MoravecResult::getMinSsd));
-		Collections.sort(morResults2, Comparator.comparingDouble(MoravecResult::getMinSsd));
-				
-		while(morResults.size() > 5000) {
-			morResults.remove(0);
-		}
-		
-		while(morResults2.size() > 5000) {
-			morResults2.remove(0);
-		}
-		
-		long estimatedTime = System.currentTimeMillis() - startTime;
-		TimeData.moravec += estimatedTime;
-*/
+
 		int[][] image = moravecProcessor.getGrayscaleData();
 		int[][] image2 = moravecProcessor2.getGrayscaleData();
 
@@ -206,7 +186,7 @@ public class MainCoifV5 {
 		do {
 			System.out.println("Circles step...");
 
-			if (binMergeCount > 8) {
+			if (binMergeCount > 5) {
 				break;
 			}
 
@@ -224,10 +204,10 @@ public class MainCoifV5 {
 			System.out.println("Circles step done.");
 			System.out.println("Feature matching step...");
 
-			final int binThreshold = 9; // or 6 or 3
+			final int binThreshold =9; // or 11 or 7
 			final double binLowerBoundPercent = 0.98;
 			final double binUpperBoundPercent = 1.02;
-			int binThreshold2 = 15; // or 12 or 6
+			int binThreshold2 = 15; // or 17 or 13
 
 			int matchingIndex = 0;
 			int[] distancesFirst;
@@ -237,7 +217,7 @@ public class MainCoifV5 {
 			int binDistance;
 
 			final int maximumDifferenceThreshold = 40;
-
+			
 			for (int i = 0; i < hrlist.size(); ++i) {
 				if (hrlist.get(i).mDistinctiveness < 80) {
 					hrlist.remove(i);
@@ -271,29 +251,31 @@ public class MainCoifV5 {
 			}
 
 			while (hrlist.size() > 20000) {
-				int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size() + 1);
+				int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
 				hrlist.remove(randomIndex);
 			}
 
 			while (hrlist2.size() > 20000) {
-				int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist2.size() + 1);
+				int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist2.size());
 				hrlist2.remove(randomIndex);
 			}
 
 			System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
 
 			double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
-			int i;
-			
+			int i, roughdist;
+
 			for (HistResult hr : hrlist) {
 				distancesFirst = hr.getDistances();
 				dist21 = hr.getDistances2();
-
-				for (HistResult hr2 : hrlist2) {					
+				
+				for (HistResult hr2 : hrlist2) {
 					if (hr2.mDistinctiveness < hr.mMinDistinctiveness
 							|| hr2.mDistinctiveness > hr.mMaxDistinctiveness) {
 						continue;
 					}
+					
+					roughdist = 0;
 
 					distancesSecond = hr2.getDistances();
 					dist22 = hr2.getDistances2();
@@ -314,6 +296,7 @@ public class MainCoifV5 {
 
 						if (val2 < valLow || val2 > valHigh) {
 							binDistance++;
+							roughdist++;
 
 							if (Math.abs(val2 - val) < binThreshold2) {
 								binDistance--;
@@ -340,6 +323,7 @@ public class MainCoifV5 {
 
 						if (val2 < valLow || val2 > valHigh) {
 							binDistance++;
+							roughdist++;
 
 							if (Math.abs(val2 - val) < binThreshold2) {
 								binDistance--;
@@ -353,13 +337,17 @@ public class MainCoifV5 {
 
 					if (binDistance < binThreshold) {
 						FeatureMatch f = new FeatureMatch(hr.getX(), hr.getY(), hr2.getX(), hr2.getY());
-						f.roughBinDistance = binDistance;
-
+						f.roughBinDistance = roughdist;// binDistance;
+						
 						featureMatches.add(f);
 
 						g2d.setColor(Color.RED);
-						g2d.drawString(String.valueOf(hr.mDistinctiveness), hr.getX() + 10, hr.getY() + 10);
-						g2d.drawString(String.valueOf(hr2.mDistinctiveness), hr2.getX() + 10 + width, hr2.getY() + 10);
+						g2d.drawString(String.valueOf(hr.mDistinctiveness), hr.getX() + 10, hr.getY() + 10);//hr.mDistinctiveness), hr.getX() + 10, hr.getY() + 10);
+						g2d.drawString(String.valueOf(hr2.mDistinctiveness), hr2.getX() + 10 + width, hr2.getY() + 10);//hr2.mDistinctiveness), hr2.getX() + 10 + width, hr2.getY() + 10);
+
+						// if (featureMatches.size() > 50) {
+						// break;
+						// }
 					}
 				}
 
@@ -368,16 +356,34 @@ public class MainCoifV5 {
 				if (matchingIndex % 1000 == 0) {
 					System.out.println("Histograms compared: " + matchingIndex + " / " + hrlist.size());
 				}
+
+				// if (featureMatches.size() > 50) {
+				// break;
+				// }
+			}
+
+			for (int in = 0; in < featureMatches.size(); ++in) {
+				if (featureMatches.get(in).roughBinDistance > 30) {
+					featureMatches.remove(in);
+					in--;
+				}
 			}
 
 			System.out.println("Feature matching done.");
 		} while (featureMatches.size() < 5
 				|| evaluateFeatureMatchCloseness(featureMatches) >= (featureMatches.size() * 0.8));
 
+		TimeData.binDistanceUsage[binMergeCount - 1]++;
+		
 		long estimatedTime = System.currentTimeMillis() - startTime;
 		TimeData.matching += estimatedTime;
+		TimeData.matchingTimes.add(estimatedTime);
 
 		System.out.println("Finalizing montage...");
+
+		PrintWriter writer = new PrintWriter("moravec3_" + String.valueOf(fileIndex) + ".txt", "UTF-8");
+		writer.println(file1);
+		writer.println(file2);
 
 		for (FeatureMatch fm : featureMatches) {
 			int redrand = ThreadLocalRandom.current().nextInt(0, 255 + 1);
@@ -392,7 +398,14 @@ public class MainCoifV5 {
 
 			g2d.setColor(Color.GREEN);
 			g2d.fillOval(fm.getX2() + width - 3, fm.getY2() - 3, 6, 6);
+
+			writer.println(fm.getX1());
+			writer.println(fm.getY1());
+			writer.println(fm.getX2());
+			writer.println(fm.getY2());
 		}
+
+		writer.close();
 
 		System.out.println("Montage finalized.");
 
@@ -451,16 +464,20 @@ public class MainCoifV5 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "Test5000.jpg", "Test3000.jpg", "Test3000.jpg", "Test1500.jpg", "Test1310.PNG",
-				"Test1199.PNG", "Test1000.jpg", "Test2120.jpg", "Test1999.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg",
-				"Test34.jpg", "Test37.jpg", "Test47.jpg", "Test48.png", "Test65.jpg", "Test70.jpg", "Test99.jpg",
-				"Test120.jpeg", "Test121.png", "Test122.png", "Test123.jpg", "Test200.jpg", "Test211.jpg",
-				"Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
-		final String[] files2 = { "Test5001.jpg", "Test3002.jpg", "Test3001.jpg", "Test1501.jpg", "Test1311.PNG",
-				"Test1200.PNG", "Test1001.jpg", "Test2121.jpg", "Test2000.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg",
-				"Test35.jpg", "Test38.jpg", "Test48.jpg", "Test49.png", "Test66.jpg", "Test71.jpg", "Test100.jpg",
-				"Test124.jpeg", "Test125.png", "Test126.png", "Test127.jpg", "Test201.jpg", "Test212.jpg",
-				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+		final String[] files1 = { "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg",
+				"Test5000_rot.jpg", "Test3000_rot.jpg", "Test3000_rot.jpg", "Test1500.jpg", "Test1310_rot.PNG",
+				"Test1199_rot.PNG", "Test1000_rot.jpg", "Test2120_rot.jpg", "Test1999_rot.jpg", "Test4.jpg",
+				"Test6.jpg", "Test21.jpg", "Test34_rot.jpg", "Test37.jpg", "Test47_rot.jpg", "Test48_rot.png",
+				"Test65.jpg", "Test70.jpg", "Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png",
+				"Test123_rot.jpg", "Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg",
+				"Test600.jpg", "Test800.jpg" };
+		final String[] files2 = { "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg",
+				"Test5001_rot.jpg", "Test3002_rot.jpg", "Test3001_rot.jpg", "Test1501.jpg", "Test1311_rot.PNG",
+				"Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg", "Test2000_rot.jpg", "Test5.jpg",
+				"Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg", "Test48_rot.jpg", "Test49_rot.png",
+				"Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg", "Test125_rot.png", "Test126_rot.png",
+				"Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg",
+				"Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
@@ -474,6 +491,100 @@ public class MainCoifV5 {
 		System.out.println((TimeData.moravec) / files1.length + "ms finding corner average");
 		System.out.println((TimeData.matching) / files1.length + "ms matching feature average");
 		System.out.println(pixelCount + " pixels processed");
+
+		long medianMoravec = TimeData.moravecTimes.stream().map(Long::valueOf).sorted()
+				.collect(Collectors.collectingAndThen(Collectors.toList(), times -> {
+					int count = times.size();
+					if (count % 2 == 0) {
+						return (times.get(count / 2 - 1) + times.get(count / 2)) / 2;
+					} else {
+						return times.get(count / 2);
+					}
+				}));
+		long medianMatching = TimeData.matchingTimes.stream().map(Long::valueOf).sorted()
+				.collect(Collectors.collectingAndThen(Collectors.toList(), times -> {
+					int count = times.size();
+					if (count % 2 == 0) {
+						return (times.get(count / 2 - 1) + times.get(count / 2)) / 2;
+					} else {
+						return times.get(count / 2);
+					}
+				}));
+		System.out.println(((double) medianMoravec) + "ms finding corner median");
+		System.out.println(((double) medianMatching) + "ms matching feature median");
+
+		List<Double> moravecTimes = TimeData.moravecTimes.stream().map(Double::valueOf).collect(Collectors.toList());
+		List<Double> matchingTimes = TimeData.matchingTimes.stream().map(Double::valueOf).collect(Collectors.toList());
+		final Set<Double> moravecOutliers = eliminateOutliers(moravecTimes, 2f).stream().collect(Collectors.toSet());
+		final Set<Double> matchingOutliers = eliminateOutliers(matchingTimes, 2f).stream().collect(Collectors.toSet());
+		System.out.println("Corner outliers: " + moravecOutliers.toString());
+		System.out.println("Feature matching outliers: " + matchingOutliers.toString());
+		moravecTimes = moravecTimes.stream().filter(time -> !moravecOutliers.contains(time))
+				.collect(Collectors.toList());
+		matchingTimes = matchingTimes.stream().filter(time -> !matchingOutliers.contains(time))
+				.collect(Collectors.toList());
+		final Double moravecSum = moravecTimes.stream().mapToDouble(f -> f.doubleValue()).sum();
+		final Double matchingSum = matchingTimes.stream().mapToDouble(f -> f.doubleValue()).sum();
+		System.out.println(moravecSum / ((double) files1.length) + "ms finding corner average without outliers");
+		System.out.println(matchingSum / ((double) files1.length) + "ms matching feature average without outliers");
+
+		System.out.println(((double) TimeData.moravec + (double) TimeData.matching) / 1000.0 + "s total");
+		System.out.println(((TimeData.matching) + TimeData.moravec) / files1.length + "ms average");
+		System.out.println(((double) medianMatching + (double) medianMoravec) + "ms median");
+		System.out.println((moravecSum + matchingSum) / ((double) files1.length) + "ms average without outliers");
+		
+		System.out.println("Merge distances used:");
+		for (int i = 1; i < TimeData.binDistanceUsage.length; ++i) {
+			System.out.println(i + " used " + TimeData.binDistanceUsage[i] + " times");
+		}
+	}
+
+	protected static double getMean(List<Double> values) {
+		int sum = 0;
+		for (double value : values) {
+			sum += value;
+		}
+
+		return (sum / values.size());
+	}
+
+	public static double getVariance(List<Double> values) {
+		double mean = getMean(values);
+		int temp = 0;
+
+		for (double a : values) {
+			temp += (a - mean) * (a - mean);
+		}
+
+		return temp / (values.size() - 1);
+	}
+
+	public static double getStdDev(List<Double> values) {
+		return Math.sqrt(getVariance(values));
+	}
+
+	public static List<Double> eliminateOutliers(List<Double> values, float scaleOfElimination) {
+		double mean = getMean(values);
+		double stdDev = getStdDev(values);
+
+		final List<Double> newList = new ArrayList<>();
+
+		for (double value : values) {
+			boolean isLessThanLowerBound = value < mean - stdDev * scaleOfElimination;
+			boolean isGreaterThanUpperBound = value > mean + stdDev * scaleOfElimination;
+			boolean isOutOfBounds = isLessThanLowerBound || isGreaterThanUpperBound;
+
+			if (!isOutOfBounds) {
+				newList.add(value);
+			}
+		}
+
+		int countOfOutliers = values.size() - newList.size();
+		if (countOfOutliers == 0) {
+			return values;
+		}
+
+		return eliminateOutliers(newList, scaleOfElimination);
 	}
 
 	private static void drawArrowLine(Graphics g, int x1, int y1, int x2, int y2, int d, int h) {

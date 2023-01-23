@@ -63,29 +63,35 @@ public class ImageUtils {
 	}
 
 	private BufferedImage resize(BufferedImage src, int targetSize) {
-	    if (targetSize <= 0) {
-	        return src; //this can't be resized
-	    }
-	    int targetWidth = targetSize;
-	    int targetHeight = targetSize;
-	    float ratio = ((float) src.getHeight() / (float) src.getWidth());
-	    if (ratio <= 1) { //square or landscape-oriented image
-	        targetHeight = (int) Math.ceil((float) targetWidth * ratio);
-	    } else { //portrait image
-	        targetWidth = Math.round((float) targetHeight / ratio);
-	    }
-	    BufferedImage bi = new BufferedImage(targetWidth, targetHeight, src.getTransparency() == Transparency.OPAQUE ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2d = bi.createGraphics();
-	    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR); //produces a balanced resizing (fast and decent quality)
-	    g2d.drawImage(src, 0, 0, targetWidth, targetHeight, null);
-	    g2d.dispose();
-	    return bi;
+		if (targetSize <= 0) {
+			return src;
+		}
+
+		int targetWidth = targetSize;
+		int targetHeight = targetSize;
+		float ratio = ((float) src.getHeight() / (float) src.getWidth());
+
+		if (ratio <= 1) {
+			targetHeight = (int) Math.ceil((float) targetWidth * ratio);
+		} else {
+			targetWidth = Math.round((float) targetHeight / ratio);
+		}
+
+		BufferedImage bi = new BufferedImage(targetWidth, targetHeight,
+				src.getTransparency() == Transparency.OPAQUE ? BufferedImage.TYPE_INT_RGB
+						: BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = bi.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.drawImage(src, 0, 0, targetWidth, targetHeight, null);
+		g2d.dispose();
+
+		return bi;
 	}
-	
+
 	public int[][] localGrayscaleArray(final String absoluteFileName) throws IOException {
 		BufferedImage image = ImageIO.read(new File(absoluteFileName));
 
-		//image = resize(image, 1000);
+		image = resize(image, 640);
 		
 		int[][] redValues = new int[image.getWidth()][image.getHeight()];
 		int[][] greenValues = new int[image.getWidth()][image.getHeight()];

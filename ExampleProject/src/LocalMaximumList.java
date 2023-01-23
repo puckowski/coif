@@ -11,7 +11,7 @@ public class LocalMaximumList {
 	private int mLocalFeatureCount;
 
 	private Queue<MoravecResult> mResults;
-
+	
 	public LocalMaximumList(int startX, int startY, int finalX, int finalY, int localFeatureCount) {
 		mStartX = startX;
 		mStartY = startY;

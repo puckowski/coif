@@ -32,4 +32,8 @@ public class FeatureMatch {
 	public int getY2() {
 		return mY2;
 	}
+	
+	public int getRoughDistance() {
+		return roughBinDistance;
+	}
 }
