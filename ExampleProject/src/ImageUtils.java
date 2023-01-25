@@ -92,7 +92,7 @@ public class ImageUtils {
 		BufferedImage image = ImageIO.read(new File(absoluteFileName));
 
 		image = resize(image, 640);
-		
+
 		int[][] redValues = new int[image.getWidth()][image.getHeight()];
 		int[][] greenValues = new int[image.getWidth()][image.getHeight()];
 		int[][] blueValues = new int[image.getWidth()][image.getHeight()];

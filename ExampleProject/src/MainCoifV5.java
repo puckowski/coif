@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
  */
 public class MainCoifV5 {
 	public static int pixelCount = 0;
-	 
+
 	public static List<HistResult> performCircles2(int[][] image, int radius, List<MoravecResult> results,
 			final int binMergeCount) {
 		List<HistResult> histResult = new ArrayList<HistResult>();
@@ -49,7 +49,7 @@ public class MainCoifV5 {
 		final int height = image[0].length;
 		final int radiusSquared = radius * radius;
 		final int radiusSquaredHalf = radiusSquared / 3;
-		
+
 		final int radiusSquaredHalf2 = radiusSquared / 7;
 
 		int[] hist = new int[256];
@@ -85,7 +85,7 @@ public class MainCoifV5 {
 
 					if (distanceSquared <= (radiusSquaredHalf)) {
 						hist2[val]++;
-							
+
 						if (distanceSquared <= (radiusSquaredHalf2)) {
 							hist3[val]++;
 						}
@@ -95,10 +95,10 @@ public class MainCoifV5 {
 		}
 
 		CircleResult circleResult = new CircleResult(hist, hist2, hist3);
-		
+
 		return circleResult;
 	}
-	
+
 	public static void process(final String file1, final String file2, final int fileIndex)
 			throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println("Moravec step...");
@@ -204,7 +204,7 @@ public class MainCoifV5 {
 			System.out.println("Circles step done.");
 			System.out.println("Feature matching step...");
 
-			final int binThreshold =9; // or 11 or 7
+			final int binThreshold = 9; // or 11 or 7
 			final double binLowerBoundPercent = 0.98;
 			final double binUpperBoundPercent = 1.02;
 			int binThreshold2 = 15; // or 17 or 13
@@ -217,7 +217,7 @@ public class MainCoifV5 {
 			int binDistance;
 
 			final int maximumDifferenceThreshold = 40;
-			
+
 			for (int i = 0; i < hrlist.size(); ++i) {
 				if (hrlist.get(i).mDistinctiveness < 80) {
 					hrlist.remove(i);
@@ -268,13 +268,13 @@ public class MainCoifV5 {
 			for (HistResult hr : hrlist) {
 				distancesFirst = hr.getDistances();
 				dist21 = hr.getDistances2();
-				
+
 				for (HistResult hr2 : hrlist2) {
 					if (hr2.mDistinctiveness < hr.mMinDistinctiveness
 							|| hr2.mDistinctiveness > hr.mMaxDistinctiveness) {
 						continue;
 					}
-					
+
 					roughdist = 0;
 
 					distancesSecond = hr2.getDistances();
@@ -338,12 +338,24 @@ public class MainCoifV5 {
 					if (binDistance < binThreshold) {
 						FeatureMatch f = new FeatureMatch(hr.getX(), hr.getY(), hr2.getX(), hr2.getY());
 						f.roughBinDistance = roughdist;// binDistance;
-						
+
 						featureMatches.add(f);
 
 						g2d.setColor(Color.RED);
-						g2d.drawString(String.valueOf(hr.mDistinctiveness), hr.getX() + 10, hr.getY() + 10);//hr.mDistinctiveness), hr.getX() + 10, hr.getY() + 10);
-						g2d.drawString(String.valueOf(hr2.mDistinctiveness), hr2.getX() + 10 + width, hr2.getY() + 10);//hr2.mDistinctiveness), hr2.getX() + 10 + width, hr2.getY() + 10);
+						g2d.drawString(String.valueOf(hr.mDistinctiveness), hr.getX() + 10, hr.getY() + 10);// hr.mDistinctiveness),
+																											// hr.getX()
+																											// + 10,
+																											// hr.getY()
+																											// + 10);
+						g2d.drawString(String.valueOf(hr2.mDistinctiveness), hr2.getX() + 10 + width, hr2.getY() + 10);// hr2.mDistinctiveness),
+																														// hr2.getX()
+																														// +
+																														// 10
+																														// +
+																														// width,
+																														// hr2.getY()
+																														// +
+																														// 10);
 
 						// if (featureMatches.size() > 50) {
 						// break;
@@ -372,9 +384,9 @@ public class MainCoifV5 {
 			System.out.println("Feature matching done.");
 		} while (featureMatches.size() < 5
 				|| evaluateFeatureMatchCloseness(featureMatches) >= (featureMatches.size() * 0.8));
-
+	
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
-		
+
 		long estimatedTime = System.currentTimeMillis() - startTime;
 		TimeData.matching += estimatedTime;
 		TimeData.matchingTimes.add(estimatedTime);
@@ -464,14 +476,16 @@ public class MainCoifV5 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg",
+		final String[] files1 = { "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg", "Test506.jpg",
+				"Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg",
 				"Test5000_rot.jpg", "Test3000_rot.jpg", "Test3000_rot.jpg", "Test1500.jpg", "Test1310_rot.PNG",
 				"Test1199_rot.PNG", "Test1000_rot.jpg", "Test2120_rot.jpg", "Test1999_rot.jpg", "Test4.jpg",
 				"Test6.jpg", "Test21.jpg", "Test34_rot.jpg", "Test37.jpg", "Test47_rot.jpg", "Test48_rot.png",
 				"Test65.jpg", "Test70.jpg", "Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png",
 				"Test123_rot.jpg", "Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg",
 				"Test600.jpg", "Test800.jpg" };
-		final String[] files2 = { "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg",
+		final String[] files2 = { "Test1032.jpg", "Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg",
+				"Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg",
 				"Test5001_rot.jpg", "Test3002_rot.jpg", "Test3001_rot.jpg", "Test1501.jpg", "Test1311_rot.PNG",
 				"Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg", "Test2000_rot.jpg", "Test5.jpg",
 				"Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg", "Test48_rot.jpg", "Test49_rot.png",
@@ -532,7 +546,7 @@ public class MainCoifV5 {
 		System.out.println(((TimeData.matching) + TimeData.moravec) / files1.length + "ms average");
 		System.out.println(((double) medianMatching + (double) medianMoravec) + "ms median");
 		System.out.println((moravecSum + matchingSum) / ((double) files1.length) + "ms average without outliers");
-		
+
 		System.out.println("Merge distances used:");
 		for (int i = 1; i < TimeData.binDistanceUsage.length; ++i) {
 			System.out.println(i + " used " + TimeData.binDistanceUsage[i] + " times");
