@@ -1,4 +1,3 @@
-
 public class HistResult {
 
 	private int[] mHist;
@@ -8,11 +7,13 @@ public class HistResult {
 	private int mY;
 	private int[] mDistances;
 	private int[] mDistances2;
-	
+
 	public int mDistinctiveness;
 	public int mMinDistinctiveness;
 	public int mMaxDistinctiveness;
-	
+
+	public int mLongestSequence;
+
 	public HistResult(int[] hist, int[] innerHist, int x, int y, int[] centerHist) {
 		mHist = hist;
 		mInnerHist = innerHist;
@@ -22,7 +23,7 @@ public class HistResult {
 
 		mDistinctiveness = 0;
 	}
-	
+
 	public int getX() {
 		return mX;
 	}
@@ -38,7 +39,7 @@ public class HistResult {
 	public int[] getInnerHist() {
 		return mInnerHist;
 	}
-	
+
 	public int[] getCenterHist() {
 		return mCenterHist;
 	}
@@ -46,7 +47,7 @@ public class HistResult {
 	public int[] getDistances() {
 		return mDistances;
 	}
-	
+
 	public int[] getDistances2() {
 		return mDistances2;
 	}
@@ -57,15 +58,31 @@ public class HistResult {
 			if (mHist[n] < modifier)
 				score++;
 		}
-		
-		mDistinctiveness = 256 - score;	
+
+		mDistinctiveness = 256 - score;
 		mMinDistinctiveness = mDistinctiveness - 2; // or 4 or 10;
 		mMaxDistinctiveness = mDistinctiveness + 2; // or 4 or 10;
+
+		int longestSequence = 0;
+		int count = 0;
+		for (int n = 0; n < mHist.length; ++n) {
+			if (mHist[n] < 25) {
+				count++;
+			} else {
+				if (longestSequence < count) {
+					longestSequence = count;
+				}
+
+				count = 0;
+			}
+		}
+
+		mLongestSequence = longestSequence;
 	}
 
 	public void computeDistances(int mergeBinCount) {
 		final int histLength = 256 / mergeBinCount;
-		
+
 		mDistances = new int[histLength];
 
 		int sum1 = 0;
@@ -79,12 +96,12 @@ public class HistResult {
 			binIndex++;
 
 			if (binIndex == mergeBinCount) {
-				mDistances[angleIndex] = sum1 - sum2;//sum1 - sum2;Math.abs(sum1 - sum2);
+				mDistances[angleIndex] = sum1 - sum2;// sum1 - sum2;Math.abs(sum1 - sum2);
 				angleIndex++;
 				binIndex = 0;
 			}
 		}
-		
+
 		mDistances2 = new int[histLength];
 
 		sum1 = 0;
@@ -98,7 +115,7 @@ public class HistResult {
 			binIndex++;
 
 			if (binIndex == mergeBinCount) {
-				mDistances2[angleIndex] = sum1 - sum2;//Math.abs(sum1 - sum2);
+				mDistances2[angleIndex] = sum1 - sum2;// Math.abs(sum1 - sum2);
 				angleIndex++;
 				binIndex = 0;
 			}

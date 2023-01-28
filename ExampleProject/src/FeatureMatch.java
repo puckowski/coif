@@ -6,8 +6,10 @@ public class FeatureMatch {
 
 	public int mX2;
 	public int mY2;
+
+	public int mRoughBinDistance;
 	
-	public int roughBinDistance;
+	public int ai;
 
 	public FeatureMatch(int x1, int y1, int x2, int y2) {
 		mX1 = x1;
@@ -32,8 +34,12 @@ public class FeatureMatch {
 	public int getY2() {
 		return mY2;
 	}
-	
+
 	public int getRoughDistance() {
-		return roughBinDistance;
+		return mRoughBinDistance;
+	}
+	
+	public void setRoughBinDistance(int distance) {
+		mRoughBinDistance = distance;
 	}
 }
