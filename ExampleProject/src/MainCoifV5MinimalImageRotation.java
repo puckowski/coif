@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MainCoifV5 {
+public class MainCoifV5MinimalImageRotation {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,
@@ -298,151 +298,127 @@ public class MainCoifV5 {
 			}
 
 			HistResultList list1;
-			
+
 			for (int i = 0; i < hrlist.size(); ++i) {
 				list1 = hrlist.get(i);
-				
+
 				for (int n = 0; n < list1.histResults.size(); ++n) {
 					if (list1.histResults.get(n).mLongestSequence > 70) {
 						hrlist.remove(i);
 						i--;
 						break;
-					}	
+					}
 				}
 			}
-			
+
 			for (int i = 0; i < hrlist2.size(); ++i) {
 				list1 = hrlist2.get(i);
-				
+
 				for (int n = 0; n < list1.histResults.size(); ++n) {
 					if (list1.histResults.get(n).mLongestSequence > 70) {
 						hrlist2.remove(i);
 						i--;
 						break;
-					}	
+					}
 				}
 			}
-			
+
 			System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
 
 			double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
 			int i, roughBinDistance;
 
-			int[][] compareIndexArray = { { 0, 1, 2, 3 }, { 1, 2, 3, 0 }, { 2, 3, 0, 1 }, { 3, 0, 1, 2 }, };
-			int lowestDistance,compareIndex,compareIndexMatch,lowestRoughBinDistance,distanceFinal, hri;
+			int distanceFinal, hri;
 			HistResult result1, result2;
-			final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
-			int maxKey, maxValue;
-			
+
 			for (HistResultList hr : hrlist) {
 				for (HistResultList hr2 : hrlist2) {
+					distanceFinal = 0;
+					roughBinDistance = 0;
 
-					lowestDistance = 99999;
-					compareIndex = 0;
-					compareIndexMatch = 0;
-					lowestRoughBinDistance = 99999;
+					for (hri = 0; hri < hr.histResults.size(); ++hri) {
+						result1 = hr.histResults.get(hri);
+						distancesFirst = result1.getDistances();
+						dist21 = result1.getDistances2();
 
-					for (int[] ar : compareIndexArray) {
-						compareIndex++;
-				
-						distanceFinal = 0;
-						roughBinDistance = 0;
+						binDistance = 0;
 
-						for (hri = 0; hri < hr.histResults.size(); ++hri) {
-							result1 = hr.histResults.get(hri);
-							distancesFirst = result1.getDistances();
-							dist21 = result1.getDistances2();
+						if (hr.histResults.get(hri).mDistinctiveness < hr2.histResults.get(hri).mMinDistinctiveness
+								|| hr.histResults.get(hri).mDistinctiveness > hr2.histResults
+										.get(hri).mMaxDistinctiveness) {
+							distanceFinal = 99999;
+							break;
+						}
 
-							binDistance = 0;
+						result2 = hr2.histResults.get(hri);
+						distancesSecond = result2.getDistances();
+						dist22 = result2.getDistances2();
 
-							if (hr.histResults.get(hri).mDistinctiveness < hr2.histResults
-									.get(ar[hri]).mMinDistinctiveness
-									|| hr.histResults.get(hri).mDistinctiveness > hr2.histResults
-											.get(ar[hri]).mMaxDistinctiveness) {
-								distanceFinal = 99999;
-								break;
-							}
+						for (i = 0; i < distancesFirst.length; ++i) {
+							val = distancesFirst[i];
+							val2 = distancesSecond[i];
 
-							result2 = hr2.histResults.get(ar[hri]);
-							distancesSecond = result2.getDistances();
-							dist22 = result2.getDistances2();
+							valLow = (val * binLowerBoundPercent);
+							valThresholdCheck = Math.abs(val - valLow);
+							if (valThresholdCheck > maximumDifferenceThreshold)
+								valLow = val - maximumDifferenceThreshold;
+							valHigh = (val * binUpperBoundPercent);
+							valThresholdCheckHigh = Math.abs(val - valHigh);
+							if (valThresholdCheckHigh > maximumDifferenceThreshold)
+								valHigh = val + maximumDifferenceThreshold;
 
-							for (i = 0; i < distancesFirst.length; ++i) {
-								val = distancesFirst[i];
-								val2 = distancesSecond[i];
+							if (val2 < valLow || val2 > valHigh) {
+								binDistance++;
+								roughBinDistance++;
 
-								valLow = (val * binLowerBoundPercent);
-								valThresholdCheck = Math.abs(val - valLow);
-								if (valThresholdCheck > maximumDifferenceThreshold)
-									valLow = val - maximumDifferenceThreshold;
-								valHigh = (val * binUpperBoundPercent);
-								valThresholdCheckHigh = Math.abs(val - valHigh);
-								if (valThresholdCheckHigh > maximumDifferenceThreshold)
-									valHigh = val + maximumDifferenceThreshold;
-
-								if (val2 < valLow || val2 > valHigh) {
-									binDistance++;
-									roughBinDistance++;
-
-									if (Math.abs(val2 - val) < binThreshold2) {
-										binDistance--;
-									}
-
-									if (binDistance >= binThreshold) {
-										break;
-									}
+								if (Math.abs(val2 - val) < binThreshold2) {
+									binDistance--;
 								}
-							}
 
-							for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
-								val = dist21[i];
-								val2 = dist22[i];
-
-								valLow = (val * binLowerBoundPercent);
-								valThresholdCheck = Math.abs(val - valLow);
-								if (valThresholdCheck > maximumDifferenceThreshold)
-									valLow = val - maximumDifferenceThreshold;
-								valHigh = (val * binUpperBoundPercent);
-								valThresholdCheckHigh = Math.abs(val - valHigh);
-								if (valThresholdCheckHigh > maximumDifferenceThreshold)
-									valHigh = val + maximumDifferenceThreshold;
-
-								if (val2 < valLow || val2 > valHigh) {
-									binDistance++;
-									roughBinDistance++;
-
-									if (Math.abs(val2 - val) < binThreshold2) {
-										binDistance--;
-									}
-
-									if (binDistance >= binThreshold) {
-										break;
-									}
+								if (binDistance >= binThreshold) {
+									break;
 								}
-							}
-
-							distanceFinal += binDistance;
-
-							if (distanceFinal >= binThreshold) {
-								break;
 							}
 						}
 
-						if (lowestDistance > distanceFinal) {
-							compareIndexMatch = compareIndex - 1;
-							lowestDistance = distanceFinal;
-							lowestRoughBinDistance = roughBinDistance;
+						for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
+							val = dist21[i];
+							val2 = dist22[i];
+
+							valLow = (val * binLowerBoundPercent);
+							valThresholdCheck = Math.abs(val - valLow);
+							if (valThresholdCheck > maximumDifferenceThreshold)
+								valLow = val - maximumDifferenceThreshold;
+							valHigh = (val * binUpperBoundPercent);
+							valThresholdCheckHigh = Math.abs(val - valHigh);
+							if (valThresholdCheckHigh > maximumDifferenceThreshold)
+								valHigh = val + maximumDifferenceThreshold;
+
+							if (val2 < valLow || val2 > valHigh) {
+								binDistance++;
+								roughBinDistance++;
+
+								if (Math.abs(val2 - val) < binThreshold2) {
+									binDistance--;
+								}
+
+								if (binDistance >= binThreshold) {
+									break;
+								}
+							}
+						}
+
+						distanceFinal += binDistance;
+
+						if (distanceFinal >= binThreshold) {
+							break;
 						}
 					}
-
-					distanceFinal = lowestDistance;
-					roughBinDistance = lowestRoughBinDistance;
 
 					if (distanceFinal < binThreshold) {
 						FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(), hr.histResults.get(0).getY(),
 								hr2.histResults.get(0).getX(), hr2.histResults.get(0).getY());
 						f.setRoughBinDistance(roughBinDistance);
-						f.rotationArrayIndex = compareIndexMatch;
 
 						featureMatches.add(f);
 
@@ -451,6 +427,7 @@ public class MainCoifV5 {
 						// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
 						// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
 						// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
+
 					}
 				}
 
@@ -461,44 +438,16 @@ public class MainCoifV5 {
 				}
 			}
 
-			rotationIndexMap.clear();
-			
-			for (i = 0; i < featureMatches.size(); ++i) {
-				if (rotationIndexMap.containsKey(featureMatches.get(i).rotationArrayIndex)) {
-					rotationIndexMap.replace(featureMatches.get(i).rotationArrayIndex, rotationIndexMap.get(featureMatches.get(i).rotationArrayIndex) + 1);
-				} else {
-					rotationIndexMap.put(featureMatches.get(i).rotationArrayIndex, 1);
-				}
-			}
-
-			maxKey = 0;
-			maxValue = 0;
-			
-			for (Map.Entry<Integer, Integer> e : rotationIndexMap.entrySet()) {
-				if (maxValue < e.getValue()) {
-					maxKey = e.getKey();
-					maxValue = e.getValue();
-				}
-			}
-			
-			for (i = 0; i < featureMatches.size(); ++i) {
-				if (featureMatches.get(i).rotationArrayIndex != maxKey) {
-					featureMatches.remove(i);
-					i--;
-				}
-			}
-
 			// Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance -
 			// o2.mRoughBinDistance);
 
-			//for (int ci = 50; ci < featureMatches.size(); ++ci) {
-				// featureMatches.remove(ci);
-				// ci--;
-			//}
+			// for (int ci = 50; ci < featureMatches.size(); ++ci) {
+			// featureMatches.remove(ci);
+			// ci--;
+			// }
 
 			System.out.println("Feature matching done.");
-		} while (featureMatches.size() < 5
-				|| evaluateFeatureMatchCloseness(featureMatches) >= 0.85);
+		} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.85);
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
 
@@ -564,7 +513,7 @@ public class MainCoifV5 {
 
 			int x = fm.getX1();
 			int y = fm.getY1();
-			
+
 			for (int n = 0; n < featureMatches.size(); ++n) {
 				if (i == n) {
 					continue;
@@ -580,7 +529,7 @@ public class MainCoifV5 {
 			}
 
 			double pct = (double) matches / (double) featureMatches.size();
-			
+
 			if (firstPercent) {
 				matchPercent = pct;
 				firstPercent = false;
@@ -591,7 +540,7 @@ public class MainCoifV5 {
 		}
 
 		System.out.println("Feature match closeness: " + matchPercent);
-		
+
 		return matchPercent;
 	}
 
