@@ -31,40 +31,40 @@ public class MainCoifV5MinimalImageRotation {
 			int x = mr.getX();
 			int y = mr.getY();
 
-			if (x - 4 >= 0 && y - 4 >= 0 && x + 4 < width && y + 4 < height) {
-				CircleResult cr = circles3(image, mr.getX(), mr.getY() - 4, radius);
+			if (x - 8 >= 0 && y - 8 >= 0 && x + 8 < width && y + 8 < height) {
+				CircleResult cr = circles3(image, mr.getX(), mr.getY() - 8, radius);
 				int[] hist = cr.getHist();
 				int[] hist2 = cr.getInnerHist();
 				int[] center = cr.getCenterHist();
 
-				HistResult hr = new HistResult(hist, hist2, mr.getX(), mr.getY() - 4, center);
+				HistResult hr = new HistResult(hist, hist2, mr.getX(), mr.getY() - 8, center);
 				hr.computeDistances(binMergeCount);
 				hr.computeDistinctiveness(2);
 
-				CircleResult crSec = circles3(image, mr.getX() - 4, mr.getY(), radius);
+				CircleResult crSec = circles3(image, mr.getX() - 8, mr.getY(), radius);
 				int[] histSec = crSec.getHist();
 				int[] hist2Sec = crSec.getInnerHist();
 				int[] centerSec = crSec.getCenterHist();
 
-				HistResult hrSec = new HistResult(histSec, hist2Sec, mr.getX() - 4, mr.getY(), centerSec);
+				HistResult hrSec = new HistResult(histSec, hist2Sec, mr.getX() - 8, mr.getY(), centerSec);
 				hrSec.computeDistances(binMergeCount);
 				hrSec.computeDistinctiveness(2);
 
-				CircleResult crThird = circles3(image, mr.getX() + 4, mr.getY(), radius);
+				CircleResult crThird = circles3(image, mr.getX() + 8, mr.getY(), radius);
 				int[] histThird = crThird.getHist();
 				int[] hist2Third = crThird.getInnerHist();
 				int[] centerThird = crThird.getCenterHist();
 
-				HistResult hrThird = new HistResult(histThird, hist2Third, mr.getX() + 4, mr.getY(), centerThird);
+				HistResult hrThird = new HistResult(histThird, hist2Third, mr.getX() + 8, mr.getY(), centerThird);
 				hrThird.computeDistances(binMergeCount);
 				hrThird.computeDistinctiveness(2);
 
-				CircleResult crFourth = circles3(image, mr.getX(), mr.getY() + 4, radius);
+				CircleResult crFourth = circles3(image, mr.getX(), mr.getY() + 8, radius);
 				int[] histFourth = crFourth.getHist();
 				int[] hist2Fourth = crFourth.getInnerHist();
 				int[] centerFourth = crFourth.getCenterHist();
 
-				HistResult hrFth = new HistResult(histFourth, hist2Fourth, mr.getX(), mr.getY() + 4, centerFourth);
+				HistResult hrFth = new HistResult(histFourth, hist2Fourth, mr.getX(), mr.getY() + 8, centerFourth);
 				hrFth.computeDistances(binMergeCount);
 				hrFth.computeDistinctiveness(2);
 
