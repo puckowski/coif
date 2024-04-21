@@ -6,6 +6,8 @@ from tqdm import tqdm_notebook as tqdm
 plt.rcParams['figure.figsize'] = [15, 15]
 import glob
 
+DROPOUT_RATE = 1
+
 files1 = glob.glob('moravec3_*.txt')
 cnt = 0
 
@@ -46,11 +48,14 @@ for file in files1:
                 arr2.append(int(line))
             
             if len(arr2) == 2:
-                arr.append(arr1)
-                arrdest.append(arr2)
+                random_number = random.randint(0, DROPOUT_RATE)
+
+                if (random_number == 0):
+                    arr.append(arr1)
+                    arrdest.append(arr2)
                 arr1 = []
                 arr2 = []
-        count = count + 1
+        count = count + 1    
     ptsdisk1.append(arr)
     ptsdisk2.append(arrdest)   
 
