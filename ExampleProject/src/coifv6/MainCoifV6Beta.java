@@ -221,16 +221,16 @@ public class MainCoifV6Beta {
 
 		List<FeatureMatch> featureMatches = new ArrayList<FeatureMatch>();
 
-		int binThreshold = 36; // 9; // or 11 or 7
-		int binMergeCount;
-		int currentBaseDistinctiveness = 95;
-		int binThreshold2 = 55;
+		int binThreshold = 38; // 9; // or 11 or 7
+		int binMergeCount = 1;
+		int currentBaseDistinctiveness = 93;
+		int binThreshold2 = 57;
 
 		do {
-			binThreshold += 4;
-			currentBaseDistinctiveness -= 5;
-			binThreshold2 += 5;
 			binMergeCount = 1;
+			binThreshold += 2;
+			currentBaseDistinctiveness -= 3;
+			binThreshold2 += 3;
 
 			do {
 				System.out.println("Circles step...");
@@ -512,8 +512,9 @@ public class MainCoifV6Beta {
 				// }
 
 				System.out.println("Feature matching done.");
-			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.85);
-		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.85) && binThreshold < 56);
+			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.65);
+		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.65)
+				&& binThreshold < 56);
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
 
