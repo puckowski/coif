@@ -12,10 +12,17 @@ public class HistResultList {
 	}
 
 	public boolean distinctivenessLessThan(int threshold) {
+		double sum = 0.0;
 		for (HistResult h : histResults) {
-			if (h.mDistinctiveness < threshold) {
+			/*if (h.mDistinctiveness < threshold) {
 				return true;
-			}
+			}*/
+			sum += h.mDistinctiveness;
+		}
+		sum /= histResults.size();
+		
+		if (sum < threshold) {
+			return true;
 		}
 
 		return false;

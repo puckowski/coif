@@ -223,7 +223,7 @@ public class MainCoifV6Beta {
 
 		int binThreshold = 38; // 9; // or 11 or 7
 		int binMergeCount = 1;
-		int currentBaseDistinctiveness = 93;
+		int currentBaseDistinctiveness = 110;//93;
 		int binThreshold2 = 57;
 
 		do {
@@ -268,35 +268,127 @@ public class MainCoifV6Beta {
 
 				for (int i = 0; i < hrlist.size(); ++i) {
 					if (hrlist.get(i).distinctivenessLessThan(currentBaseDistinctiveness)) {
-						hrlist.remove(i);
-						--i;
+						//hrlist.remove(i);
+						//--i;
 					}
 				}
 
 				for (int i = 0; i < hrlist2.size(); ++i) {
 					if (hrlist2.get(i).distinctivenessLessThan(currentBaseDistinctiveness)) {
+						//hrlist2.remove(i);
+						//--i;
+					}
+				}
+
+				double mod = 0.35;
+				long count;
+				double sum, high, low, quart;
+				do {
+					mod -= 0.05;
+				sum = 0.0;
+				count = 0;
+				for (int i = 0; i < hrlist.size(); ++i) {
+					HistResultList hr = hrlist.get(i);
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+						count++;
+					}
+				}
+				sum /= count;
+				quart = sum * mod;
+				low = sum -quart;
+				high = sum + quart;
+				System.err.println( sum);
+				count = 0;
+				for (int i = 0; i < hrlist.size(); ++i) {
+					HistResultList hr = hrlist.get(i);
+					sum = 0.0;
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+					}
+					sum /= hr.histResults.size();
+					
+					if (sum < high) {
+						count++;
+					}
+				}
+				} while (hrlist.size() - count < 2500 && hrlist.size() > 2500);
+				
+				for (int i = 0; i < hrlist.size(); ++i) {
+					HistResultList hr = hrlist.get(i);
+					sum = 0.0;
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+					}
+					sum /= hr.histResults.size();
+					
+					if (sum < high) {
+						hrlist.remove(i);
+						--i;
+					}
+				}
+				
+				mod = 0.35;
+				do {
+					mod -= 0.05;
+				sum = 0.0;
+				count = 0;
+				for (int i = 0; i < hrlist2.size(); ++i) {
+					HistResultList hr = hrlist2.get(i);
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+						count++;
+					}
+				}
+				sum /= count;
+				quart = sum * mod;
+				low = sum -quart;
+				high = sum + quart;
+				System.err.println("\t" + sum);
+				count = 0;
+				for (int i = 0; i < hrlist2.size(); ++i) {
+					HistResultList hr = hrlist2.get(i);
+					sum = 0.0;
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+					}
+					sum /= hr.histResults.size();
+					
+					if (sum < high) {
+						count++;
+					}
+				}
+				} while (hrlist2.size() - count < 2500 && hrlist2.size() > 2500);
+				for (int i = 0; i < hrlist2.size(); ++i) {
+					HistResultList hr = hrlist2.get(i);
+					sum = 0.0;
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+					}
+					sum /= hr.histResults.size();
+					
+					if (sum < high) {
 						hrlist2.remove(i);
 						--i;
 					}
 				}
-
-				if (hrlist.size() > 10000) {
+				//if (hrlist.size() > 10000) {
 					for (int i = 0; i < hrlist.size(); ++i) {
-						if (hrlist.get(i).distinctivenessLessThan(105)) {
-							hrlist.remove(i);
-							--i;
+						if (hrlist.get(i).distinctivenessLessThan(105)) {//105)) {
+						///	hrlist.remove(i);
+						//	--i;
 						}
 					}
-				}
+				//}
 
-				if (hrlist2.size() > 10000) {
+				//if (hrlist2.size() > 10000) {
 					for (int i = 0; i < hrlist2.size(); ++i) {
-						if (hrlist2.get(i).distinctivenessLessThan(105)) {
-							hrlist2.remove(i);
-							--i;
+						if (hrlist2.get(i).distinctivenessLessThan(105)) {//105)) {
+						//hrlist2.remove(i);
+						//	--i;
 						}
 					}
-				}
+				//}
 
 				while (hrlist.size() > 20000) {
 					int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
@@ -512,8 +604,8 @@ public class MainCoifV6Beta {
 				// }
 
 				System.out.println("Feature matching done.");
-			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.65);
-		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.65)
+			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
+		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007)
 				&& binThreshold < 56);
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
@@ -568,11 +660,48 @@ public class MainCoifV6Beta {
 		}
 	}
 
-	public static double evaluateFeatureMatchCloseness(final List<FeatureMatch> featureMatches) {
+	public static double evaluateFeatureMatchCloseness(final List<FeatureMatch> featureMatches, int width, int height) {
 		System.out.println("Evaluating feature match closeness...");
 
+		int minx =Integer.MAX_VALUE, maxx = 0, miny = Integer.MAX_VALUE, maxy = 0;
+		for (int i = 0; i < featureMatches.size(); ++i) {
+			final FeatureMatch fm = featureMatches.get(i);
+			int matches = 0;
+
+			int x = fm.getX1();
+			int y = fm.getY1();
+			
+			if (minx > x) {
+				minx = x;
+			}
+			
+			if (miny > y) {
+				miny = y;
+			}
+			
+			if (maxx < x) {
+				 maxx = x;
+			}
+			
+			if (maxy < y) {
+				maxy = y;
+			}
+		}
+		
+		int len1 = maxx - minx;
+		int len2 = maxy - miny;
+		System.out.println(maxx + " " + minx + " " + len1);
+		System.out.println(maxy + " " + miny + " " + len2);
+		int area = len1 * len2;
+		
+		int area2 = width * height;
+		
+		double matchPercent =  (double) area / (double) area2;
+		
+		/*
 		double matchPercent = 0.0;
 		boolean firstPercent = true;
+		long count = 0;
 
 		for (int i = 0; i < featureMatches.size(); ++i) {
 			final FeatureMatch fm = featureMatches.get(i);
@@ -588,24 +717,39 @@ public class MainCoifV6Beta {
 
 				final FeatureMatch fm2 = featureMatches.get(n);
 
-				if (fm2.getX1() >= ((double) x * 0.9) && fm2.getX1() <= ((double) x * 1.1)) {
-					if (fm2.getY1() >= ((double) y * 0.9) && fm2.getY1() <= ((double) y * 1.1)) {
+				if (fm2.getX1() >= ((double) x * 0.6) && fm2.getX1() <= ((double) x * 1.4)) {
+					if (fm2.getY1() >= ((double) y * 0.6) && fm2.getY1() <= ((double) y * 1.4)) {
 						matches++;
 					}
 				}
 			}
 
-			double pct = (double) matches / (double) featureMatches.size();
-
-			if (firstPercent) {
-				matchPercent = pct;
-				firstPercent = false;
-			} else {
+			double pct = 0.0;
+			
+			if (matches != 0.0 && !featureMatches.isEmpty()) {
+				//System.out.println(matches + " " + featureMatches.size());
+				pct = (double) matches / (double) featureMatches.size();
+				
 				matchPercent += pct;
-				matchPercent /= 2;
+				//System.out.println(matchPercent);
+				count++;
 			}
+			
+			if (firstPercent) {
+			//	matchPercent = pct;
+			//	firstPercent = false;
+			} else {
+			//	matchPercent += pct;
+			//	matchPercent /= 2;
+			}
+			
 		}
-
+		
+		if (matchPercent != 0.0) {
+		matchPercent /= count;
+		}
+	*/
+		
 		System.out.println("Feature match closeness: " + matchPercent);
 
 		return matchPercent;
