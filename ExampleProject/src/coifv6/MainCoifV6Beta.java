@@ -217,6 +217,37 @@ public class MainCoifV6Beta {
 
 		List<FeatureMatch> featureMatches = new ArrayList<FeatureMatch>();
 
+		double binThreshold2Negation;
+
+		final double binLowerBoundPercent = 0.98;
+		final double binUpperBoundPercent = 1.02;
+
+		int matchingIndex;
+		int[] distancesFirst;
+		int[] distancesSecond;
+		int[] dist21;
+		int[] dist22;
+		int binDistance;
+
+		final int maximumDifferenceThreshold = 40;
+
+		int circleSize = 30;
+
+		double mod;
+		long count;
+		double sum, high, quart;
+
+		double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
+		int i, roughBinDistance;
+
+		int[][] compareIndexArray = { { 0, 1, 2, 3 }, { 1, 2, 3, 0 }, { 2, 3, 0, 1 }, { 3, 0, 1, 2 }, };
+		int lowestDistance, compareIndex, compareIndexMatch, lowestRoughBinDistance, distanceFinal, hri;
+		HistResult result1, result2;
+		final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
+		int maxKey, maxValue;
+
+		HistResultList list1;
+
 		int binThreshold = 38;
 		int binMergeCount = 1;
 		int binThreshold2 = 57;
@@ -225,6 +256,7 @@ public class MainCoifV6Beta {
 			binMergeCount = 1;
 			binThreshold += 2;
 			binThreshold2 += 3;
+			binThreshold2Negation = binThreshold2 * 0.85;
 
 			do {
 				System.out.println("Circles step...");
@@ -235,7 +267,7 @@ public class MainCoifV6Beta {
 
 				featureMatches.clear();
 
-				int circleSize = 30;
+				matchingIndex = 0;
 
 				System.out.println("Bin merge count: " + binMergeCount);
 
@@ -247,41 +279,27 @@ public class MainCoifV6Beta {
 				System.out.println("Circles step done.");
 				System.out.println("Feature matching step...");
 
-				final double binLowerBoundPercent = 0.98;
-				final double binUpperBoundPercent = 1.02;
+				mod = 0.35;
 
-				int matchingIndex = 0;
-				int[] distancesFirst;
-				int[] distancesSecond;
-				int[] dist21;
-				int[] dist22;
-				int binDistance;
-
-				final int maximumDifferenceThreshold = 40;
-
-				double mod = 0.35;
-				long count;
-				double sum, high, quart;
-				
 				do {
 					mod -= 0.05;
 					sum = 0.0;
 					count = 0;
-					
-					for (int i = 0; i < hrlist.size(); ++i) {
+
+					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
 							count++;
 						}
 					}
-					
+
 					sum /= count;
 					quart = sum * mod;
 					high = sum + quart;
 					count = 0;
-					
-					for (int i = 0; i < hrlist.size(); ++i) {
+
+					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
 						sum = 0.0;
 						for (HistResult h : hr.histResults) {
@@ -295,7 +313,7 @@ public class MainCoifV6Beta {
 					}
 				} while (hrlist.size() - count < 2500 && hrlist.size() > 2500);
 
-				for (int i = 0; i < hrlist.size(); ++i) {
+				for (i = 0; i < hrlist.size(); ++i) {
 					HistResultList hr = hrlist.get(i);
 					sum = 0.0;
 					for (HistResult h : hr.histResults) {
@@ -310,26 +328,26 @@ public class MainCoifV6Beta {
 				}
 
 				mod = 0.35;
-				
+
 				do {
 					mod -= 0.05;
 					sum = 0.0;
 					count = 0;
-					
-					for (int i = 0; i < hrlist2.size(); ++i) {
+
+					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
 							count++;
 						}
 					}
-					
+
 					sum /= count;
 					quart = sum * mod;
 					high = sum + quart;
 					count = 0;
-					
-					for (int i = 0; i < hrlist2.size(); ++i) {
+
+					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
 						sum = 0.0;
 						for (HistResult h : hr.histResults) {
@@ -342,8 +360,8 @@ public class MainCoifV6Beta {
 						}
 					}
 				} while (hrlist2.size() - count < 2500 && hrlist2.size() > 2500);
-				
-				for (int i = 0; i < hrlist2.size(); ++i) {
+
+				for (i = 0; i < hrlist2.size(); ++i) {
 					HistResultList hr = hrlist2.get(i);
 					sum = 0.0;
 					for (HistResult h : hr.histResults) {
@@ -367,9 +385,7 @@ public class MainCoifV6Beta {
 					hrlist2.remove(randomIndex);
 				}
 
-				HistResultList list1;
-
-				for (int i = 0; i < hrlist.size(); ++i) {
+				for (i = 0; i < hrlist.size(); ++i) {
 					list1 = hrlist.get(i);
 
 					for (int n = 0; n < list1.histResults.size(); ++n) {
@@ -381,7 +397,7 @@ public class MainCoifV6Beta {
 					}
 				}
 
-				for (int i = 0; i < hrlist2.size(); ++i) {
+				for (i = 0; i < hrlist2.size(); ++i) {
 					list1 = hrlist2.get(i);
 
 					for (int n = 0; n < list1.histResults.size(); ++n) {
@@ -394,15 +410,6 @@ public class MainCoifV6Beta {
 				}
 
 				System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
-
-				double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
-				int i, roughBinDistance;
-
-				int[][] compareIndexArray = { { 0, 1, 2, 3 }, { 1, 2, 3, 0 }, { 2, 3, 0, 1 }, { 3, 0, 1, 2 }, };
-				int lowestDistance, compareIndex, compareIndexMatch, lowestRoughBinDistance, distanceFinal, hri;
-				HistResult result1, result2;
-				final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
-				int maxKey, maxValue;
 
 				for (HistResultList hr : hrlist) {
 					for (HistResultList hr2 : hrlist2) {
@@ -452,7 +459,7 @@ public class MainCoifV6Beta {
 										binDistance++;
 										roughBinDistance++;
 
-										if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
+										if (Math.abs(val2 - val) < binThreshold2Negation) {
 											binDistance--;
 										} else {
 											binDistance++;
@@ -481,7 +488,7 @@ public class MainCoifV6Beta {
 										binDistance++;
 										roughBinDistance++;
 
-										if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
+										if (Math.abs(val2 - val) < binThreshold2Negation) {
 											binDistance--;
 										} else {
 											binDistance++;
