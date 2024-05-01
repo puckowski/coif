@@ -676,7 +676,8 @@ public class MainCoifV6Beta {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg", "base1.jpg", "Test1025.jpg",
+		final String[] files1 = { "b.jpg", "P1011370.JPG", "P1011069.JPG", "P1010372.JPG", "grail03.jpg",
+				"DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg", "base1.jpg", "Test1025.jpg",
 				"Test1027.jpg", "Test81.jpg", "Test1027.jpg", "Test1025.jpg", "Test81.jpg", "Test1025.jpg",
 				"Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg", "Test1027.jpg", "Test1500.jpg",
 				"Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3000_rot.jpg", "Test47_rot.jpg", "Test3030.jpg",
@@ -688,7 +689,8 @@ public class MainCoifV6Beta {
 				"Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png", "Test123_rot.jpg",
 				"Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg",
 				"Test800.jpg" };
-		final String[] files2 = { "bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg",
+		final String[] files2 = { "c.jpg", "P1011371.JPG", "P1011070.JPG", "P1010373.JPG", "grail04.jpg",
+				"DSC_0179.jpg", "bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg",
 				"Test1028_3.jpg", "Test85.jpg", "Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg",
 				"Test70.jpg", "Test67.jpg", "Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg",
 				"Test1503.jpg", "Test83.jpg", "Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg",
