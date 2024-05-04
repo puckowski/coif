@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MainCoifV6Beta {
+public class MainCoifV6 {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,

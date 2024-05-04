@@ -1,4 +1,4 @@
-package coifv6;
+package coifv5;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MainCoifV6BetaMinimalImageRotation {
+public class MainCoifV5MinimalImageRotationFast {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,
@@ -170,6 +171,16 @@ public class MainCoifV6BetaMinimalImageRotation {
 			return;
 		}
 
+		morResults.sort(Comparator.comparing(MoravecResult::getMinSsd));
+		morResults2.sort(Comparator.comparing(MoravecResult::getMinSsd));
+
+		while (morResults.size() > 1000) {
+			morResults.remove(0);
+		}
+		while (morResults2.size() > 1000) {
+			morResults2.remove(0);
+		}
+		
 		int[][] image = moravecProcessor.getGrayscaleData();
 		int[][] image2 = moravecProcessor2.getGrayscaleData();
 
@@ -220,313 +231,236 @@ public class MainCoifV6BetaMinimalImageRotation {
 		long startTime = System.currentTimeMillis();
 
 		List<FeatureMatch> featureMatches = new ArrayList<FeatureMatch>();
-
-		int binThreshold = 38;
-		int binMergeCount = 1;
-		int binThreshold2 = 57;
+		int binMergeCount = 2;
 
 		do {
-			binMergeCount = 1;
-			binThreshold += 2;
-			binThreshold2 += 3;
+			System.out.println("Circles step...");
 
-			do {
-				System.out.println("Circles step...");
+			if (binMergeCount > 5) {
+				break;
+			}
 
-				if (binMergeCount > 5) {
-					break;
+			featureMatches.clear();
+
+			int circleSize = 30;
+
+			System.out.println("Bin merge count: " + binMergeCount);
+
+			List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
+			List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
+
+			binMergeCount++;
+
+			System.out.println("Circles step done.");
+			System.out.println("Feature matching step...");
+
+			final int binThreshold = 30; // 9; // or 11 or 7
+			final double binLowerBoundPercent = 0.98;
+			final double binUpperBoundPercent = 1.02;
+			int binThreshold2 = 55; // 15; // or 17 or 13
+
+			int matchingIndex = 0;
+			int[] distancesFirst;
+			int[] distancesSecond;
+			int[] dist21;
+			int[] dist22;
+			int binDistance;
+
+			final int maximumDifferenceThreshold = 40;
+
+			for (int i = 0; i < hrlist.size(); ++i) {
+				if (hrlist.get(i).distinctivenessLessThan(90)) {
+					hrlist.remove(i);
+					--i;
 				}
+			}
 
-				featureMatches.clear();
+			for (int i = 0; i < hrlist2.size(); ++i) {
+				if (hrlist2.get(i).distinctivenessLessThan(90)) {
+					hrlist2.remove(i);
+					--i;
+				}
+			}
 
-				int circleSize = 30;
-
-				System.out.println("Bin merge count: " + binMergeCount);
-
-				List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
-				List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
-
-				binMergeCount++;
-
-				System.out.println("Circles step done.");
-				System.out.println("Feature matching step...");
-
-				final double binLowerBoundPercent = 0.98;
-				final double binUpperBoundPercent = 1.02;
-
-				int matchingIndex = 0;
-				int[] distancesFirst;
-				int[] distancesSecond;
-				int[] dist21;
-				int[] dist22;
-				int binDistance;
-
-				final int maximumDifferenceThreshold = 40;
-
-				double mod = 0.35;
-				long count;
-				double sum, high, quart;
-
-				do {
-					mod -= 0.05;
-					sum = 0.0;
-					count = 0;
-
-					for (int i = 0; i < hrlist.size(); ++i) {
-						HistResultList hr = hrlist.get(i);
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-							count++;
-						}
-					}
-
-					sum /= count;
-					quart = sum * mod;
-					high = sum + quart;
-					count = 0;
-
-					for (int i = 0; i < hrlist.size(); ++i) {
-						HistResultList hr = hrlist.get(i);
-						sum = 0.0;
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-						}
-						sum /= hr.histResults.size();
-
-						if (sum < high) {
-							count++;
-						}
-					}
-				} while (hrlist.size() - count < 2500 && hrlist.size() > 2500);
-
+			if (hrlist.size() > 10000) {
 				for (int i = 0; i < hrlist.size(); ++i) {
-					HistResultList hr = hrlist.get(i);
-					sum = 0.0;
-					for (HistResult h : hr.histResults) {
-						sum += h.mDistinctiveness;
-					}
-					sum /= hr.histResults.size();
-
-					if (sum < high) {
+					if (hrlist.get(i).distinctivenessLessThan(105)) {
 						hrlist.remove(i);
 						--i;
 					}
 				}
+			}
 
-				mod = 0.35;
-
-				do {
-					mod -= 0.05;
-					sum = 0.0;
-					count = 0;
-
-					for (int i = 0; i < hrlist2.size(); ++i) {
-						HistResultList hr = hrlist2.get(i);
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-							count++;
-						}
-					}
-
-					sum /= count;
-					quart = sum * mod;
-					high = sum + quart;
-					count = 0;
-
-					for (int i = 0; i < hrlist2.size(); ++i) {
-						HistResultList hr = hrlist2.get(i);
-						sum = 0.0;
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-						}
-						sum /= hr.histResults.size();
-
-						if (sum < high) {
-							count++;
-						}
-					}
-				} while (hrlist2.size() - count < 2500 && hrlist2.size() > 2500);
-
+			if (hrlist2.size() > 10000) {
 				for (int i = 0; i < hrlist2.size(); ++i) {
-					HistResultList hr = hrlist2.get(i);
-					sum = 0.0;
-					for (HistResult h : hr.histResults) {
-						sum += h.mDistinctiveness;
-					}
-					sum /= hr.histResults.size();
-
-					if (sum < high) {
+					if (hrlist2.get(i).distinctivenessLessThan(105)) {
 						hrlist2.remove(i);
 						--i;
 					}
 				}
+			}
 
-				while (hrlist.size() > 20000) {
-					int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
-					hrlist.remove(randomIndex);
+			while (hrlist.size() > 20000) {
+				int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
+				hrlist.remove(randomIndex);
+			}
+
+			while (hrlist2.size() > 20000) {
+				int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist2.size());
+				hrlist2.remove(randomIndex);
+			}
+
+			HistResultList list1;
+
+			for (int i = 0; i < hrlist.size(); ++i) {
+				list1 = hrlist.get(i);
+
+				for (int n = 0; n < list1.histResults.size(); ++n) {
+					if (list1.histResults.get(n).mLongestSequence > 70) {
+						hrlist.remove(i);
+						i--;
+						break;
+					}
 				}
+			}
 
-				while (hrlist2.size() > 20000) {
-					int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist2.size());
-					hrlist2.remove(randomIndex);
+			for (int i = 0; i < hrlist2.size(); ++i) {
+				list1 = hrlist2.get(i);
+
+				for (int n = 0; n < list1.histResults.size(); ++n) {
+					if (list1.histResults.get(n).mLongestSequence > 70) {
+						hrlist2.remove(i);
+						i--;
+						break;
+					}
 				}
+			}
 
-				HistResultList list1;
+			System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
 
-				for (int i = 0; i < hrlist.size(); ++i) {
-					list1 = hrlist.get(i);
+			double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
+			int i, roughBinDistance;
 
-					for (int n = 0; n < list1.histResults.size(); ++n) {
-						if (list1.histResults.get(n).mLongestSequence > 70) {
-							hrlist.remove(i);
-							i--;
+			int distanceFinal, hri;
+			HistResult result1, result2;
+
+			for (HistResultList hr : hrlist) {
+				for (HistResultList hr2 : hrlist2) {
+					distanceFinal = 0;
+					roughBinDistance = 0;
+
+					for (hri = 0; hri < hr.histResults.size(); ++hri) {
+						result1 = hr.histResults.get(hri);
+						distancesFirst = result1.getDistances();
+						dist21 = result1.getDistances2();
+
+						binDistance = 0;
+
+						if (hr.histResults.get(hri).mDistinctiveness < hr2.histResults.get(hri).mMinDistinctiveness
+								|| hr.histResults.get(hri).mDistinctiveness > hr2.histResults
+										.get(hri).mMaxDistinctiveness) {
+							distanceFinal = 99999;
+							break;
+						}
+
+						result2 = hr2.histResults.get(hri);
+						distancesSecond = result2.getDistances();
+						dist22 = result2.getDistances2();
+
+						for (i = 0; i < distancesFirst.length; ++i) {
+							val = distancesFirst[i];
+							val2 = distancesSecond[i];
+
+							valLow = (val * binLowerBoundPercent);
+							valThresholdCheck = Math.abs(val - valLow);
+							if (valThresholdCheck > maximumDifferenceThreshold)
+								valLow = val - maximumDifferenceThreshold;
+							valHigh = (val * binUpperBoundPercent);
+							valThresholdCheckHigh = Math.abs(val - valHigh);
+							if (valThresholdCheckHigh > maximumDifferenceThreshold)
+								valHigh = val + maximumDifferenceThreshold;
+
+							if (val2 < valLow || val2 > valHigh) {
+								binDistance++;
+								roughBinDistance++;
+
+								if (Math.abs(val2 - val) < binThreshold2) {
+									binDistance--;
+								}
+
+								if (binDistance >= binThreshold) {
+									break;
+								}
+							}
+						}
+
+						for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
+							val = dist21[i];
+							val2 = dist22[i];
+
+							valLow = (val * binLowerBoundPercent);
+							valThresholdCheck = Math.abs(val - valLow);
+							if (valThresholdCheck > maximumDifferenceThreshold)
+								valLow = val - maximumDifferenceThreshold;
+							valHigh = (val * binUpperBoundPercent);
+							valThresholdCheckHigh = Math.abs(val - valHigh);
+							if (valThresholdCheckHigh > maximumDifferenceThreshold)
+								valHigh = val + maximumDifferenceThreshold;
+
+							if (val2 < valLow || val2 > valHigh) {
+								binDistance++;
+								roughBinDistance++;
+
+								if (Math.abs(val2 - val) < binThreshold2) {
+									binDistance--;
+								}
+
+								if (binDistance >= binThreshold) {
+									break;
+								}
+							}
+						}
+
+						distanceFinal += binDistance;
+
+						if (distanceFinal >= binThreshold) {
 							break;
 						}
 					}
-				}
 
-				for (int i = 0; i < hrlist2.size(); ++i) {
-					list1 = hrlist2.get(i);
+					if (distanceFinal < binThreshold) {
+						FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(), hr.histResults.get(0).getY(),
+								hr2.histResults.get(0).getX(), hr2.histResults.get(0).getY());
+						f.setRoughBinDistance(roughBinDistance);
 
-					for (int n = 0; n < list1.histResults.size(); ++n) {
-						if (list1.histResults.get(n).mLongestSequence > 70) {
-							hrlist2.remove(i);
-							i--;
-							break;
-						}
+						featureMatches.add(f);
+
+						g2d.setColor(Color.RED);
+						// g2d.drawString(String.valueOf(hr.histResults.get(0).mDistinctiveness),
+						// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
+						// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
+						// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
+
 					}
 				}
 
-				System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
+				matchingIndex++;
 
-				double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
-				int i, roughBinDistance;
-
-				int distanceFinal, hri;
-				HistResult result1, result2;
-
-				for (HistResultList hr : hrlist) {
-					for (HistResultList hr2 : hrlist2) {
-						distanceFinal = 0;
-						roughBinDistance = 0;
-
-						for (hri = 0; hri < hr.histResults.size(); ++hri) {
-							result1 = hr.histResults.get(hri);
-							distancesFirst = result1.getDistances();
-							dist21 = result1.getDistances2();
-
-							binDistance = 0;
-							result2 = hr2.histResults.get(hri);
-
-							if (result1.mDistinctiveness < result2.mMinDistinctiveness
-									|| result1.mDistinctiveness > result2.mMaxDistinctiveness) {
-								distanceFinal = 99999;
-								break;
-							}
-
-							distancesSecond = result2.getDistances();
-							dist22 = result2.getDistances2();
-
-							for (i = 0; i < distancesFirst.length; ++i) {
-								val = distancesFirst[i];
-								val2 = distancesSecond[i];
-
-								valLow = (val * binLowerBoundPercent);
-								valThresholdCheck = Math.abs(val - valLow);
-								if (valThresholdCheck > maximumDifferenceThreshold)
-									valLow = val - maximumDifferenceThreshold;
-								valHigh = (val * binUpperBoundPercent);
-								valThresholdCheckHigh = Math.abs(val - valHigh);
-								if (valThresholdCheckHigh > maximumDifferenceThreshold)
-									valHigh = val + maximumDifferenceThreshold;
-
-								if (val2 < valLow || val2 > valHigh) {
-									binDistance++;
-									roughBinDistance++;
-
-									if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
-										binDistance--;
-									} else {
-										binDistance++;
-									}
-
-									if (binDistance >= binThreshold) {
-										break;
-									}
-								}
-							}
-
-							for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
-								val = dist21[i];
-								val2 = dist22[i];
-
-								valLow = (val * binLowerBoundPercent);
-								valThresholdCheck = Math.abs(val - valLow);
-								if (valThresholdCheck > maximumDifferenceThreshold)
-									valLow = val - maximumDifferenceThreshold;
-								valHigh = (val * binUpperBoundPercent);
-								valThresholdCheckHigh = Math.abs(val - valHigh);
-								if (valThresholdCheckHigh > maximumDifferenceThreshold)
-									valHigh = val + maximumDifferenceThreshold;
-
-								if (val2 < valLow || val2 > valHigh) {
-									binDistance++;
-									roughBinDistance++;
-
-									if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
-										binDistance--;
-									} else {
-										binDistance++;
-									}
-
-									if (binDistance >= binThreshold) {
-										break;
-									}
-								}
-							}
-
-							distanceFinal += binDistance;
-
-							if (distanceFinal >= binThreshold) {
-								break;
-							}
-						}
-
-						if (distanceFinal < binThreshold) {
-							FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(),
-									hr.histResults.get(0).getY(), hr2.histResults.get(0).getX(),
-									hr2.histResults.get(0).getY());
-							f.setRoughBinDistance(roughBinDistance);
-
-							featureMatches.add(f);
-
-							g2d.setColor(Color.RED);
-							// g2d.drawString(String.valueOf(hr.histResults.get(0).mDistinctiveness),
-							// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
-							// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
-							// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
-						}
-					}
-					
-					matchingIndex++;
-
-					if (matchingIndex % 1000 == 0) {
-						System.out.println("Features compared: " + matchingIndex + "/" + hrlist.size());
-					}
+				if (matchingIndex % 1000 == 0) {
+					System.out.println("Features compared: " + matchingIndex + "/" + hrlist.size());
 				}
+			}
 
-				// Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance -
-				// o2.mRoughBinDistance);
+			// Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance -
+			// o2.mRoughBinDistance);
 
-				// for (int ci = 50; ci < featureMatches.size(); ++ci) {
-				// featureMatches.remove(ci);
-				// ci--;
-				// }
+			// for (int ci = 50; ci < featureMatches.size(); ++ci) {
+			// featureMatches.remove(ci);
+			// ci--;
+			// }
 
-				System.out.println("Feature matching done.");
-			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
-		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007)
-				&& binThreshold < 56);
+			System.out.println("Feature matching done.");
+		} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches) >= 0.85);
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
 
@@ -580,41 +514,43 @@ public class MainCoifV6BetaMinimalImageRotation {
 		}
 	}
 
-	public static double evaluateFeatureMatchCloseness(final List<FeatureMatch> featureMatches, int width, int height) {
+	public static double evaluateFeatureMatchCloseness(final List<FeatureMatch> featureMatches) {
 		System.out.println("Evaluating feature match closeness...");
 
-		int minx = Integer.MAX_VALUE, maxx = 0, miny = Integer.MAX_VALUE, maxy = 0;
+		double matchPercent = 0.0;
+		boolean firstPercent = true;
 
 		for (int i = 0; i < featureMatches.size(); ++i) {
 			final FeatureMatch fm = featureMatches.get(i);
+			int matches = 0;
 
 			int x = fm.getX1();
 			int y = fm.getY1();
 
-			if (minx > x) {
-				minx = x;
+			for (int n = 0; n < featureMatches.size(); ++n) {
+				if (i == n) {
+					continue;
+				}
+
+				final FeatureMatch fm2 = featureMatches.get(n);
+
+				if (fm2.getX1() >= ((double) x * 0.9) && fm2.getX1() <= ((double) x * 1.1)) {
+					if (fm2.getY1() >= ((double) y * 0.9) && fm2.getY1() <= ((double) y * 1.1)) {
+						matches++;
+					}
+				}
 			}
 
-			if (miny > y) {
-				miny = y;
-			}
+			double pct = (double) matches / (double) featureMatches.size();
 
-			if (maxx < x) {
-				maxx = x;
-			}
-
-			if (maxy < y) {
-				maxy = y;
+			if (firstPercent) {
+				matchPercent = pct;
+				firstPercent = false;
+			} else {
+				matchPercent += pct;
+				matchPercent /= 2;
 			}
 		}
-
-		int len1 = maxx - minx;
-		int len2 = maxy - miny;
-
-		int area = len1 * len2;
-		int area2 = width * height;
-
-		double matchPercent = (double) area / (double) area2;
 
 		System.out.println("Feature match closeness: " + matchPercent);
 
@@ -622,28 +558,18 @@ public class MainCoifV6BetaMinimalImageRotation {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "h1.jpg", "base1.jpg", "Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg",
-				"Test1025.jpg", "Test81.jpg", "Test1025.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg",
-				"Test1027.jpg", "Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3000_rot.jpg",
-				"Test47_rot.jpg", "Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg",
-				"Test506.jpg", "Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg",
-				"Test82.jpg", "Test5000_rot.jpg", "Test3000_rot.jpg", "Test1500.jpg", "Test1310_rot.PNG",
-				"Test1199_rot.PNG", "Test1000_rot.jpg", "Test2120_rot.jpg", "Test1999_rot.jpg", "Test4.jpg",
-				"Test6.jpg", "Test21.jpg", "Test34_rot.jpg", "Test37.jpg", "Test47_rot.jpg", "Test48_rot.png",
-				"Test65.jpg", "Test70.jpg", "Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png",
-				"Test123_rot.jpg", "Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg",
-				"Test600.jpg", "Test800.jpg" };
-		final String[] files2 = { "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg",
-				"Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg",
-				"Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg",
-				"Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg",
-				"Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg",
-				"Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg",
-				"Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg",
-				"Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg",
-				"Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg",
-				"Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg",
-				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+		final String[] files1 = {
+
+				"Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg", "Test506.jpg",
+				"Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg",
+				"Test1500.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg", "Test37.jpg", "Test65.jpg", "Test70.jpg",
+				"Test99.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
+		final String[] files2 = {
+
+				"Test3031.jpg", "Test1032.jpg", "Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg",
+				"Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg",
+				"Test1501.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg", "Test71.jpg",
+				"Test100.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);

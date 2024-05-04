@@ -1,3 +1,5 @@
+package coifv5;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,16 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MultithreadedMainCoifV5 {
+public class MainCoifV5 {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,
@@ -140,8 +138,8 @@ public class MultithreadedMainCoifV5 {
 		return circleResult;
 	}
 
-	public static void process(final String file1, final String file2, final int fileIndex, ExecutorService executor,
-			ExecutorService executor2) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void process(final String file1, final String file2, final int fileIndex)
+			throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println("Moravec step...");
 
 		int thresholdmor = 100;
@@ -237,42 +235,8 @@ public class MultithreadedMainCoifV5 {
 
 			System.out.println("Bin merge count: " + binMergeCount);
 
-			final List<CircleBuilderCallable> cbuilders = new ArrayList<>();
-
-			// List<HistResultList> hrlist = performCircles2(image, circleSize, morResults,
-			// binMergeCount);
-			// List<HistResultList> hrlist2 = performCircles2(image2, circleSize,
-			// morResults2, binMergeCount);
-
-			List<Future<List<HistResultList>>> futures2 = new ArrayList<>();
-
-			// Submit the callable task to the executor
-			Future<List<HistResultList>> futurec1 = executor
-					.submit(new CircleBuilderCallable(image, circleSize, morResults, binMergeCount));
-			Future<List<HistResultList>> futurec2 = executor
-					.submit(new CircleBuilderCallable(image2, circleSize, morResults, binMergeCount));
-			futures2.add(futurec1);
-			futures2.add(futurec2);
-
-			List<HistResultList> hrlist = new ArrayList<>();
-			List<HistResultList> hrlist2 = new ArrayList<>();
-
-			int cbindex = 0;
-
-			for (Future<List<HistResultList>> future : futures2) {
-				// Wait for the result and print it
-				try {
-					List<HistResultList> result = future.get(); // This call blocks until the task is completed
-					if (cbindex == 0) {
-						cbindex++;
-						hrlist.addAll(result);
-					} else {
-						hrlist2.addAll(result);
-					}
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
-			}
+			List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
+			List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
 
 			binMergeCount++;
 
@@ -372,38 +336,128 @@ public class MultithreadedMainCoifV5 {
 			final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
 			int maxKey, maxValue;
 
-			int sublistSize = 500;
+			for (HistResultList hr : hrlist) {
+				for (HistResultList hr2 : hrlist2) {
 
-			List<List<HistResultList>> sublists = new ArrayList<>();
+					lowestDistance = 99999;
+					compareIndex = 0;
+					compareIndexMatch = 0;
+					lowestRoughBinDistance = 99999;
 
-			for (int si = 0; si < hrlist.size(); si += sublistSize) {
-				int endIndex = Math.min(si + sublistSize, hrlist.size());
-				List<HistResultList> sublist = hrlist.subList(si, endIndex);
-				sublists.add(sublist);
-			}
+					for (int[] ar : compareIndexArray) {
+						compareIndex++;
 
-			final List<HistResultListMatcher> matchers = new ArrayList<>();
+						distanceFinal = 0;
+						roughBinDistance = 0;
 
-			for (List<HistResultList> sublist : sublists) {
-				final HistResultListMatcher matcher = new HistResultListMatcher(sublist, hrlist2, g2d);
-				matchers.add(matcher);
-			}
+						for (hri = 0; hri < hr.histResults.size(); ++hri) {
+							result1 = hr.histResults.get(hri);
+							distancesFirst = result1.getDistances();
+							dist21 = result1.getDistances2();
 
-			List<Future<List<FeatureMatch>>> futures = new ArrayList<>();
+							binDistance = 0;
+							result2 = hr2.histResults.get(ar[hri]);
 
-			for (HistResultListMatcher matcher : matchers) {
-				// Submit the callable task to the executor
-				Future<List<FeatureMatch>> future = executor.submit(matcher);
-				futures.add(future);
-			}
+							if (result1.mDistinctiveness < result2.mMinDistinctiveness
+									|| result1.mDistinctiveness > result2.mMaxDistinctiveness) {
+								distanceFinal = 99999;
+								break;
+							}
 
-			for (Future<List<FeatureMatch>> future : futures) {
-				// Wait for the result and print it
-				try {
-					List<FeatureMatch> result = future.get(); // This call blocks until the task is completed
-					featureMatches.addAll(result);
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
+							distancesSecond = result2.getDistances();
+							dist22 = result2.getDistances2();
+
+							for (i = 0; i < distancesFirst.length; ++i) {
+								val = distancesFirst[i];
+								val2 = distancesSecond[i];
+
+								valLow = (val * binLowerBoundPercent);
+								valThresholdCheck = Math.abs(val - valLow);
+								if (valThresholdCheck > maximumDifferenceThreshold)
+									valLow = val - maximumDifferenceThreshold;
+								valHigh = (val * binUpperBoundPercent);
+								valThresholdCheckHigh = Math.abs(val - valHigh);
+								if (valThresholdCheckHigh > maximumDifferenceThreshold)
+									valHigh = val + maximumDifferenceThreshold;
+
+								if (val2 < valLow || val2 > valHigh) {
+									binDistance++;
+									roughBinDistance++;
+
+									if (Math.abs(val2 - val) < binThreshold2) {
+										binDistance--;
+									}
+
+									if (binDistance >= binThreshold) {
+										break;
+									}
+								}
+							}
+
+							for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
+								val = dist21[i];
+								val2 = dist22[i];
+
+								valLow = (val * binLowerBoundPercent);
+								valThresholdCheck = Math.abs(val - valLow);
+								if (valThresholdCheck > maximumDifferenceThreshold)
+									valLow = val - maximumDifferenceThreshold;
+								valHigh = (val * binUpperBoundPercent);
+								valThresholdCheckHigh = Math.abs(val - valHigh);
+								if (valThresholdCheckHigh > maximumDifferenceThreshold)
+									valHigh = val + maximumDifferenceThreshold;
+
+								if (val2 < valLow || val2 > valHigh) {
+									binDistance++;
+									roughBinDistance++;
+
+									if (Math.abs(val2 - val) < binThreshold2) {
+										binDistance--;
+									}
+
+									if (binDistance >= binThreshold) {
+										break;
+									}
+								}
+							}
+
+							distanceFinal += binDistance;
+
+							if (distanceFinal >= binThreshold) {
+								break;
+							}
+						}
+
+						if (lowestDistance > distanceFinal) {
+							compareIndexMatch = compareIndex - 1;
+							lowestDistance = distanceFinal;
+							lowestRoughBinDistance = roughBinDistance;
+						}
+					}
+
+					distanceFinal = lowestDistance;
+					roughBinDistance = lowestRoughBinDistance;
+
+					if (distanceFinal < binThreshold) {
+						FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(), hr.histResults.get(0).getY(),
+								hr2.histResults.get(0).getX(), hr2.histResults.get(0).getY());
+						f.setRoughBinDistance(roughBinDistance);
+						f.rotationArrayIndex = compareIndexMatch;
+
+						featureMatches.add(f);
+
+						g2d.setColor(Color.RED);
+						// g2d.drawString(String.valueOf(hr.histResults.get(0).mDistinctiveness),
+						// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
+						// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
+						// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
+					}
+				}
+
+				matchingIndex++;
+
+				if (matchingIndex % 1000 == 0) {
+					System.out.println("Features compared: " + matchingIndex + "/" + hrlist.size());
 				}
 			}
 
@@ -542,7 +596,7 @@ public class MultithreadedMainCoifV5 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "base1.jpg", "Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg",
+		final String[] files1 = { "h1.jpg", "base1.jpg", "Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg",
 				"Test1025.jpg", "Test81.jpg", "Test1025.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg",
 				"Test1027.jpg", "Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3000_rot.jpg",
 				"Test47_rot.jpg", "Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg",
@@ -553,30 +607,22 @@ public class MultithreadedMainCoifV5 {
 				"Test65.jpg", "Test70.jpg", "Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png",
 				"Test123_rot.jpg", "Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg",
 				"Test600.jpg", "Test800.jpg" };
-		final String[] files2 = { "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg", "Test1028_2.jpg",
-				"Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg", "Test23.jpg",
-				"Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg", "Test84.jpg",
-				"Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg", "Test1026.jpg",
-				"Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg",
-				"Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg", "Test1501.jpg",
-				"Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg", "Test2000_rot.jpg",
-				"Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg", "Test48_rot.jpg",
-				"Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg", "Test125_rot.png",
-				"Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg", "Test241.jpg",
-				"Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
-
-		int cpuCoreCount = Runtime.getRuntime().availableProcessors();
-
-		ExecutorService executor = Executors.newFixedThreadPool(cpuCoreCount);
-		ExecutorService executor2 = Executors.newFixedThreadPool(cpuCoreCount);
+		final String[] files2 = { "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg",
+				"Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg",
+				"Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg",
+				"Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg",
+				"Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg",
+				"Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg",
+				"Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg",
+				"Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg",
+				"Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg",
+				"Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg",
+				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
-			process(files1[i], files2[i], i, executor, executor2);
+			process(files1[i], files2[i], i);
 		}
-
-		executor.shutdown();
-		executor2.shutdown();
 
 		System.out.println((double) TimeData.imageLoad / 1000.0 + "s loading images");
 		System.out.println((double) TimeData.moravec / 1000.0 + "s finding corners");

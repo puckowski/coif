@@ -1,3 +1,5 @@
+package coifv5;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;

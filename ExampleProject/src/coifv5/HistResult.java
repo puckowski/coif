@@ -1,3 +1,5 @@
+package coifv5;
+
 public class HistResult {
 
 	private int[] mHist;
