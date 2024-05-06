@@ -562,6 +562,7 @@ public class MainCoifV6MinimalImageRotation {
 			writer.println(fm.getY2());
 		}
 
+		writer.flush();
 		writer.close();
 
 		System.out.println("Montage finalized.");

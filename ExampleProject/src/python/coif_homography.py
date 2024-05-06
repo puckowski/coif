@@ -6,7 +6,7 @@ from tqdm import tqdm_notebook as tqdm
 plt.rcParams['figure.figsize'] = [15, 15]
 import glob
 
-DROPOUT_RATE = 1
+DROPOUT_RATE = 0
 
 files1 = glob.glob('moravec3_*.txt')
 cnt = 0

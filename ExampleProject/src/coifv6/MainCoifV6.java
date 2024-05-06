@@ -521,7 +521,7 @@ public class MainCoifV6 {
 							FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(),
 									hr.histResults.get(0).getY(), hr2.histResults.get(0).getX(),
 									hr2.histResults.get(0).getY());
-							f.setRoughBinDistance(roughBinDistance);
+							f.setRoughBinDistance(distanceFinal); // roughBinDistance);
 							f.rotationArrayIndex = compareIndexMatch;
 
 							featureMatches.add(f);
@@ -568,14 +568,47 @@ public class MainCoifV6 {
 						i--;
 					}
 				}
-
-				// Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance -
-				// o2.mRoughBinDistance);
-
-				// for (int ci = 50; ci < featureMatches.size(); ++ci) {
-				// featureMatches.remove(ci);
-				// ci--;
-				// }
+				
+				/*
+				Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance - o2.mRoughBinDistance);
+				
+				int fmi = featureMatches.size() - 1;				 
+				
+				while (featureMatches.size() > 25 && fmi >= 0) {
+					FeatureMatch fm = featureMatches.get(fmi);
+					
+					int x = fm.getX1();
+					int y = fm.getY1();
+					
+					for (int io = 0; io < featureMatches.size(); ++io) {
+						if (io == fmi) continue;
+						
+						FeatureMatch fm2 = featureMatches.get(io);
+						
+						if (fm2.getX1() >= (x - 15) && fm2.getX1() <= (x + 15)) {
+							if (fm2.getY1() >= (y- 15) && fm2.getY1() <= (y + 15)) {
+								featureMatches.remove(io);
+								
+								if (fmi > io) {
+									fmi--;
+								}
+								
+								io--;
+								
+								if (featureMatches.size() == 25) {
+									fmi = -1;
+									break;
+								}
+							}
+						}
+					}
+					
+					fmi--;
+				}
+				while (featureMatches.size() > 25) {
+					featureMatches.remove(featureMatches.size() - 1);
+				}
+				*/
 
 				System.out.println("Feature matching done.");
 			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
@@ -616,6 +649,7 @@ public class MainCoifV6 {
 			writer.println(fm.getY2());
 		}
 
+		writer.flush();
 		writer.close();
 
 		System.out.println("Montage finalized.");

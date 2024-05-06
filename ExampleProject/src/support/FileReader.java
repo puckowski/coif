@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class FileReader {
 	public static void main(String[] args) throws IOException {
 		String filePath = "coifresults1.txt"; // Update this to the path of your text file
-		List<ImageMatch> matches = new ArrayList<>();
+		List<ImageMatch> coifMatches = new ArrayList<>();
 
 		Stream<String> lines = Files.lines(Paths.get(filePath));
 		List<String> lines2 = lines.collect(Collectors.toList());
@@ -47,17 +47,17 @@ public class FileReader {
 				String firstImage = images[0].trim();
 				String secondImage = images[1].trim();
 
-				matches.add(new ImageMatch(firstImage, secondImage, numberOfInliers, totalGood, ratio));
+				coifMatches.add(new ImageMatch(firstImage, secondImage, numberOfInliers, totalGood, ratio));
 			}
 		}
 
 		// Print all matches
-		for (ImageMatch match : matches) {
+		for (ImageMatch match : coifMatches) {
 		//	System.out.println(match);
 		}
 
 		filePath = "siftresults1.txt"; // Update this to the path of your text file
-		List<ImageMatch> matches2 = new ArrayList<>();
+		List<ImageMatch> siftMatches = new ArrayList<>();
 
 		lines = Files.lines(Paths.get(filePath));
 		lines2 = lines.collect(Collectors.toList());
@@ -91,15 +91,15 @@ public class FileReader {
 				String firstImage = images[0].trim();
 				String secondImage = images[1].trim();
 
-				matches2.add(new ImageMatch(firstImage, secondImage, numberOfInliers, totalGood, ratio));
+				siftMatches.add(new ImageMatch(firstImage, secondImage, numberOfInliers, totalGood, ratio));
 			}
 		}
 
 		// Print all matches
-		for (ImageMatch match : matches2) {
+		for (ImageMatch match : siftMatches) {
 		//	System.out.println(match);
 		}
 		
-		ImageMatchUtils.findAndPrintMatches(matches, matches2);
+		ImageMatchUtils.findAndPrintMatches(coifMatches, siftMatches);
 	}
 }

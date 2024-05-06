@@ -1,0 +1,16 @@
+SIFT versus COIF false positivesitive counts
+
+image pair 0
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 1
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 2
+sift 6 false positives
+coif 0 false positives
+sift 24% false positive rate, coif 0% false positive rate, coif better

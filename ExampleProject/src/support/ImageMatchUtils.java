@@ -3,20 +3,20 @@ import java.util.List;
 
 public class ImageMatchUtils {
 
-    public static void findAndPrintMatches(List<ImageMatch> list1, List<ImageMatch> list2) {
+    public static void findAndPrintMatches(List<ImageMatch> coifMatches, List<ImageMatch> siftMatches) {
         int count = 0;
         int coif = 0;
-    	for (ImageMatch item1 : list1) {
-            for (ImageMatch item2 : list2) {
-                if (item1.firstImage.equals(item2.firstImage) && item1.secondImage.equals(item2.secondImage)) {
+    	for (ImageMatch coifItem : coifMatches) {
+            for (ImageMatch siftItem : siftMatches) {
+                if (coifItem.firstImage.equals(siftItem.firstImage) && coifItem.secondImage.equals(siftItem.secondImage)) {
                     System.out.println("Match found: ");
-                    System.out.println("List1 - " + item1);
-                    System.out.println("List2 - " + item2);
-                    System.out.println("COIF to SIFT: " + item1.ratio + " vs. " + item2.ratio);
-                    if (item1.ratio < item2.ratio) {
+                    System.out.println("List1 - " + coifItem);
+                    System.out.println("List2 - " + siftItem);
+                    System.out.println("COIF to SIFT: " + coifItem.ratio + " vs. " + siftItem.ratio);
+                    if (coifItem.ratio < siftItem.ratio) {
                     	System.out.println("SIFT better");
-                    } else if (item1.ratio == item2.ratio ){
-                    	System.out.println("SIFT and COIF same");
+                    } else if (coifItem.ratio == siftItem.ratio ){
+                    	System.out.println("COIF and SIFT same");
                     	coif++;
                     } else {
                     	System.out.println("COIF better");
