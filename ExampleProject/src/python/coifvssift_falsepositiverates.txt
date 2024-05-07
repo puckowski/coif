@@ -1,9 +1,9 @@
 SIFT versus COIF false positivesitive counts
 
 image pair 0
-sift 0 false positives
+sift 1 false positives
 coif 0 false positives
-sift and coif equal
+sift 4% false positive rate, coif 0% false positive rate, coif better
 
 image pair 1
 sift 0 false positives
@@ -14,3 +14,123 @@ image pair 2
 sift 6 false positives
 coif 0 false positives
 sift 24% false positive rate, coif 0% false positive rate, coif better
+
+image pair 3
+sift 2 false positives
+coif 0 false positives
+sift 8% false positive rate, coif 0% false positive rate, coif better
+
+image pair 4
+sift 1 false positives
+coif 0 false positives
+sift 4% false positive rate, coif 0% false positive rate, coif better
+
+image pair 5
+sift 3 false positives
+coif 0 false positives
+sift 12% false positive rate, coif 0% false positive rate, coif better
+
+image pair 6
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 7
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 8
+sift 1 false positives
+coif 1 false positives
+sift 4% false positive rate, coif 4% false positive rate, sift and coif equal
+
+image pair 9
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 10
+sift 0 false positives
+coif 2 false positives
+sift 0% false positive rate, coif 8% false positive rate, sift better
+
+image pair 11
+sift 3 false positives
+coif 0 false positives
+sift 12% false positive rate, coif 8% false positive rate, coif better
+
+image pair 12
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 13
+sift 0 false positives
+coif 4 false positives
+sift 0% false positive rate, coif 16% false positive rate, sift better
+
+image pair 14
+sift 0 false positives
+coif 4 false positives
+sift 0% false positive rate, coif 16% false positive rate, sift better
+
+image pair 15
+sift 0 false positives
+coif 5 false positives
+sift 0% false positive rate, coif 20% false positive rate, sift better
+
+image pair 16
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 17
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 18
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 19
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 20
+sift 0 false positives
+coif 1 false positives
+sift 0% false positive rate, coif 4% false positive rate, sift better
+
+image pair 21
+sift 0 false positives
+coif 2 false positives
+sift 0% false positive rate, coif 8% false positive rate, sift better
+
+image pair 22
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 23
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 24
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 25
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 26
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
