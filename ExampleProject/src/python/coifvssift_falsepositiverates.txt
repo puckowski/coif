@@ -369,3 +369,11 @@ image pair 73
 sift 0 false positives
 coif 0 false positives
 sift and coif equal
+
+55 sift and coif equal
+11 sift better
+8 coif better
+
+sift 98.9589% accurate
+coif 98.5205% accurate
+sift 0.4384% more accurate
