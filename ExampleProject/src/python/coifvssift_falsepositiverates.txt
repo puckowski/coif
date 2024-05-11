@@ -377,3 +377,18 @@ sift and coif equal
 sift 98.9589% accurate
 coif 98.5205% accurate
 sift 0.4384% more accurate
+
+SIFT
+100% 65
+99-95% 4
+94-90% 1
+89-85% 2
+84-80% 0
+79-75% 1
+
+COIF
+100% 60
+99-95% 6
+94-90% 4
+89-85% 0
+84-90% 3
