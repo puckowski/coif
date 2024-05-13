@@ -569,33 +569,45 @@ public class MainCoifV6 {
 					}
 				}
 
-				/*
-				 * Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance -
-				 * o2.mRoughBinDistance);
-				 * 
-				 * int fmi = featureMatches.size() - 1;
-				 * 
-				 * while (featureMatches.size() > 25 && fmi >= 0) { FeatureMatch fm =
-				 * featureMatches.get(fmi);
-				 * 
-				 * int x = fm.getX1(); int y = fm.getY1();
-				 * 
-				 * for (int io = 0; io < featureMatches.size(); ++io) { if (io == fmi) continue;
-				 * 
-				 * FeatureMatch fm2 = featureMatches.get(io);
-				 * 
-				 * if (fm2.getX1() >= (x - 15) && fm2.getX1() <= (x + 15)) { if (fm2.getY1() >=
-				 * (y- 15) && fm2.getY1() <= (y + 15)) { featureMatches.remove(io);
-				 * 
-				 * if (fmi > io) { fmi--; }
-				 * 
-				 * io--;
-				 * 
-				 * if (featureMatches.size() == 25) { fmi = -1; break; } } } }
-				 * 
-				 * fmi--; } while (featureMatches.size() > 25) {
-				 * featureMatches.remove(featureMatches.size() - 1); }
-				 */
+//				Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance - o2.mRoughBinDistance);
+//
+//				int fmi = featureMatches.size() - 1;
+//
+//				while (featureMatches.size() > 25 && fmi >= 0) {
+//					FeatureMatch fm = featureMatches.get(fmi);
+//
+//					int x = fm.getX1();
+//					int y = fm.getY1();
+//
+//					for (int io = 0; io < featureMatches.size(); ++io) {
+//						if (io == fmi)
+//							continue;
+//
+//						FeatureMatch fm2 = featureMatches.get(io);
+//
+//						if (fm2.getX1() >= (x - 15) && fm2.getX1() <= (x + 15)) {
+//							if (fm2.getY1() >= (y - 15) && fm2.getY1() <= (y + 15)) {
+//								featureMatches.remove(io);
+//
+//								if (fmi > io) {
+//									fmi--;
+//								}
+//
+//								io--;
+//
+//								if (featureMatches.size() == 25) {
+//									fmi = -1;
+//									break;
+//								}
+//							}
+//						}
+//					}
+//
+//					fmi--;
+//				}
+//				while (featureMatches.size() > 25) {
+//					featureMatches.remove(featureMatches.size() - 1);
+//				}
 
 				System.out.println("Feature matching done.");
 			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
@@ -697,10 +709,28 @@ public class MainCoifV6 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = {"paris_invalides_000662.jpg", "all_souls_000065.jpg", "all_souls_000065.jpg","pano8.jpg", "pano6.jpg", "1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG",
-				"P1011069.JPG", "P1010372.JPG", "grail03.jpg", "DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png",
-				"h1.jpg", "base1.jpg", "Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg", "Test1025.jpg",
-				"Test81.jpg", "Test1025.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg", "Test1027.jpg",
+		final String[] files1 = { "paris_invalides_000662_sm_1.jpg", "paris_invalides_000662_sm_2.jpg",
+				"paris_invalides_000662_sm_3.jpg", "paris_invalides_000662_sm_4.jpg", "paris_invalides_000662_sm_5.jpg",
+				"paris_invalides_000662_sm_6.jpg", "paris_invalides_000662_sm_7.jpg", "paris_invalides_000662_sm_8.jpg",
+				"paris_invalides_000662_sm_9.jpg", "paris_invalides_000662_sm_10.jpg",
+				"paris_invalides_000662_pt_1.png", "paris_invalides_000662_pt_2.png", "paris_invalides_000662_pt_3.png",
+				"paris_invalides_000662_pt_4.png", "paris_invalides_000662_pt_5.png", "paris_invalides_000662_pt_6.png",
+				"paris_invalides_000662_pt_7.png", "paris_invalides_000662_pt_8.png", "paris_invalides_000662_pt_9.png",
+				"paris_invalides_000662_pt_10.png", "paris_invalides_000662_lt_1.jpg",
+				"paris_invalides_000662_lt_2.jpg", "paris_invalides_000662_lt_3.jpg", "paris_invalides_000662_lt_4.jpg",
+				"paris_invalides_000662_lt_5.jpg", "paris_invalides_000662_lt_6.jpg", "paris_invalides_000662_lt_7.jpg",
+				"paris_invalides_000662_lt_8.jpg", "paris_invalides_000662_lt_9.jpg", "paris_invalides_000662_1.jpg",
+				"paris_invalides_000662_2.jpg", "paris_invalides_000662_3.jpg", "paris_invalides_000662_4.jpg",
+				"paris_invalides_000662_5.jpg", "paris_invalides_000662_6.jpg", "paris_invalides_000662_7.jpg",
+				"paris_invalides_000662_8.jpg", "paris_invalides_000662_9.jpg", "paris_invalides_000664.jpg",
+				"paris_invalides_000665.jpg", "paris_invalides_000666.jpg", "paris_invalides_000667.jpg",
+				"paris_invalides_000668.jpg", "paris_invalides_000669.jpg", "paris_invalides_000670.jpg",
+				"paris_invalides_000671.jpg", "paris_invalides_000672.jpg", "paris_invalides_000673.jpg",
+				"paris_invalides_000662.jpg", "all_souls_000065.jpg", "all_souls_000065.jpg", "pano8.jpg", "pano6.jpg",
+				"1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG", "P1011069.JPG", "P1010372.JPG",
+				"grail03.jpg", "DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg", "base1.jpg",
+				"Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg", "Test1025.jpg", "Test81.jpg",
+				"Test1025.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg", "Test1027.jpg",
 				"Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3000_rot.jpg", "Test47_rot.jpg",
 				"Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg", "Test506.jpg",
 				"Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg",
@@ -710,19 +740,36 @@ public class MainCoifV6 {
 				"Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png", "Test123_rot.jpg",
 				"Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg",
 				"Test800.jpg" };
-		final String[] files2 = { "paris_invalides_000663.jpg","all_souls_000051.jpg", "all_souls_000066.jpg", "pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg", "P1011371.JPG",
-				"P1011070.JPG", "P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png", "Yosemite2.jpg", "img3.png",
-				"h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg", "Test1028_2.jpg",
-				"Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg", "Test23.jpg",
-				"Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg", "Test84.jpg",
-				"Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg", "Test1026.jpg",
-				"Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg",
-				"Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg", "Test1501.jpg",
-				"Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg", "Test2000_rot.jpg",
-				"Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg", "Test48_rot.jpg",
-				"Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg", "Test125_rot.png",
-				"Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg", "Test241.jpg",
-				"Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+		final String[] files2 = { "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "all_souls_000051.jpg",
+				"all_souls_000066.jpg", "pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg",
+				"P1011371.JPG", "P1011070.JPG", "P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png",
+				"Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg",
+				"Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg",
+				"Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg",
+				"Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg",
+				"Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg",
+				"Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg",
+				"Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg",
+				"Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg",
+				"Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg",
+				"Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg",
+				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
