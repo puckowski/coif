@@ -1,0 +1,296 @@
+1Hill.JPG and 2Hill.JPG
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+2Hill.JPG and 3Hill.JPG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+S3.jpg and S5.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+b.jpg and c.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+P1011370.JPG and P1011371.JPG
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+P1011069.JPG and P1011070.JPG
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+P1010372.JPG and P1010373.JPG
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+grail03.jpg and grail04.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+DSC_0178.jpg and DSC_0179.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+bike1.png and bike2.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Yosemite1.jpg and Yosemite2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img2.png and img3.png
+Number of inliers:  23
+Total good: 25
+Ratio of inliers/total good: 0.9200
+h1.jpg and h2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+base1.jpg and base2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1025.jpg and Test1026_4.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1027.jpg and Test1028_3.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test81.jpg and Test85.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1027.jpg and Test1028_2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1025.jpg and Test1026_3.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test81.jpg and Test82_2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1025.jpg and Test1026_2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test72.jpg and Test70.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test65.jpg and Test67.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test21.jpg and Test23.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1027.jpg and Test1029.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1027.jpg and Test1030.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1500.jpg and Test1502.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1500.jpg and Test1503.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test81.jpg and Test83.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test81.jpg and Test84.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test3000_rot.jpg and Test3002_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test47_rot.jpg and Test49_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test3030.jpg and Test3031.jpg
+Number of inliers:  23
+Total good: 25
+Ratio of inliers/total good: 0.9200
+Test1031.jpg and Test1032.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1027.jpg and Test1028.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1025.jpg and Test1026.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1024.jpg and Test1023.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test506.jpg and Test507.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test506.jpg and Test508.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test404.jpg and Test405.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test705.jpg and Test706.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test705.jpg and Test707.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test766.jpg and Test767.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test766.jpg and Test768.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test82.jpg and Test81.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test5000_rot.jpg and Test5001_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test3000_rot.jpg and Test3001_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1500.jpg and Test1501.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1310_rot.PNG and Test1311_rot.PNG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1199_rot.PNG and Test1200_rot.PNG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1000_rot.jpg and Test1001_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test2120_rot.jpg and Test2121_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test1999_rot.jpg and Test2000_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test4.jpg and Test5.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test6.jpg and Test7.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test21.jpg and Test22.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test34_rot.jpg and Test35_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test37.jpg and Test38.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+Test47_rot.jpg and Test48_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test48_rot.png and Test49_rot.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test65.jpg and Test66.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test70.jpg and Test71.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test99.jpg and Test100.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test120_rot.jpeg and Test124_rot.jpeg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test121_rot.png and Test125_rot.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test122_rot.png and Test126_rot.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test123_rot.jpg and Test127_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test200_rot.jpg and Test201_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test211_rot.jpg and Test212_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test240.jpg and Test241.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test300.jpg and Test310.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test400.jpg and Test410.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test600.jpg and Test610.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+Test800.jpg and Test810.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000

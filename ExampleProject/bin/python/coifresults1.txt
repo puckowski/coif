@@ -1,0 +1,444 @@
+img file moravec3_0.txt
+25 and 25
+1Hill.JPG and 2Hill.JPG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_1.txt
+25 and 25
+2Hill.JPG and 3Hill.JPG
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_10.txt
+25 and 25
+Yosemite1.jpg and Yosemite2.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_11.txt
+25 and 25
+img2.png and img3.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_12.txt
+25 and 25
+h1.jpg and h2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_13.txt
+25 and 25
+base1.jpg and base2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_14.txt
+25 and 25
+Test1025.jpg and Test1026_4.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_15.txt
+25 and 25
+Test1027.jpg and Test1028_3.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_16.txt
+25 and 25
+Test81.jpg and Test85.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_17.txt
+25 and 25
+Test1027.jpg and Test1028_2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_18.txt
+25 and 25
+Test1025.jpg and Test1026_3.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_19.txt
+25 and 25
+Test81.jpg and Test82_2.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_2.txt
+25 and 25
+S3.jpg and S5.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_20.txt
+25 and 25
+Test1025.jpg and Test1026_2.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_21.txt
+25 and 25
+Test72.jpg and Test70.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_22.txt
+18 and 18
+Test65.jpg and Test67.jpg
+Number of inliers:  18
+Total good: 18
+Ratio of inliers/total good: 1.0000
+img file moravec3_23.txt
+25 and 25
+Test21.jpg and Test23.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_24.txt
+25 and 25
+Test1027.jpg and Test1029.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_25.txt
+25 and 25
+Test1027.jpg and Test1030.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_26.txt
+23 and 23
+Test1500.jpg and Test1502.jpg
+Number of inliers:  23
+Total good: 23
+Ratio of inliers/total good: 1.0000
+img file moravec3_27.txt
+25 and 25
+Test1500.jpg and Test1503.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_28.txt
+25 and 25
+Test81.jpg and Test83.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_29.txt
+25 and 25
+Test81.jpg and Test84.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_3.txt
+9 and 9
+b.jpg and c.jpg
+Number of inliers:  9
+Total good: 9
+Ratio of inliers/total good: 1.0000
+img file moravec3_30.txt
+25 and 25
+Test3000_rot.jpg and Test3002_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_31.txt
+25 and 25
+Test47_rot.jpg and Test49_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_32.txt
+11 and 11
+Test3030.jpg and Test3031.jpg
+Number of inliers:  11
+Total good: 11
+Ratio of inliers/total good: 1.0000
+img file moravec3_33.txt
+25 and 25
+Test1031.jpg and Test1032.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_34.txt
+25 and 25
+Test1027.jpg and Test1028.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_35.txt
+25 and 25
+Test1025.jpg and Test1026.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_36.txt
+25 and 25
+Test1024.jpg and Test1023.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_37.txt
+25 and 25
+Test506.jpg and Test507.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_38.txt
+25 and 25
+Test506.jpg and Test508.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_39.txt
+25 and 25
+Test404.jpg and Test405.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_4.txt
+25 and 25
+P1011370.JPG and P1011371.JPG
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_40.txt
+25 and 25
+Test705.jpg and Test706.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_41.txt
+19 and 19
+Test705.jpg and Test707.jpg
+Number of inliers:  19
+Total good: 19
+Ratio of inliers/total good: 1.0000
+img file moravec3_42.txt
+25 and 25
+Test766.jpg and Test767.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_43.txt
+25 and 25
+Test766.jpg and Test768.jpg
+Number of inliers:  24
+Total good: 25
+Ratio of inliers/total good: 0.9600
+img file moravec3_44.txt
+25 and 25
+Test82.jpg and Test81.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_45.txt
+25 and 25
+Test5000_rot.jpg and Test5001_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_46.txt
+25 and 25
+Test3000_rot.jpg and Test3001_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_47.txt
+25 and 25
+Test1500.jpg and Test1501.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_48.txt
+25 and 25
+Test1310_rot.PNG and Test1311_rot.PNG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_49.txt
+20 and 20
+Test1199_rot.PNG and Test1200_rot.PNG
+Number of inliers:  20
+Total good: 20
+Ratio of inliers/total good: 1.0000
+img file moravec3_5.txt
+25 and 25
+P1011069.JPG and P1011070.JPG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_50.txt
+25 and 25
+Test1000_rot.jpg and Test1001_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_51.txt
+25 and 25
+Test2120_rot.jpg and Test2121_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_52.txt
+25 and 25
+Test1999_rot.jpg and Test2000_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_53.txt
+25 and 25
+Test4.jpg and Test5.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_54.txt
+25 and 25
+Test6.jpg and Test7.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_55.txt
+25 and 25
+Test21.jpg and Test22.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_56.txt
+25 and 25
+Test34_rot.jpg and Test35_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_57.txt
+17 and 17
+Test37.jpg and Test38.jpg
+Number of inliers:  17
+Total good: 17
+Ratio of inliers/total good: 1.0000
+img file moravec3_58.txt
+25 and 25
+Test47_rot.jpg and Test48_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_59.txt
+25 and 25
+Test48_rot.png and Test49_rot.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_6.txt
+25 and 25
+P1010372.JPG and P1010373.JPG
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_60.txt
+25 and 25
+Test65.jpg and Test66.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_61.txt
+25 and 25
+Test70.jpg and Test71.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_62.txt
+11 and 11
+Test99.jpg and Test100.jpg
+Number of inliers:  11
+Total good: 11
+Ratio of inliers/total good: 1.0000
+img file moravec3_63.txt
+25 and 25
+Test120_rot.jpeg and Test124_rot.jpeg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_64.txt
+25 and 25
+Test121_rot.png and Test125_rot.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_65.txt
+25 and 25
+Test122_rot.png and Test126_rot.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_66.txt
+25 and 25
+Test123_rot.jpg and Test127_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_67.txt
+25 and 25
+Test200_rot.jpg and Test201_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_68.txt
+25 and 25
+Test211_rot.jpg and Test212_rot.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_69.txt
+25 and 25
+Test240.jpg and Test241.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_7.txt
+25 and 25
+grail03.jpg and grail04.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_70.txt
+25 and 25
+Test300.jpg and Test310.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_71.txt
+25 and 25
+Test400.jpg and Test410.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_72.txt
+25 and 25
+Test600.jpg and Test610.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_73.txt
+25 and 25
+Test800.jpg and Test810.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_8.txt
+25 and 25
+DSC_0178.jpg and DSC_0179.jpg
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000
+img file moravec3_9.txt
+25 and 25
+bike1.png and bike2.png
+Number of inliers:  25
+Total good: 25
+Ratio of inliers/total good: 1.0000

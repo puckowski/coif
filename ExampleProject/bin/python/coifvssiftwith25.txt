@@ -1,0 +1,445 @@
+Match found: 
+List1 - ImageMatch{firstImage='1Hill.JPG', secondImage='2Hill.JPG', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='1Hill.JPG', secondImage='2Hill.JPG', numberOfInliers=24, totalGood=25, ratio=0.96}
+COIF to SIFT: 1.0 vs. 0.96
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='2Hill.JPG', secondImage='3Hill.JPG', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='2Hill.JPG', secondImage='3Hill.JPG', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Yosemite1.jpg', secondImage='Yosemite2.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Yosemite1.jpg', secondImage='Yosemite2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='img2.png', secondImage='img3.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='img2.png', secondImage='img3.png', numberOfInliers=23, totalGood=25, ratio=0.92}
+COIF to SIFT: 1.0 vs. 0.92
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='h1.jpg', secondImage='h2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='h1.jpg', secondImage='h2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='base1.jpg', secondImage='base2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='base1.jpg', secondImage='base2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026_4.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026_4.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1028_3.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1028_3.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test81.jpg', secondImage='Test85.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test81.jpg', secondImage='Test85.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1028_2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1028_2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026_3.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026_3.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test81.jpg', secondImage='Test82_2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test81.jpg', secondImage='Test82_2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='S3.jpg', secondImage='S5.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='S3.jpg', secondImage='S5.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026_2.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026_2.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test72.jpg', secondImage='Test70.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test72.jpg', secondImage='Test70.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test65.jpg', secondImage='Test67.jpg', numberOfInliers=18, totalGood=18, ratio=1.0}
+List2 - ImageMatch{firstImage='Test65.jpg', secondImage='Test67.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test21.jpg', secondImage='Test23.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test21.jpg', secondImage='Test23.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1029.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1029.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1030.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1030.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1500.jpg', secondImage='Test1502.jpg', numberOfInliers=23, totalGood=23, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1500.jpg', secondImage='Test1502.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1500.jpg', secondImage='Test1503.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1500.jpg', secondImage='Test1503.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test81.jpg', secondImage='Test83.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test81.jpg', secondImage='Test83.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test81.jpg', secondImage='Test84.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test81.jpg', secondImage='Test84.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='b.jpg', secondImage='c.jpg', numberOfInliers=9, totalGood=9, ratio=1.0}
+List2 - ImageMatch{firstImage='b.jpg', secondImage='c.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test3000_rot.jpg', secondImage='Test3002_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test3000_rot.jpg', secondImage='Test3002_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test47_rot.jpg', secondImage='Test49_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test47_rot.jpg', secondImage='Test49_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test3030.jpg', secondImage='Test3031.jpg', numberOfInliers=11, totalGood=11, ratio=1.0}
+List2 - ImageMatch{firstImage='Test3030.jpg', secondImage='Test3031.jpg', numberOfInliers=23, totalGood=25, ratio=0.92}
+COIF to SIFT: 1.0 vs. 0.92
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1031.jpg', secondImage='Test1032.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1031.jpg', secondImage='Test1032.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1028.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1027.jpg', secondImage='Test1028.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test1025.jpg', secondImage='Test1026.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1024.jpg', secondImage='Test1023.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1024.jpg', secondImage='Test1023.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test506.jpg', secondImage='Test507.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test506.jpg', secondImage='Test507.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test506.jpg', secondImage='Test508.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test506.jpg', secondImage='Test508.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test404.jpg', secondImage='Test405.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test404.jpg', secondImage='Test405.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='P1011370.JPG', secondImage='P1011371.JPG', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='P1011370.JPG', secondImage='P1011371.JPG', numberOfInliers=24, totalGood=25, ratio=0.96}
+COIF to SIFT: 0.96 vs. 0.96
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test705.jpg', secondImage='Test706.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test705.jpg', secondImage='Test706.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test705.jpg', secondImage='Test707.jpg', numberOfInliers=19, totalGood=19, ratio=1.0}
+List2 - ImageMatch{firstImage='Test705.jpg', secondImage='Test707.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test766.jpg', secondImage='Test767.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test766.jpg', secondImage='Test767.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test766.jpg', secondImage='Test768.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+List2 - ImageMatch{firstImage='Test766.jpg', secondImage='Test768.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 0.96 vs. 1.0
+SIFT better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test82.jpg', secondImage='Test81.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test82.jpg', secondImage='Test81.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test5000_rot.jpg', secondImage='Test5001_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test5000_rot.jpg', secondImage='Test5001_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test3000_rot.jpg', secondImage='Test3001_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test3000_rot.jpg', secondImage='Test3001_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1500.jpg', secondImage='Test1501.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1500.jpg', secondImage='Test1501.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1310_rot.PNG', secondImage='Test1311_rot.PNG', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1310_rot.PNG', secondImage='Test1311_rot.PNG', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1199_rot.PNG', secondImage='Test1200_rot.PNG', numberOfInliers=20, totalGood=20, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1199_rot.PNG', secondImage='Test1200_rot.PNG', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='P1011069.JPG', secondImage='P1011070.JPG', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='P1011069.JPG', secondImage='P1011070.JPG', numberOfInliers=24, totalGood=25, ratio=0.96}
+COIF to SIFT: 1.0 vs. 0.96
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1000_rot.jpg', secondImage='Test1001_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1000_rot.jpg', secondImage='Test1001_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test2120_rot.jpg', secondImage='Test2121_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test2120_rot.jpg', secondImage='Test2121_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test1999_rot.jpg', secondImage='Test2000_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test1999_rot.jpg', secondImage='Test2000_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test4.jpg', secondImage='Test5.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test4.jpg', secondImage='Test5.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test6.jpg', secondImage='Test7.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test6.jpg', secondImage='Test7.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test21.jpg', secondImage='Test22.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test21.jpg', secondImage='Test22.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test34_rot.jpg', secondImage='Test35_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test34_rot.jpg', secondImage='Test35_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test37.jpg', secondImage='Test38.jpg', numberOfInliers=17, totalGood=17, ratio=1.0}
+List2 - ImageMatch{firstImage='Test37.jpg', secondImage='Test38.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+COIF to SIFT: 1.0 vs. 0.96
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test47_rot.jpg', secondImage='Test48_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test47_rot.jpg', secondImage='Test48_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test48_rot.png', secondImage='Test49_rot.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test48_rot.png', secondImage='Test49_rot.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='P1010372.JPG', secondImage='P1010373.JPG', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='P1010372.JPG', secondImage='P1010373.JPG', numberOfInliers=24, totalGood=25, ratio=0.96}
+COIF to SIFT: 1.0 vs. 0.96
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='Test65.jpg', secondImage='Test66.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test65.jpg', secondImage='Test66.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test70.jpg', secondImage='Test71.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test70.jpg', secondImage='Test71.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test99.jpg', secondImage='Test100.jpg', numberOfInliers=11, totalGood=11, ratio=1.0}
+List2 - ImageMatch{firstImage='Test99.jpg', secondImage='Test100.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test120_rot.jpeg', secondImage='Test124_rot.jpeg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test120_rot.jpeg', secondImage='Test124_rot.jpeg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test121_rot.png', secondImage='Test125_rot.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test121_rot.png', secondImage='Test125_rot.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test122_rot.png', secondImage='Test126_rot.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test122_rot.png', secondImage='Test126_rot.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test123_rot.jpg', secondImage='Test127_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test123_rot.jpg', secondImage='Test127_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test200_rot.jpg', secondImage='Test201_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test200_rot.jpg', secondImage='Test201_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test211_rot.jpg', secondImage='Test212_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test211_rot.jpg', secondImage='Test212_rot.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test240.jpg', secondImage='Test241.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test240.jpg', secondImage='Test241.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='grail03.jpg', secondImage='grail04.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='grail03.jpg', secondImage='grail04.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test300.jpg', secondImage='Test310.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test300.jpg', secondImage='Test310.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test400.jpg', secondImage='Test410.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test400.jpg', secondImage='Test410.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test600.jpg', secondImage='Test610.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test600.jpg', secondImage='Test610.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='Test800.jpg', secondImage='Test810.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='Test800.jpg', secondImage='Test810.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+Match found: 
+List1 - ImageMatch{firstImage='DSC_0178.jpg', secondImage='DSC_0179.jpg', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='DSC_0178.jpg', secondImage='DSC_0179.jpg', numberOfInliers=24, totalGood=25, ratio=0.96}
+COIF to SIFT: 1.0 vs. 0.96
+COIF better
+
+Match found: 
+List1 - ImageMatch{firstImage='bike1.png', secondImage='bike2.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+List2 - ImageMatch{firstImage='bike1.png', secondImage='bike2.png', numberOfInliers=25, totalGood=25, ratio=1.0}
+COIF to SIFT: 1.0 vs. 1.0
+COIF and SIFT same
+
+COIF was better or equal 64 out of 74 image pairs

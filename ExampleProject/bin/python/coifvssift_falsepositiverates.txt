@@ -1,0 +1,394 @@
+SIFT versus COIF false positivesitive counts
+
+image pair 0
+sift 1 false positives
+coif 0 false positives
+sift 4% false positive rate, coif 0% false positive rate, coif better
+
+image pair 1
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 2
+sift 6 false positives
+coif 0 false positives
+sift 24% false positive rate, coif 0% false positive rate, coif better
+
+image pair 3
+sift 2 false positives
+coif 0 false positives
+sift 8% false positive rate, coif 0% false positive rate, coif better
+
+image pair 4
+sift 1 false positives
+coif 0 false positives
+sift 4% false positive rate, coif 0% false positive rate, coif better
+
+image pair 5
+sift 3 false positives
+coif 0 false positives
+sift 12% false positive rate, coif 0% false positive rate, coif better
+
+image pair 6
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 7
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 8
+sift 1 false positives
+coif 1 false positives
+sift 4% false positive rate, coif 4% false positive rate, sift and coif equal
+
+image pair 9
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 10
+sift 0 false positives
+coif 2 false positives
+sift 0% false positive rate, coif 8% false positive rate, sift better
+
+image pair 11
+sift 3 false positives
+coif 0 false positives
+sift 12% false positive rate, coif 8% false positive rate, coif better
+
+image pair 12
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 13
+sift 0 false positives
+coif 4 false positives
+sift 0% false positive rate, coif 16% false positive rate, sift better
+
+image pair 14
+sift 0 false positives
+coif 4 false positives
+sift 0% false positive rate, coif 16% false positive rate, sift better
+
+image pair 15
+sift 0 false positives
+coif 5 false positives
+sift 0% false positive rate, coif 20% false positive rate, sift better
+
+image pair 16
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 17
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 18
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 19
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 20
+sift 0 false positives
+coif 1 false positives
+sift 0% false positive rate, coif 4% false positive rate, sift better
+
+image pair 21
+sift 0 false positives
+coif 2 false positives
+sift 0% false positive rate, coif 8% false positive rate, sift better
+
+image pair 22
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 23
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 24
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 25
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 26
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 27
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 28
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 29
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 30
+sift 0 false positives
+coif 1 false positives
+sift 0% false positive rate, coif 4% false positive rate, sift better
+
+image pair 31
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 32
+sift 1 false positives
+coif 0 false positives
+sift 4% false positive rate, coif 0% false positive rate, coif better
+
+image pair 33
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 34
+sift 0 false positives
+coif 2 false positives
+sift 0% false positive rate, coif 8% false positive rate, sift better
+
+image pair 35
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 36
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 37
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 38
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 39
+sift 0 false positives
+coif 1 false positives
+sift 0% false positive rate, coif 4% false positive rate, sift better
+
+image pair 40
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 41
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 42
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 43
+sift 0 false positives
+coif 1 false positives
+sift 0% false positive rate, coif 4% false positive rate, sift better
+
+image pair 44
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 45
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 46
+sift 0 false positives
+coif 1 false positives
+sift 0% false positive rate, coif 4% false positive rate, sift better
+
+image pair 47
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 48
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 49
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 50
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 51
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 52
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 53
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 54
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 55
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 56
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 57
+sift 1 false positives
+coif 0 false positives
+sift 4% false positive rate, coif 0% false positive rate, coif better
+
+image pair 58
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 59
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 60
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 61
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 62
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 63
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 64
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 65
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 66
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 67
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 68
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 69
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 70
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 71
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 72
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+image pair 73
+sift 0 false positives
+coif 0 false positives
+sift and coif equal
+
+55 sift and coif equal
+11 sift better
+8 coif better
+
+sift 98.9589% accurate
+coif 98.5205% accurate
+sift 0.4384% more accurate
+
+SIFT
+100% 65
+99-95% 4
+94-90% 1
+89-85% 2
+84-80% 0
+79-75% 1
+
+COIF
+100% 60
+99-95% 6
+94-90% 4
+89-85% 0
+84-90% 3
