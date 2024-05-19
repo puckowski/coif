@@ -40,3 +40,11 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 | 89-85%         | 2     |
 | 84-80%         | 0     |
 | 79-75%         | 1     |
+
+## Impact of Environmental Factors on Measurement Accuracy
+
+| Effect                     | Accuracy Range |
+|----------------------------|----------------|
+| Light Variation            | +/- 10%        |
+| Perspective Transformation | 25%            |
+| Scale Change               | +/- 50%        |
