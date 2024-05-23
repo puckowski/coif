@@ -48,3 +48,19 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 | Light Variation            | +/- 10%        |
 | Perspective Transformation | 25%            |
 | Scale Change               | +/- 50%        |
+
+## Performance Metrics and Distribution Statistics for Image Matching Operations
+
+| Average Matching Time | Median Matching Time | Image Pair Count | Pixels Processed Count |
+|-----------------------|----------------------|------------------|------------------------|
+| 7,589 milliseconds    | 3,162 milliseconds   | 55               | 30,612,480             |
+
+Matching times include time to identify corners, time to generate descriptors, and time for feature matching.
+
+| Bin Merge Count | Number of Times Used | Percent Occurrence |
+|-----------------|----------------------|--------------------|
+| 1               | 38                   | 69.09%             |
+| 2               | 3                    | 5.45%              |
+| 3               | 4                    | 7.27%              |
+| 4               | 5                    | 9.09%              |
+| 5               | 5                    | 9.09%              |
