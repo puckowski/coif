@@ -235,7 +235,7 @@ public class MainCoifV6PanoramaSingleRun {
 
 		double mod;
 		long count;
-		double sum, high, quart;
+		double sum, sumOneHr, high, quart;
 
 		double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
 		int i, roughBinDistance;
@@ -273,6 +273,8 @@ public class MainCoifV6PanoramaSingleRun {
 		System.out.println("Circles step done.");
 		System.out.println("Feature matching step...");
 
+		long startTimeDistinctiveness = System.currentTimeMillis();
+		
 		mod = 0.35;
 
 		do {
@@ -282,10 +284,15 @@ public class MainCoifV6PanoramaSingleRun {
 
 			for (i = 0; i < hrlist.size(); ++i) {
 				HistResultList hr = hrlist.get(i);
+				sumOneHr = 0.0;
+				
 				for (HistResult h : hr.histResults) {
 					sum += h.mDistinctiveness;
+					sumOneHr += h.mDistinctiveness;
 					count++;
 				}
+				
+				hr.distinctivenessAverage = sumOneHr / 4;
 			}
 
 			sum /= count;
@@ -295,13 +302,8 @@ public class MainCoifV6PanoramaSingleRun {
 
 			for (i = 0; i < hrlist.size(); ++i) {
 				HistResultList hr = hrlist.get(i);
-				sum = 0.0;
-				for (HistResult h : hr.histResults) {
-					sum += h.mDistinctiveness;
-				}
-				sum /= hr.histResults.size();
 
-				if (sum < high) {
+				if (hr.distinctivenessAverage < high) {
 					count++;
 				}
 			}
@@ -309,13 +311,8 @@ public class MainCoifV6PanoramaSingleRun {
 
 		for (i = 0; i < hrlist.size(); ++i) {
 			HistResultList hr = hrlist.get(i);
-			sum = 0.0;
-			for (HistResult h : hr.histResults) {
-				sum += h.mDistinctiveness;
-			}
-			sum /= hr.histResults.size();
 
-			if (sum < high) {
+			if (hr.distinctivenessAverage < high) {
 				hrlist.remove(i);
 				--i;
 			}
@@ -330,10 +327,15 @@ public class MainCoifV6PanoramaSingleRun {
 
 			for (i = 0; i < hrlist2.size(); ++i) {
 				HistResultList hr = hrlist2.get(i);
+				sumOneHr = 0.0;
+				
 				for (HistResult h : hr.histResults) {
 					sum += h.mDistinctiveness;
+					sumOneHr += h.mDistinctiveness;
 					count++;
 				}
+				
+				hr.distinctivenessAverage = sumOneHr / 4;
 			}
 
 			sum /= count;
@@ -343,13 +345,8 @@ public class MainCoifV6PanoramaSingleRun {
 
 			for (i = 0; i < hrlist2.size(); ++i) {
 				HistResultList hr = hrlist2.get(i);
-				sum = 0.0;
-				for (HistResult h : hr.histResults) {
-					sum += h.mDistinctiveness;
-				}
-				sum /= hr.histResults.size();
 
-				if (sum < high) {
+				if (hr.distinctivenessAverage < high) {
 					count++;
 				}
 			}
@@ -357,18 +354,16 @@ public class MainCoifV6PanoramaSingleRun {
 
 		for (i = 0; i < hrlist2.size(); ++i) {
 			HistResultList hr = hrlist2.get(i);
-			sum = 0.0;
-			for (HistResult h : hr.histResults) {
-				sum += h.mDistinctiveness;
-			}
-			sum /= hr.histResults.size();
 
-			if (sum < high) {
+			if (hr.distinctivenessAverage < high) {
 				hrlist2.remove(i);
 				--i;
 			}
 		}
 
+		long estimatedTimeDistinctiveness = System.currentTimeMillis() - startTimeDistinctiveness;
+		TimeData.distinctivenessAlignmentTimes.add(estimatedTimeDistinctiveness);
+		
 		while (hrlist.size() > 20000) {
 			int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
 			hrlist.remove(randomIndex);
@@ -448,7 +443,7 @@ public class MainCoifV6PanoramaSingleRun {
 							valThresholdCheckHigh = Math.abs(val - valHigh);
 							if (valThresholdCheckHigh > maximumDifferenceThreshold)
 								valHigh = val + maximumDifferenceThreshold;
-
+							
 							if (val2 < valLow || val2 > valHigh) {
 								binDistance++;
 								roughBinDistance++;
@@ -477,7 +472,7 @@ public class MainCoifV6PanoramaSingleRun {
 							valThresholdCheckHigh = Math.abs(val - valHigh);
 							if (valThresholdCheckHigh > maximumDifferenceThreshold)
 								valHigh = val + maximumDifferenceThreshold;
-
+							
 							if (val2 < valLow || val2 > valHigh) {
 								binDistance++;
 								roughBinDistance++;
@@ -723,12 +718,17 @@ public class MainCoifV6PanoramaSingleRun {
 			process(files1[i], files2[i], i);
 		}
 
+		final long distictivenessTimeSum = TimeData.distinctivenessAlignmentTimes.stream()
+                .mapToLong(Long::longValue)
+                .sum();
+		
 		System.out.println((double) TimeData.imageLoad / 1000.0 + "s loading images");
 		System.out.println((double) TimeData.moravec / 1000.0 + "s finding corners");
 		System.out.println((double) TimeData.matching / 1000.0 + "s matching features");
 		System.out.println((TimeData.imageLoad) / files1.length + "ms loading image average");
 		System.out.println((TimeData.moravec) / files1.length + "ms finding corner average");
 		System.out.println((TimeData.matching) / files1.length + "ms matching feature average");
+		System.out.println(distictivenessTimeSum / files1.length + "ms distinctiveness alignment average");
 		System.out.println(pixelCount + " pixels processed");
 
 		long medianMoravec = TimeData.moravecTimes.stream().map(Long::valueOf).sorted()

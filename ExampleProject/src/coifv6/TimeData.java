@@ -12,6 +12,7 @@ public class TimeData {
 
 	public static List<Long> matchingTimes = new ArrayList<>();
 	public static List<Long> moravecTimes = new ArrayList<>();
+	public static List<Long> distinctivenessAlignmentTimes = new ArrayList<>();
 
 	public static int[] binDistanceUsage = new int[6];
 	public static int[] iterationCountUsage = new int[10];
