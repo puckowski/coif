@@ -35,70 +35,38 @@ def draw_matches(img1_path, img2_path):
         print("Error loading images!")
         return
 
-    # Initialize the SIFT detector
-    sift = cv2.SIFT_create()
+    # Initialize the ORB detector
+    orb = cv2.ORB_create()
 
     start_time = time.time()
 
-    # Detect keypoints and descriptors
-    kp1, des1 = sift.detectAndCompute(resized_img1, None)
-    kp2, des2 = sift.detectAndCompute(resized_img2, None)
+    # Detect keypoints and descriptors with ORB
+    kp1, des1 = orb.detectAndCompute(resized_img1, None)
+    kp2, des2 = orb.detectAndCompute(resized_img2, None)
 
-    # Create BFMatcher object
-    bf = cv2.BFMatcher()
+    # Create BFMatcher object with default params
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
-    # Match descriptors using k-nearest neighbors
-    matches = bf.knnMatch(des1, des2, k=2)
+    # Match descriptors.
+    matches = bf.match(des1, des2)
 
-    # Apply ratio test to find good matches
-    good = []
-    for m, n in matches:
-        if m.distance < 0.75 * n.distance:
-            good.append(m)
+    # Sort them in the order of their distance.
+    matches = sorted(matches, key=lambda x: x.distance)
 
     end_time = time.time()
     
-    # Sort the good matches based on the distance - best matches first
-    good = sorted(good, key=lambda x: x.distance)
-
-    # Limit to the 1000 best matches
-    if len(good) > 25:
-        good = good[:25]
-    
-    # Extract location of good matches
-    points1 = np.float32([kp1[m.queryIdx].pt for m in good])
-    points2 = np.float32([kp2[m.trainIdx].pt for m in good])
-
-    # Find homography using RANSAC
-    H, mask = cv2.findHomography(points1, points2, cv2.RANSAC,100.0)
-
-    # Number of inliers
-    inliers = np.sum(mask)
-    print("Number of inliers: ", inliers)
-    print("Total good: " + str(len(good)))
-    
-    total_good = len(good)
-
-    # Calculate the ratio
-    if total_good > 0:  # Prevent division by zero
-        ratio = inliers / total_good
-    else:
-        ratio = 0  # Handle case where total_good is zero
-
-    print(f"Ratio of inliers/total good: {ratio:.4f}")  # Format ratio to 2 decimal places
-
     # Draw first 10 good matches.
     draw_params = dict(matchColor=(0, 255, 0),  # Draw matches in green color
                        singlePointColor=None,
-                       matchesMask=mask.ravel().tolist(),  # Draw only inliers
                        flags=2)
 
-    #img_matches = cv2.drawMatches(img1, kp1, img2, kp2, good, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    # Draw the matches
+    img_matches = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], None, **draw_params)
 
     # Show the image
-    #cv2.imshow('Matches', img_matches)
-    #cv2.waitKey(0)
-    #cv2.destroyAllWindows()
+    # cv2.imshow('Matches', img_matches)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
     
     return end_time - start_time
 

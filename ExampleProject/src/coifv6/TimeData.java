@@ -1,6 +1,7 @@
 package coifv6;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TimeData {
@@ -13,6 +14,8 @@ public class TimeData {
 	public static List<Long> moravecTimes = new ArrayList<>();
 
 	public static int[] binDistanceUsage = new int[6];
+	public static int[] iterationCountUsage = new int[10];
+	public static HashMap<Integer, List<Integer>> iterationCountUsageMap = new HashMap<>();
 	
 	public static int featureMatches = 0;
 

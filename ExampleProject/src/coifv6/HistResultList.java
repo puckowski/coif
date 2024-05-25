@@ -6,6 +6,7 @@ import java.util.List;
 public class HistResultList {
 
 	public List<HistResult> histResults;
+	public double distinctivenessAverage;
 
 	public HistResultList() {
 		histResults = new ArrayList<>();

@@ -14,14 +14,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MainCoifV6 {
+public class MainCoifV6PanoramaSingleRun {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,
@@ -253,316 +252,315 @@ public class MainCoifV6 {
 		int binMergeCount = 1;
 		int binThreshold2 = 57;
 
+		binMergeCount = 1;
+		binThreshold += 2;
+		binThreshold2 += 3;
+		binThreshold2Negation = binThreshold2 * 0.85;
+
+		System.out.println("Circles step...");
+
+		featureMatches.clear();
+
+		matchingIndex = 0;
+
+		System.out.println("Bin merge count: " + binMergeCount);
+
+		List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
+		List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
+
+		binMergeCount++;
+
+		System.out.println("Circles step done.");
+		System.out.println("Feature matching step...");
+
+		mod = 0.35;
+
 		do {
-			binMergeCount = 1;
-			binThreshold += 2;
-			binThreshold2 += 3;
-			binThreshold2Negation = binThreshold2 * 0.85;
+			mod -= 0.05;
+			sum = 0.0;
+			count = 0;
 
-			TimeData.iterationCountUsage[Math.abs(16 - (56 - binThreshold)) / 2]++;
+			for (i = 0; i < hrlist.size(); ++i) {
+				HistResultList hr = hrlist.get(i);
+				for (HistResult h : hr.histResults) {
+					sum += h.mDistinctiveness;
+					count++;
+				}
+			}
 
-			do {
-				System.out.println("Circles step...");
+			sum /= count;
+			quart = sum * mod;
+			high = sum + quart;
+			count = 0;
 
-				if (binMergeCount > 5) {
+			for (i = 0; i < hrlist.size(); ++i) {
+				HistResultList hr = hrlist.get(i);
+				sum = 0.0;
+				for (HistResult h : hr.histResults) {
+					sum += h.mDistinctiveness;
+				}
+				sum /= hr.histResults.size();
+
+				if (sum < high) {
+					count++;
+				}
+			}
+		} while (hrlist.size() - count < 2500 && hrlist.size() > 2500);
+
+		for (i = 0; i < hrlist.size(); ++i) {
+			HistResultList hr = hrlist.get(i);
+			sum = 0.0;
+			for (HistResult h : hr.histResults) {
+				sum += h.mDistinctiveness;
+			}
+			sum /= hr.histResults.size();
+
+			if (sum < high) {
+				hrlist.remove(i);
+				--i;
+			}
+		}
+
+		mod = 0.35;
+
+		do {
+			mod -= 0.05;
+			sum = 0.0;
+			count = 0;
+
+			for (i = 0; i < hrlist2.size(); ++i) {
+				HistResultList hr = hrlist2.get(i);
+				for (HistResult h : hr.histResults) {
+					sum += h.mDistinctiveness;
+					count++;
+				}
+			}
+
+			sum /= count;
+			quart = sum * mod;
+			high = sum + quart;
+			count = 0;
+
+			for (i = 0; i < hrlist2.size(); ++i) {
+				HistResultList hr = hrlist2.get(i);
+				sum = 0.0;
+				for (HistResult h : hr.histResults) {
+					sum += h.mDistinctiveness;
+				}
+				sum /= hr.histResults.size();
+
+				if (sum < high) {
+					count++;
+				}
+			}
+		} while (hrlist2.size() - count < 2500 && hrlist2.size() > 2500);
+
+		for (i = 0; i < hrlist2.size(); ++i) {
+			HistResultList hr = hrlist2.get(i);
+			sum = 0.0;
+			for (HistResult h : hr.histResults) {
+				sum += h.mDistinctiveness;
+			}
+			sum /= hr.histResults.size();
+
+			if (sum < high) {
+				hrlist2.remove(i);
+				--i;
+			}
+		}
+
+		while (hrlist.size() > 20000) {
+			int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
+			hrlist.remove(randomIndex);
+		}
+
+		while (hrlist2.size() > 20000) {
+			int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist2.size());
+			hrlist2.remove(randomIndex);
+		}
+
+		for (i = 0; i < hrlist.size(); ++i) {
+			list1 = hrlist.get(i);
+
+			for (int n = 0; n < list1.histResults.size(); ++n) {
+				if (list1.histResults.get(n).mLongestSequence > 70) {
+					hrlist.remove(i);
+					i--;
 					break;
 				}
+			}
+		}
 
-				featureMatches.clear();
+		for (i = 0; i < hrlist2.size(); ++i) {
+			list1 = hrlist2.get(i);
 
-				matchingIndex = 0;
-
-				System.out.println("Bin merge count: " + binMergeCount);
-
-				List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
-				List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
-
-				binMergeCount++;
-
-				System.out.println("Circles step done.");
-				System.out.println("Feature matching step...");
-
-				mod = 0.35;
-
-				do {
-					mod -= 0.05;
-					sum = 0.0;
-					count = 0;
-
-					for (i = 0; i < hrlist.size(); ++i) {
-						HistResultList hr = hrlist.get(i);
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-							count++;
-						}
-					}
-
-					sum /= count;
-					quart = sum * mod;
-					high = sum + quart;
-					count = 0;
-
-					for (i = 0; i < hrlist.size(); ++i) {
-						HistResultList hr = hrlist.get(i);
-						sum = 0.0;
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-						}
-						sum /= hr.histResults.size();
-						hr.distinctivenessAverage = sum;
-
-						if (sum < high) {
-							count++;
-						}
-					}
-				} while (hrlist.size() - count < 2500 && hrlist.size() > 2500);
-
-				for (i = 0; i < hrlist.size(); ++i) {
-					HistResultList hr = hrlist.get(i);
-
-					if (hr.distinctivenessAverage < high) {
-						hrlist.remove(i);
-						--i;
-					}
+			for (int n = 0; n < list1.histResults.size(); ++n) {
+				if (list1.histResults.get(n).mLongestSequence > 70) {
+					hrlist2.remove(i);
+					i--;
+					break;
 				}
+			}
+		}
 
-				mod = 0.35;
+		System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
 
-				do {
-					mod -= 0.05;
-					sum = 0.0;
-					count = 0;
+		for (HistResultList hr : hrlist) {
+			for (HistResultList hr2 : hrlist2) {
 
-					for (i = 0; i < hrlist2.size(); ++i) {
-						HistResultList hr = hrlist2.get(i);
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-							count++;
-						}
-					}
+				lowestDistance = 99999;
+				compareIndex = 0;
+				compareIndexMatch = 0;
+				lowestRoughBinDistance = 99999;
 
-					sum /= count;
-					quart = sum * mod;
-					high = sum + quart;
-					count = 0;
+				for (int[] ar : compareIndexArray) {
+					compareIndex++;
 
-					for (i = 0; i < hrlist2.size(); ++i) {
-						HistResultList hr = hrlist2.get(i);
-						sum = 0.0;
-						for (HistResult h : hr.histResults) {
-							sum += h.mDistinctiveness;
-						}
-						sum /= hr.histResults.size();
-						hr.distinctivenessAverage = sum;
+					distanceFinal = 0;
+					roughBinDistance = 0;
 
-						if (sum < high) {
-							count++;
-						}
-					}
-				} while (hrlist2.size() - count < 2500 && hrlist2.size() > 2500);
+					for (hri = 0; hri < hr.histResults.size(); ++hri) {
+						result1 = hr.histResults.get(hri);
+						distancesFirst = result1.getDistances();
+						dist21 = result1.getDistances2();
 
-				for (i = 0; i < hrlist2.size(); ++i) {
-					HistResultList hr = hrlist2.get(i);
+						binDistance = 0;
+						result2 = hr2.histResults.get(ar[hri]);
 
-					if (hr.distinctivenessAverage < high) {
-						hrlist2.remove(i);
-						--i;
-					}
-				}
-
-				while (hrlist.size() > 20000) {
-					int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
-					hrlist.remove(randomIndex);
-				}
-
-				while (hrlist2.size() > 20000) {
-					int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist2.size());
-					hrlist2.remove(randomIndex);
-				}
-
-				for (i = 0; i < hrlist.size(); ++i) {
-					list1 = hrlist.get(i);
-
-					for (int n = 0; n < list1.histResults.size(); ++n) {
-						if (list1.histResults.get(n).mLongestSequence > 70) {
-							hrlist.remove(i);
-							i--;
+						if (result1.mDistinctiveness < result2.mMinDistinctiveness
+								|| result1.mDistinctiveness > result2.mMaxDistinctiveness) {
+							distanceFinal = 99999;
 							break;
 						}
-					}
-				}
 
-				for (i = 0; i < hrlist2.size(); ++i) {
-					list1 = hrlist2.get(i);
+						distancesSecond = result2.getDistances();
+						dist22 = result2.getDistances2();
 
-					for (int n = 0; n < list1.histResults.size(); ++n) {
-						if (list1.histResults.get(n).mLongestSequence > 70) {
-							hrlist2.remove(i);
-							i--;
-							break;
-						}
-					}
-				}
+						for (i = 0; i < distancesFirst.length; ++i) {
+							val = distancesFirst[i];
+							val2 = distancesSecond[i];
 
-				System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
+							valLow = (val * binLowerBoundPercent);
+							valThresholdCheck = Math.abs(val - valLow);
+							if (valThresholdCheck > maximumDifferenceThreshold)
+								valLow = val - maximumDifferenceThreshold;
+							valHigh = (val * binUpperBoundPercent);
+							valThresholdCheckHigh = Math.abs(val - valHigh);
+							if (valThresholdCheckHigh > maximumDifferenceThreshold)
+								valHigh = val + maximumDifferenceThreshold;
 
-				for (HistResultList hr : hrlist) {
-					for (HistResultList hr2 : hrlist2) {
+							if (val2 < valLow || val2 > valHigh) {
+								binDistance++;
+								roughBinDistance++;
 
-						lowestDistance = 99999;
-						compareIndex = 0;
-						compareIndexMatch = 0;
-						lowestRoughBinDistance = 99999;
-
-						for (int[] ar : compareIndexArray) {
-							compareIndex++;
-
-							distanceFinal = 0;
-							roughBinDistance = 0;
-
-							for (hri = 0; hri < hr.histResults.size(); ++hri) {
-								result1 = hr.histResults.get(hri);
-								distancesFirst = result1.getDistances();
-								dist21 = result1.getDistances2();
-
-								binDistance = 0;
-								result2 = hr2.histResults.get(ar[hri]);
-
-								if (result1.mDistinctiveness < result2.mMinDistinctiveness
-										|| result1.mDistinctiveness > result2.mMaxDistinctiveness) {
-									distanceFinal = 99999;
-									break;
+								if (Math.abs(val2 - val) < binThreshold2Negation) {
+									binDistance--;
+								} else {
+									binDistance++;
 								}
 
-								distancesSecond = result2.getDistances();
-								dist22 = result2.getDistances2();
-
-								for (i = 0; i < distancesFirst.length; ++i) {
-									val = distancesFirst[i];
-									val2 = distancesSecond[i];
-
-									valLow = (val * binLowerBoundPercent);
-									valThresholdCheck = Math.abs(val - valLow);
-									if (valThresholdCheck > maximumDifferenceThreshold)
-										valLow = val - maximumDifferenceThreshold;
-									valHigh = (val * binUpperBoundPercent);
-									valThresholdCheckHigh = Math.abs(val - valHigh);
-									if (valThresholdCheckHigh > maximumDifferenceThreshold)
-										valHigh = val + maximumDifferenceThreshold;
-
-									if (val2 < valLow || val2 > valHigh) {
-										binDistance++;
-										roughBinDistance++;
-
-										if (Math.abs(val2 - val) < binThreshold2Negation) {
-											binDistance--;
-										} else {
-											binDistance++;
-										}
-
-										if (binDistance >= binThreshold) {
-											break;
-										}
-									}
-								}
-
-								for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
-									val = dist21[i];
-									val2 = dist22[i];
-
-									valLow = (val * binLowerBoundPercent);
-									valThresholdCheck = Math.abs(val - valLow);
-									if (valThresholdCheck > maximumDifferenceThreshold)
-										valLow = val - maximumDifferenceThreshold;
-									valHigh = (val * binUpperBoundPercent);
-									valThresholdCheckHigh = Math.abs(val - valHigh);
-									if (valThresholdCheckHigh > maximumDifferenceThreshold)
-										valHigh = val + maximumDifferenceThreshold;
-
-									if (val2 < valLow || val2 > valHigh) {
-										binDistance++;
-										roughBinDistance++;
-
-										if (Math.abs(val2 - val) < binThreshold2Negation) {
-											binDistance--;
-										} else {
-											binDistance++;
-										}
-
-										if (binDistance >= binThreshold) {
-											break;
-										}
-									}
-								}
-
-								distanceFinal += binDistance;
-
-								if (distanceFinal >= binThreshold) {
+								if (binDistance >= binThreshold) {
 									break;
 								}
 							}
+						}
 
-							if (lowestDistance > distanceFinal) {
-								compareIndexMatch = compareIndex - 1;
-								lowestDistance = distanceFinal;
-								lowestRoughBinDistance = roughBinDistance;
+						for (i = 0; i < dist21.length && binDistance < binThreshold; ++i) {
+							val = dist21[i];
+							val2 = dist22[i];
+
+							valLow = (val * binLowerBoundPercent);
+							valThresholdCheck = Math.abs(val - valLow);
+							if (valThresholdCheck > maximumDifferenceThreshold)
+								valLow = val - maximumDifferenceThreshold;
+							valHigh = (val * binUpperBoundPercent);
+							valThresholdCheckHigh = Math.abs(val - valHigh);
+							if (valThresholdCheckHigh > maximumDifferenceThreshold)
+								valHigh = val + maximumDifferenceThreshold;
+
+							if (val2 < valLow || val2 > valHigh) {
+								binDistance++;
+								roughBinDistance++;
+
+								if (Math.abs(val2 - val) < binThreshold2Negation) {
+									binDistance--;
+								} else {
+									binDistance++;
+								}
+
+								if (binDistance >= binThreshold) {
+									break;
+								}
 							}
 						}
 
-						distanceFinal = lowestDistance;
-						roughBinDistance = lowestRoughBinDistance;
+						distanceFinal += binDistance;
 
-						if (distanceFinal < binThreshold) {
-							FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(),
-									hr.histResults.get(0).getY(), hr2.histResults.get(0).getX(),
-									hr2.histResults.get(0).getY());
-							f.setRoughBinDistance(distanceFinal); // roughBinDistance);
-							f.rotationArrayIndex = compareIndexMatch;
-
-							featureMatches.add(f);
-
-							g2d.setColor(Color.RED);
-							// g2d.drawString(String.valueOf(hr.histResults.get(0).mDistinctiveness),
-							// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
-							// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
-							// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
+						if (distanceFinal >= binThreshold) {
+							break;
 						}
 					}
 
-					matchingIndex++;
-
-					if (matchingIndex % 1000 == 0) {
-						System.out.println("Features compared: " + matchingIndex + "/" + hrlist.size());
+					if (lowestDistance > distanceFinal) {
+						compareIndexMatch = compareIndex - 1;
+						lowestDistance = distanceFinal;
+						lowestRoughBinDistance = roughBinDistance;
 					}
 				}
 
-				rotationIndexMap.clear();
+				distanceFinal = lowestDistance;
+				roughBinDistance = lowestRoughBinDistance;
 
-				for (i = 0; i < featureMatches.size(); ++i) {
-					if (rotationIndexMap.containsKey(featureMatches.get(i).rotationArrayIndex)) {
-						rotationIndexMap.replace(featureMatches.get(i).rotationArrayIndex,
-								rotationIndexMap.get(featureMatches.get(i).rotationArrayIndex) + 1);
-					} else {
-						rotationIndexMap.put(featureMatches.get(i).rotationArrayIndex, 1);
-					}
+				if (distanceFinal < binThreshold) {
+					FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(), hr.histResults.get(0).getY(),
+							hr2.histResults.get(0).getX(), hr2.histResults.get(0).getY());
+					f.setRoughBinDistance(distanceFinal); // roughBinDistance);
+					f.rotationArrayIndex = compareIndexMatch;
+
+					featureMatches.add(f);
+
+					g2d.setColor(Color.RED);
+					// g2d.drawString(String.valueOf(hr.histResults.get(0).mDistinctiveness),
+					// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
+					// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
+					// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
 				}
+			}
 
-				maxKey = 0;
-				maxValue = 0;
+			matchingIndex++;
 
-				for (Map.Entry<Integer, Integer> e : rotationIndexMap.entrySet()) {
-					if (maxValue < e.getValue()) {
-						maxKey = e.getKey();
-						maxValue = e.getValue();
-					}
-				}
+			if (matchingIndex % 1000 == 0) {
+				System.out.println("Features compared: " + matchingIndex + "/" + hrlist.size());
+			}
+		}
 
-				for (i = 0; i < featureMatches.size(); ++i) {
-					if (featureMatches.get(i).rotationArrayIndex != maxKey) {
-						featureMatches.remove(i);
-						i--;
-					}
-				}
+		rotationIndexMap.clear();
+
+		for (i = 0; i < featureMatches.size(); ++i) {
+			if (rotationIndexMap.containsKey(featureMatches.get(i).rotationArrayIndex)) {
+				rotationIndexMap.replace(featureMatches.get(i).rotationArrayIndex,
+						rotationIndexMap.get(featureMatches.get(i).rotationArrayIndex) + 1);
+			} else {
+				rotationIndexMap.put(featureMatches.get(i).rotationArrayIndex, 1);
+			}
+		}
+
+		maxKey = 0;
+		maxValue = 0;
+
+		for (Map.Entry<Integer, Integer> e : rotationIndexMap.entrySet()) {
+			if (maxValue < e.getValue()) {
+				maxKey = e.getKey();
+				maxValue = e.getValue();
+			}
+		}
+
+		for (i = 0; i < featureMatches.size(); ++i) {
+			if (featureMatches.get(i).rotationArrayIndex != maxKey) {
+				featureMatches.remove(i);
+				i--;
+			}
+		}
 
 //				Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance - o2.mRoughBinDistance);
 //
@@ -604,20 +602,7 @@ public class MainCoifV6 {
 //					featureMatches.remove(featureMatches.size() - 1);
 //				}
 
-				System.out.println("Feature matching done.");
-			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
-		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007)
-				&& binThreshold < 56);
-
-		if (TimeData.iterationCountUsageMap.containsKey(binMergeCount - 1)) {
-			final List<Integer> list = TimeData.iterationCountUsageMap.get(binMergeCount - 1);
-			list.add(Math.abs(16 - (56 - binThreshold)) / 2);
-			TimeData.iterationCountUsageMap.put(binMergeCount - 1, list);
-		} else {
-			final List<Integer> list = new ArrayList<>();
-			list.add(Math.abs(16 - (56 - binThreshold)) / 2);
-			TimeData.iterationCountUsageMap.put(binMergeCount - 1, list);
-		}
+		System.out.println("Feature matching done.");
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
 
@@ -714,67 +699,24 @@ public class MainCoifV6 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "paris_invalides_000662_sm_1.jpg", "paris_invalides_000662_sm_2.jpg",
-				"paris_invalides_000662_sm_3.jpg", "paris_invalides_000662_sm_4.jpg", "paris_invalides_000662_sm_5.jpg",
-				"paris_invalides_000662_sm_6.jpg", "paris_invalides_000662_sm_7.jpg", "paris_invalides_000662_sm_8.jpg",
-				"paris_invalides_000662_sm_9.jpg", "paris_invalides_000662_sm_10.jpg",
-				"paris_invalides_000662_pt_1.png", "paris_invalides_000662_pt_2.png", "paris_invalides_000662_pt_3.png",
-				"paris_invalides_000662_pt_4.png", "paris_invalides_000662_pt_5.png", "paris_invalides_000662_pt_6.png",
-				"paris_invalides_000662_pt_7.png", "paris_invalides_000662_pt_8.png", "paris_invalides_000662_pt_9.png",
-				"paris_invalides_000662_pt_10.png", "paris_invalides_000662_lt_1.jpg",
-				"paris_invalides_000662_lt_2.jpg", "paris_invalides_000662_lt_3.jpg", "paris_invalides_000662_lt_4.jpg",
-				"paris_invalides_000662_lt_5.jpg", "paris_invalides_000662_lt_6.jpg", "paris_invalides_000662_lt_7.jpg",
-				"paris_invalides_000662_lt_8.jpg", "paris_invalides_000662_lt_9.jpg", "paris_invalides_000662_1.jpg",
-				"paris_invalides_000662_2.jpg", "paris_invalides_000662_3.jpg", "paris_invalides_000662_4.jpg",
-				"paris_invalides_000662_5.jpg", "paris_invalides_000662_6.jpg", "paris_invalides_000662_7.jpg",
-				"paris_invalides_000662_8.jpg", "paris_invalides_000662_9.jpg", "paris_invalides_000664.jpg",
-				"paris_invalides_000665.jpg", "paris_invalides_000666.jpg", "paris_invalides_000667.jpg",
-				"paris_invalides_000668.jpg", "paris_invalides_000669.jpg", "paris_invalides_000670.jpg",
-				"paris_invalides_000671.jpg", "paris_invalides_000672.jpg", "paris_invalides_000673.jpg",
-				"paris_invalides_000662.jpg", "all_souls_000065.jpg", "all_souls_000065.jpg", "pano8.jpg", "pano6.jpg",
-				"1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG", "P1011069.JPG", "P1010372.JPG",
-				"grail03.jpg", "DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg", "base1.jpg",
-				"Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg", "Test1025.jpg", "Test81.jpg",
-				"Test1025.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg", "Test1027.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3000_rot.jpg", "Test47_rot.jpg",
-				"Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg", "Test506.jpg",
-				"Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg",
-				"Test5000_rot.jpg", "Test3000_rot.jpg", "Test1500.jpg", "Test1310_rot.PNG", "Test1199_rot.PNG",
-				"Test1000_rot.jpg", "Test2120_rot.jpg", "Test1999_rot.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg",
-				"Test34_rot.jpg", "Test37.jpg", "Test47_rot.jpg", "Test48_rot.png", "Test65.jpg", "Test70.jpg",
-				"Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png", "Test123_rot.jpg",
-				"Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg",
-				"Test800.jpg" };
-		final String[] files2 = { "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "all_souls_000051.jpg",
-				"all_souls_000066.jpg", "pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg",
-				"P1011371.JPG", "P1011070.JPG", "P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png",
-				"Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg",
-				"Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg",
-				"Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg",
-				"Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg",
-				"Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg",
-				"Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg",
-				"Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg",
-				"Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg",
-				"Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg",
-				"Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg",
-				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+		final String[] files1 = { "paris_invalides_000662.jpg", "all_souls_000065.jpg", "all_souls_000065.jpg",
+				"pano8.jpg", "pano6.jpg", "1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG", "P1011069.JPG",
+				"P1010372.JPG", "grail03.jpg", "DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg",
+				"base1.jpg", "Test81.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg", "Test1027.jpg",
+				"Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3030.jpg", "Test1031.jpg",
+				"Test1027.jpg", "Test1025.jpg", "Test1024.jpg", "Test506.jpg", "Test506.jpg", "Test404.jpg",
+				"Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg", "Test1500.jpg", "Test4.jpg",
+				"Test6.jpg", "Test21.jpg", "Test37.jpg", "Test65.jpg", "Test70.jpg", "Test99.jpg", "Test240.jpg",
+				"Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
+		final String[] files2 = { "paris_invalides_000663.jpg", "all_souls_000051.jpg", "all_souls_000066.jpg",
+				"pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg", "P1011371.JPG", "P1011070.JPG",
+				"P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg",
+				"base2.jpg", "Test85.jpg", "Test70.jpg", "Test67.jpg", "Test23.jpg", "Test1029.jpg", "Test1030.jpg",
+				"Test1502.jpg", "Test1503.jpg", "Test83.jpg", "Test84.jpg", "Test3031.jpg", "Test1032.jpg",
+				"Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg",
+				"Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test1501.jpg", "Test5.jpg",
+				"Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test241.jpg",
+				"Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
@@ -836,25 +778,6 @@ public class MainCoifV6 {
 		System.out.println("Merge distances used:");
 		for (int i = 1; i < TimeData.binDistanceUsage.length; ++i) {
 			System.out.println(i + " used " + TimeData.binDistanceUsage[i] + " times");
-		}
-
-		System.out.println("Iteration counts used:");
-		for (int i = 0; i < TimeData.iterationCountUsage.length; ++i) {
-			System.out.println(i + " used " + TimeData.iterationCountUsage[i] + " times");
-		}
-
-		System.out.println("Additional iteration data:");
-		for (Map.Entry<Integer, List<Integer>> entry : TimeData.iterationCountUsageMap.entrySet()) {
-			final List<Integer> list = entry.getValue();
-			final Map<Object, Long> countMap = list.stream()
-					// Zero-indexed iterations
-					.map(count -> count + 1).collect(Collectors.groupingBy(number -> number, Collectors.counting()));
-
-			System.out.print("Bin merge count: " + entry.getKey() + "\n");
-			for (Map.Entry<Object, Long> e : countMap.entrySet()) {
-				System.out.print("Iteration: " + e.getKey() + " count: " + e.getValue() + "\n");
-			}
-			System.out.println();
 		}
 
 		System.out.println("Feature matches: " + TimeData.featureMatches);

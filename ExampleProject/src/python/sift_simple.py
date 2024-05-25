@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 
 def resize_image(img_path):
     # Load the image in grayscale
@@ -37,6 +38,8 @@ def draw_matches(img1_path, img2_path):
     # Initialize the SIFT detector
     sift = cv2.SIFT_create()
 
+    start_time = time.time()
+
     # Detect keypoints and descriptors
     kp1, des1 = sift.detectAndCompute(resized_img1, None)
     kp2, des2 = sift.detectAndCompute(resized_img2, None)
@@ -53,6 +56,8 @@ def draw_matches(img1_path, img2_path):
         if m.distance < 0.75 * n.distance:
             good.append(m)
 
+    end_time = time.time()
+    
     # Sort the good matches based on the distance - best matches first
     good = sorted(good, key=lambda x: x.distance)
 
@@ -94,6 +99,8 @@ def draw_matches(img1_path, img2_path):
     #cv2.imshow('Matches', img_matches)
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
+    
+    return end_time - start_time
 
 # Lists of paths to the images
 img1_paths = [ "1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG", "P1011069.JPG",
@@ -123,7 +130,15 @@ img2_paths = [ "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg", "P1011371.JPG", "P10
 				"Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg",
 				"Test610.jpg", "Test810.jpg" ]
 
+total_match_time = 0
+count = 0
+
 # Loop over the arrays
 for img1_path, img2_path in zip(img1_paths, img2_paths):
     print(img1_path + " and " + img2_path)
-    draw_matches("..\\..\\" + img1_path, "..\\..\\" + img2_path)
+    total_match_time += draw_matches("..\\..\\" + img1_path, "..\\..\\" + img2_path)
+    count += 1
+    
+if count > 0:
+    print(f"Total match time: {total_match_time:.2f} seconds")
+    print(f"Average match time: {total_match_time / count:.2f} seconds per pair")

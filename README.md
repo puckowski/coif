@@ -64,3 +64,24 @@ Matching times include time to identify corners, time to generate descriptors, a
 | 3               | 4                    | 7.27%              |
 | 4               | 5                    | 9.09%              |
 | 5               | 5                    | 9.09%              |
+
+## Detailed Analysis of Iteration Counts by Bin Merge
+
+| Bin Merge Count | Iteration | Count | Percent Occurrence |
+|-----------------|-----------|-------|--------------------|
+| 1               | 1         | 66    | 51.96%             |
+| 2               | 1         | 16    | 12.59%             |
+| 3               | 1         | 11    | 8.66%              |
+| 4               | 1         | 11    | 8.66%              |
+| 4               | 2         | 1     | 0.78%              |
+| 4               | 6         | 1     | 0.78%              |
+| 5               | 1         | 7     | 5.51%              |
+| 5               | 2         | 2     | 1.57%              |
+| 5               | 4         | 1     | 0.78%              |
+| 5               | 5         | 1     | 0.78%              |
+| 5               | 7         | 2     | 1.57%              |
+| 5               | 8         | 1     | 0.78%              |
+| 5               | 9         | 7     | 5.51%              |
+
+Given the test image pair set, 51.96% of all image pairs yielded passing feature matches with the default COIFv6 parameters.
+Given the test image pair set, 87.38% of all image pairs yielded passing feature matches within the first 5 iterations.
