@@ -53,7 +53,13 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 
 | Average Matching Time | Median Matching Time | Image Pair Count | Pixels Processed Count |
 |-----------------------|----------------------|------------------|------------------------|
-| 5,536 milliseconds    | 2,323 milliseconds   | 55               | 30,612,480             |
+| 4,432 milliseconds    | 2,135 milliseconds   | 45               | 25,543,680             |
+
+## Performance Metrics and Distribution Statistics for COIFv6 Upright (Minimal Image Rotation)
+
+| Average Matching Time | Median Matching Time | Image Pair Count | Pixels Processed Count |
+|-----------------------|----------------------|------------------|------------------------|
+| 3,867 milliseconds    | 1,561 milliseconds   | 45               | 25,543,680             |
 
 Matching times include time to identify corners, time to generate descriptors, and time for feature matching.
 

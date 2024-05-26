@@ -219,9 +219,6 @@ public class MainCoifV6PanoramaSingleRun {
 
 		double binThreshold2Negation;
 
-		final double binLowerBoundPercent = 0.98;
-		final double binUpperBoundPercent = 1.02;
-
 		int matchingIndex;
 		int[] distancesFirst;
 		int[] distancesSecond;
@@ -229,19 +226,17 @@ public class MainCoifV6PanoramaSingleRun {
 		int[] dist22;
 		int binDistance;
 
-		final int maximumDifferenceThreshold = 40;
-
 		int circleSize = 30;
 
 		double mod;
 		long count;
 		double sum, sumOneHr, high, quart;
 
-		double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
-		int i, roughBinDistance;
+		double val, val2;
+		int i;
 
 		int[][] compareIndexArray = { { 0, 1, 2, 3 }, { 1, 2, 3, 0 }, { 2, 3, 0, 1 }, { 3, 0, 1, 2 }, };
-		int lowestDistance, compareIndex, compareIndexMatch, lowestRoughBinDistance, distanceFinal, hri;
+		int lowestDistance, compareIndex, compareIndexMatch, distanceFinal, hri;
 		HistResult result1, result2;
 		final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
 		int maxKey, maxValue;
@@ -406,13 +401,11 @@ public class MainCoifV6PanoramaSingleRun {
 				lowestDistance = 99999;
 				compareIndex = 0;
 				compareIndexMatch = 0;
-				lowestRoughBinDistance = 99999;
 
 				for (int[] ar : compareIndexArray) {
 					compareIndex++;
 
 					distanceFinal = 0;
-					roughBinDistance = 0;
 
 					for (hri = 0; hri < hr.histResults.size(); ++hri) {
 						result1 = hr.histResults.get(hri);
@@ -436,7 +429,6 @@ public class MainCoifV6PanoramaSingleRun {
 							val2 = distancesSecond[i];
 
 							binDistance++;
-							roughBinDistance++;
 
 							if (Math.abs(val2 - val) < binThreshold2Negation) {
 								binDistance--;
@@ -454,7 +446,6 @@ public class MainCoifV6PanoramaSingleRun {
 							val2 = dist22[i];
 
 							binDistance++;
-							roughBinDistance++;
 
 							if (Math.abs(val2 - val) < binThreshold2Negation) {
 								binDistance--;
@@ -477,12 +468,10 @@ public class MainCoifV6PanoramaSingleRun {
 					if (lowestDistance > distanceFinal) {
 						compareIndexMatch = compareIndex - 1;
 						lowestDistance = distanceFinal;
-						lowestRoughBinDistance = roughBinDistance;
 					}
 				}
 
 				distanceFinal = lowestDistance;
-				roughBinDistance = lowestRoughBinDistance;
 
 				if (distanceFinal < binThreshold) {
 					FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(), hr.histResults.get(0).getY(),

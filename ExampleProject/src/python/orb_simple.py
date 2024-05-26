@@ -50,10 +50,10 @@ def draw_matches(img1_path, img2_path):
     # Match descriptors.
     matches = bf.match(des1, des2)
 
+    end_time = time.time()
+
     # Sort them in the order of their distance.
     matches = sorted(matches, key=lambda x: x.distance)
-
-    end_time = time.time()
     
     # Draw first 10 good matches.
     draw_params = dict(matchColor=(0, 255, 0),  # Draw matches in green color
@@ -61,7 +61,7 @@ def draw_matches(img1_path, img2_path):
                        flags=2)
 
     # Draw the matches
-    img_matches = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], None, **draw_params)
+    # img_matches = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], None, **draw_params)
 
     # Show the image
     # cv2.imshow('Matches', img_matches)

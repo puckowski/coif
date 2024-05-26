@@ -153,10 +153,6 @@ public class MainCoifV6MinimalImageRotation {
 			moravecProcessor.process(file1);
 			moravecProcessor2.process(file2);
 
-			if (!file1.contains("_rot") && !file2.contains("_rot")) {
-				// moravecProcessor.average(moravecProcessor2.getGrayscaleData());
-			}
-
 			moravecProcessor.process2();
 			moravecProcessor2.process2();
 
@@ -221,6 +217,31 @@ public class MainCoifV6MinimalImageRotation {
 
 		List<FeatureMatch> featureMatches = new ArrayList<FeatureMatch>();
 
+		double binThreshold2Negation;
+
+		int matchingIndex;
+		int[] distancesFirst;
+		int[] distancesSecond;
+		int[] dist21;
+		int[] dist22;
+		int binDistance;
+
+		int circleSize = 30;
+
+		double mod;
+		long count;
+		double sum, high, quart;
+
+		double val, val2;
+		int i;
+
+		int lowestDistance, compareIndex, compareIndexMatch, distanceFinal, hri;
+		HistResult result1, result2;
+		final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
+		int maxKey, maxValue;
+
+		HistResultList list1;
+
 		int binThreshold = 38;
 		int binMergeCount = 1;
 		int binThreshold2 = 57;
@@ -229,6 +250,7 @@ public class MainCoifV6MinimalImageRotation {
 			binMergeCount = 1;
 			binThreshold += 2;
 			binThreshold2 += 3;
+			binThreshold2Negation = binThreshold2 * 0.85;
 
 			do {
 				System.out.println("Circles step...");
@@ -239,7 +261,7 @@ public class MainCoifV6MinimalImageRotation {
 
 				featureMatches.clear();
 
-				int circleSize = 30;
+				matchingIndex = 0;
 
 				System.out.println("Bin merge count: " + binMergeCount);
 
@@ -251,28 +273,14 @@ public class MainCoifV6MinimalImageRotation {
 				System.out.println("Circles step done.");
 				System.out.println("Feature matching step...");
 
-				final double binLowerBoundPercent = 0.98;
-				final double binUpperBoundPercent = 1.02;
-
-				int matchingIndex = 0;
-				int[] distancesFirst;
-				int[] distancesSecond;
-				int[] dist21;
-				int[] dist22;
-				int binDistance;
-
-				final int maximumDifferenceThreshold = 40;
-
-				double mod = 0.35;
-				long count;
-				double sum, high, quart;
+				mod = 0.35;
 
 				do {
 					mod -= 0.05;
 					sum = 0.0;
 					count = 0;
 
-					for (int i = 0; i < hrlist.size(); ++i) {
+					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
@@ -285,7 +293,7 @@ public class MainCoifV6MinimalImageRotation {
 					high = sum + quart;
 					count = 0;
 
-					for (int i = 0; i < hrlist.size(); ++i) {
+					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
 						sum = 0.0;
 						for (HistResult h : hr.histResults) {
@@ -299,7 +307,7 @@ public class MainCoifV6MinimalImageRotation {
 					}
 				} while (hrlist.size() - count < 2500 && hrlist.size() > 2500);
 
-				for (int i = 0; i < hrlist.size(); ++i) {
+				for (i = 0; i < hrlist.size(); ++i) {
 					HistResultList hr = hrlist.get(i);
 					sum = 0.0;
 					for (HistResult h : hr.histResults) {
@@ -320,7 +328,7 @@ public class MainCoifV6MinimalImageRotation {
 					sum = 0.0;
 					count = 0;
 
-					for (int i = 0; i < hrlist2.size(); ++i) {
+					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
@@ -333,7 +341,7 @@ public class MainCoifV6MinimalImageRotation {
 					high = sum + quart;
 					count = 0;
 
-					for (int i = 0; i < hrlist2.size(); ++i) {
+					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
 						sum = 0.0;
 						for (HistResult h : hr.histResults) {
@@ -347,7 +355,7 @@ public class MainCoifV6MinimalImageRotation {
 					}
 				} while (hrlist2.size() - count < 2500 && hrlist2.size() > 2500);
 
-				for (int i = 0; i < hrlist2.size(); ++i) {
+				for (i = 0; i < hrlist2.size(); ++i) {
 					HistResultList hr = hrlist2.get(i);
 					sum = 0.0;
 					for (HistResult h : hr.histResults) {
@@ -371,9 +379,7 @@ public class MainCoifV6MinimalImageRotation {
 					hrlist2.remove(randomIndex);
 				}
 
-				HistResultList list1;
-
-				for (int i = 0; i < hrlist.size(); ++i) {
+				for (i = 0; i < hrlist.size(); ++i) {
 					list1 = hrlist.get(i);
 
 					for (int n = 0; n < list1.histResults.size(); ++n) {
@@ -385,7 +391,7 @@ public class MainCoifV6MinimalImageRotation {
 					}
 				}
 
-				for (int i = 0; i < hrlist2.size(); ++i) {
+				for (i = 0; i < hrlist2.size(); ++i) {
 					list1 = hrlist2.get(i);
 
 					for (int n = 0; n < list1.histResults.size(); ++n) {
@@ -399,16 +405,12 @@ public class MainCoifV6MinimalImageRotation {
 
 				System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
 
-				double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
-				int i, roughBinDistance;
-
-				int distanceFinal, hri;
-				HistResult result1, result2;
-
 				for (HistResultList hr : hrlist) {
 					for (HistResultList hr2 : hrlist2) {
+						lowestDistance = 99999;
+						compareIndex = 0;
+						compareIndexMatch = 0;
 						distanceFinal = 0;
-						roughBinDistance = 0;
 
 						for (hri = 0; hri < hr.histResults.size(); ++hri) {
 							result1 = hr.histResults.get(hri);
@@ -432,9 +434,8 @@ public class MainCoifV6MinimalImageRotation {
 								val2 = distancesSecond[i];
 
 								binDistance++;
-								roughBinDistance++;
 
-								if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
+								if (Math.abs(val2 - val) < binThreshold2Negation) {
 									binDistance--;
 								} else {
 									binDistance++;
@@ -450,9 +451,8 @@ public class MainCoifV6MinimalImageRotation {
 								val2 = dist22[i];
 
 								binDistance++;
-								roughBinDistance++;
 
-								if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
+								if (Math.abs(val2 - val) < binThreshold2Negation) {
 									binDistance--;
 								} else {
 									binDistance++;
@@ -470,11 +470,19 @@ public class MainCoifV6MinimalImageRotation {
 							}
 						}
 
+						if (lowestDistance > distanceFinal) {
+							compareIndexMatch = compareIndex - 1;
+							lowestDistance = distanceFinal;
+						}
+
+						distanceFinal = lowestDistance;
+
 						if (distanceFinal < binThreshold) {
 							FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(),
 									hr.histResults.get(0).getY(), hr2.histResults.get(0).getX(),
 									hr2.histResults.get(0).getY());
-							f.setRoughBinDistance(roughBinDistance);
+							f.setRoughBinDistance(distanceFinal); // roughBinDistance);
+							f.rotationArrayIndex = compareIndexMatch;
 
 							featureMatches.add(f);
 
@@ -493,13 +501,73 @@ public class MainCoifV6MinimalImageRotation {
 					}
 				}
 
-				// Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance -
-				// o2.mRoughBinDistance);
+				rotationIndexMap.clear();
 
-				// for (int ci = 50; ci < featureMatches.size(); ++ci) {
-				// featureMatches.remove(ci);
-				// ci--;
-				// }
+				for (i = 0; i < featureMatches.size(); ++i) {
+					if (rotationIndexMap.containsKey(featureMatches.get(i).rotationArrayIndex)) {
+						rotationIndexMap.replace(featureMatches.get(i).rotationArrayIndex,
+								rotationIndexMap.get(featureMatches.get(i).rotationArrayIndex) + 1);
+					} else {
+						rotationIndexMap.put(featureMatches.get(i).rotationArrayIndex, 1);
+					}
+				}
+
+				maxKey = 0;
+				maxValue = 0;
+
+				for (Map.Entry<Integer, Integer> e : rotationIndexMap.entrySet()) {
+					if (maxValue < e.getValue()) {
+						maxKey = e.getKey();
+						maxValue = e.getValue();
+					}
+				}
+
+				for (i = 0; i < featureMatches.size(); ++i) {
+					if (featureMatches.get(i).rotationArrayIndex != maxKey) {
+						featureMatches.remove(i);
+						i--;
+					}
+				}
+
+//				Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance - o2.mRoughBinDistance);
+//
+//				int fmi = featureMatches.size() - 1;
+//
+//				while (featureMatches.size() > 25 && fmi >= 0) {
+//					FeatureMatch fm = featureMatches.get(fmi);
+//
+//					int x = fm.getX1();
+//					int y = fm.getY1();
+//
+//					for (int io = 0; io < featureMatches.size(); ++io) {
+//						if (io == fmi)
+//							continue;
+//
+//						FeatureMatch fm2 = featureMatches.get(io);
+//
+//						if (fm2.getX1() >= (x - 15) && fm2.getX1() <= (x + 15)) {
+//							if (fm2.getY1() >= (y - 15) && fm2.getY1() <= (y + 15)) {
+//								featureMatches.remove(io);
+//
+//								if (fmi > io) {
+//									fmi--;
+//								}
+//
+//								io--;
+//
+//								if (featureMatches.size() == 25) {
+//									fmi = -1;
+//									break;
+//								}
+//							}
+//						}
+//					}
+//
+//					fmi--;
+//				}
+//				while (featureMatches.size() > 25) {
+//					featureMatches.remove(featureMatches.size() - 1);
+//				}
 
 				System.out.println("Feature matching done.");
 			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
@@ -601,28 +669,21 @@ public class MainCoifV6MinimalImageRotation {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "h1.jpg", "base1.jpg", "Test1025.jpg", "Test1027.jpg", "Test81.jpg", "Test1027.jpg",
-				"Test1025.jpg", "Test81.jpg", "Test1025.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg",
-				"Test1027.jpg", "Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3000_rot.jpg",
-				"Test47_rot.jpg", "Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg",
+		final String[] files1 = { "paris_invalides_000662.jpg", "all_souls_000065.jpg", "all_souls_000065.jpg",
+				"pano8.jpg", "pano6.jpg", "1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG", "P1011069.JPG",
+				"P1010372.JPG", "grail03.jpg", "DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg",
+				"base1.jpg", "Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg",
 				"Test506.jpg", "Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg",
-				"Test82.jpg", "Test5000_rot.jpg", "Test3000_rot.jpg", "Test1500.jpg", "Test1310_rot.PNG",
-				"Test1199_rot.PNG", "Test1000_rot.jpg", "Test2120_rot.jpg", "Test1999_rot.jpg", "Test4.jpg",
-				"Test6.jpg", "Test21.jpg", "Test34_rot.jpg", "Test37.jpg", "Test47_rot.jpg", "Test48_rot.png",
-				"Test65.jpg", "Test70.jpg", "Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png",
-				"Test123_rot.jpg", "Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg",
-				"Test600.jpg", "Test800.jpg" };
-		final String[] files2 = { "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg",
-				"Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg",
-				"Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg",
-				"Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg",
-				"Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg",
-				"Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg",
-				"Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg",
-				"Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg",
-				"Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg",
-				"Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg",
-				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+				"Test82.jpg", "Test1500.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg", "Test37.jpg", "Test65.jpg",
+				"Test70.jpg", "Test99.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
+		final String[] files2 = { "paris_invalides_000663.jpg", "all_souls_000051.jpg", "all_souls_000066.jpg",
+				"pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg", "P1011371.JPG", "P1011070.JPG",
+				"P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg",
+				"base2.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg", "Test1026.jpg", "Test1023.jpg",
+				"Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg",
+				"Test81.jpg", "Test1501.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg",
+				"Test71.jpg", "Test100.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg",
+				"Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);

@@ -219,9 +219,6 @@ public class MainCoifV6Panorama {
 
 		double binThreshold2Negation;
 
-		final double binLowerBoundPercent = 0.98;
-		final double binUpperBoundPercent = 1.02;
-
 		int matchingIndex;
 		int[] distancesFirst;
 		int[] distancesSecond;
@@ -229,19 +226,17 @@ public class MainCoifV6Panorama {
 		int[] dist22;
 		int binDistance;
 
-		final int maximumDifferenceThreshold = 40;
-
 		int circleSize = 30;
 
 		double mod;
 		long count;
 		double sum, high, quart;
 
-		double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
-		int i, roughBinDistance;
+		double val, val2;
+		int i;
 
 		int[][] compareIndexArray = { { 0, 1, 2, 3 }, { 1, 2, 3, 0 }, { 2, 3, 0, 1 }, { 3, 0, 1, 2 }, };
-		int lowestDistance, compareIndex, compareIndexMatch, lowestRoughBinDistance, distanceFinal, hri;
+		int lowestDistance, compareIndex, compareIndexMatch, distanceFinal, hri;
 		HistResult result1, result2;
 		final Map<Integer, Integer> rotationIndexMap = new HashMap<Integer, Integer>();
 		int maxKey, maxValue;
@@ -417,13 +412,11 @@ public class MainCoifV6Panorama {
 						lowestDistance = 99999;
 						compareIndex = 0;
 						compareIndexMatch = 0;
-						lowestRoughBinDistance = 99999;
 
 						for (int[] ar : compareIndexArray) {
 							compareIndex++;
 
 							distanceFinal = 0;
-							roughBinDistance = 0;
 
 							for (hri = 0; hri < hr.histResults.size(); ++hri) {
 								result1 = hr.histResults.get(hri);
@@ -447,7 +440,6 @@ public class MainCoifV6Panorama {
 									val2 = distancesSecond[i];
 
 									binDistance++;
-									roughBinDistance++;
 
 									if (Math.abs(val2 - val) < binThreshold2Negation) {
 										binDistance--;
@@ -465,7 +457,6 @@ public class MainCoifV6Panorama {
 									val2 = dist22[i];
 
 									binDistance++;
-									roughBinDistance++;
 
 									if (Math.abs(val2 - val) < binThreshold2Negation) {
 										binDistance--;
@@ -488,12 +479,10 @@ public class MainCoifV6Panorama {
 							if (lowestDistance > distanceFinal) {
 								compareIndexMatch = compareIndex - 1;
 								lowestDistance = distanceFinal;
-								lowestRoughBinDistance = roughBinDistance;
 							}
 						}
 
 						distanceFinal = lowestDistance;
-						roughBinDistance = lowestRoughBinDistance;
 
 						if (distanceFinal < binThreshold) {
 							FeatureMatch f = new FeatureMatch(hr.histResults.get(0).getX(),
@@ -690,21 +679,18 @@ public class MainCoifV6Panorama {
 		final String[] files1 = { "paris_invalides_000662.jpg", "all_souls_000065.jpg", "all_souls_000065.jpg",
 				"pano8.jpg", "pano6.jpg", "1Hill.JPG", "2Hill.JPG", "S3.jpg", "b.jpg", "P1011370.JPG", "P1011069.JPG",
 				"P1010372.JPG", "grail03.jpg", "DSC_0178.jpg", "bike1.png", "Yosemite1.jpg", "img2.png", "h1.jpg",
-				"base1.jpg", "Test81.jpg", "Test72.jpg", "Test65.jpg", "Test21.jpg", "Test1027.jpg", "Test1027.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test81.jpg", "Test81.jpg", "Test3030.jpg", "Test1031.jpg",
-				"Test1027.jpg", "Test1025.jpg", "Test1024.jpg", "Test506.jpg", "Test506.jpg", "Test404.jpg",
-				"Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg", "Test82.jpg", "Test1500.jpg", "Test4.jpg",
-				"Test6.jpg", "Test21.jpg", "Test37.jpg", "Test65.jpg", "Test70.jpg", "Test99.jpg", "Test240.jpg",
-				"Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
+				"base1.jpg", "Test3030.jpg", "Test1031.jpg", "Test1027.jpg", "Test1025.jpg", "Test1024.jpg",
+				"Test506.jpg", "Test506.jpg", "Test404.jpg", "Test705.jpg", "Test705.jpg", "Test766.jpg", "Test766.jpg",
+				"Test82.jpg", "Test1500.jpg", "Test4.jpg", "Test6.jpg", "Test21.jpg", "Test37.jpg", "Test65.jpg",
+				"Test70.jpg", "Test99.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg", "Test800.jpg" };
 		final String[] files2 = { "paris_invalides_000663.jpg", "all_souls_000051.jpg", "all_souls_000066.jpg",
 				"pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg", "P1011371.JPG", "P1011070.JPG",
 				"P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg",
-				"base2.jpg", "Test85.jpg", "Test70.jpg", "Test67.jpg", "Test23.jpg", "Test1029.jpg", "Test1030.jpg",
-				"Test1502.jpg", "Test1503.jpg", "Test83.jpg", "Test84.jpg", "Test3031.jpg", "Test1032.jpg",
-				"Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg",
-				"Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test1501.jpg", "Test5.jpg",
-				"Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test241.jpg",
-				"Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+				"base2.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg", "Test1026.jpg", "Test1023.jpg",
+				"Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg",
+				"Test81.jpg", "Test1501.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg",
+				"Test71.jpg", "Test100.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg",
+				"Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
