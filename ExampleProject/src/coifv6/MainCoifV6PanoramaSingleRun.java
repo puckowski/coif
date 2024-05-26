@@ -274,7 +274,7 @@ public class MainCoifV6PanoramaSingleRun {
 		System.out.println("Feature matching step...");
 
 		long startTimeDistinctiveness = System.currentTimeMillis();
-		
+
 		mod = 0.35;
 
 		do {
@@ -285,13 +285,13 @@ public class MainCoifV6PanoramaSingleRun {
 			for (i = 0; i < hrlist.size(); ++i) {
 				HistResultList hr = hrlist.get(i);
 				sumOneHr = 0.0;
-				
+
 				for (HistResult h : hr.histResults) {
 					sum += h.mDistinctiveness;
 					sumOneHr += h.mDistinctiveness;
 					count++;
 				}
-				
+
 				hr.distinctivenessAverage = sumOneHr / 4;
 			}
 
@@ -328,13 +328,13 @@ public class MainCoifV6PanoramaSingleRun {
 			for (i = 0; i < hrlist2.size(); ++i) {
 				HistResultList hr = hrlist2.get(i);
 				sumOneHr = 0.0;
-				
+
 				for (HistResult h : hr.histResults) {
 					sum += h.mDistinctiveness;
 					sumOneHr += h.mDistinctiveness;
 					count++;
 				}
-				
+
 				hr.distinctivenessAverage = sumOneHr / 4;
 			}
 
@@ -363,7 +363,7 @@ public class MainCoifV6PanoramaSingleRun {
 
 		long estimatedTimeDistinctiveness = System.currentTimeMillis() - startTimeDistinctiveness;
 		TimeData.distinctivenessAlignmentTimes.add(estimatedTimeDistinctiveness);
-		
+
 		while (hrlist.size() > 20000) {
 			int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
 			hrlist.remove(randomIndex);
@@ -435,28 +435,17 @@ public class MainCoifV6PanoramaSingleRun {
 							val = distancesFirst[i];
 							val2 = distancesSecond[i];
 
-							valLow = (val * binLowerBoundPercent);
-							valThresholdCheck = Math.abs(val - valLow);
-							if (valThresholdCheck > maximumDifferenceThreshold)
-								valLow = val - maximumDifferenceThreshold;
-							valHigh = (val * binUpperBoundPercent);
-							valThresholdCheckHigh = Math.abs(val - valHigh);
-							if (valThresholdCheckHigh > maximumDifferenceThreshold)
-								valHigh = val + maximumDifferenceThreshold;
-							
-							if (val2 < valLow || val2 > valHigh) {
+							binDistance++;
+							roughBinDistance++;
+
+							if (Math.abs(val2 - val) < binThreshold2Negation) {
+								binDistance--;
+							} else {
 								binDistance++;
-								roughBinDistance++;
+							}
 
-								if (Math.abs(val2 - val) < binThreshold2Negation) {
-									binDistance--;
-								} else {
-									binDistance++;
-								}
-
-								if (binDistance >= binThreshold) {
-									break;
-								}
+							if (binDistance >= binThreshold) {
+								break;
 							}
 						}
 
@@ -464,28 +453,17 @@ public class MainCoifV6PanoramaSingleRun {
 							val = dist21[i];
 							val2 = dist22[i];
 
-							valLow = (val * binLowerBoundPercent);
-							valThresholdCheck = Math.abs(val - valLow);
-							if (valThresholdCheck > maximumDifferenceThreshold)
-								valLow = val - maximumDifferenceThreshold;
-							valHigh = (val * binUpperBoundPercent);
-							valThresholdCheckHigh = Math.abs(val - valHigh);
-							if (valThresholdCheckHigh > maximumDifferenceThreshold)
-								valHigh = val + maximumDifferenceThreshold;
-							
-							if (val2 < valLow || val2 > valHigh) {
+							binDistance++;
+							roughBinDistance++;
+
+							if (Math.abs(val2 - val) < binThreshold2Negation) {
+								binDistance--;
+							} else {
 								binDistance++;
-								roughBinDistance++;
+							}
 
-								if (Math.abs(val2 - val) < binThreshold2Negation) {
-									binDistance--;
-								} else {
-									binDistance++;
-								}
-
-								if (binDistance >= binThreshold) {
-									break;
-								}
+							if (binDistance >= binThreshold) {
+								break;
 							}
 						}
 
@@ -718,10 +696,9 @@ public class MainCoifV6PanoramaSingleRun {
 			process(files1[i], files2[i], i);
 		}
 
-		final long distictivenessTimeSum = TimeData.distinctivenessAlignmentTimes.stream()
-                .mapToLong(Long::longValue)
-                .sum();
-		
+		final long distictivenessTimeSum = TimeData.distinctivenessAlignmentTimes.stream().mapToLong(Long::longValue)
+				.sum();
+
 		System.out.println((double) TimeData.imageLoad / 1000.0 + "s loading images");
 		System.out.println((double) TimeData.moravec / 1000.0 + "s finding corners");
 		System.out.println((double) TimeData.matching / 1000.0 + "s matching features");

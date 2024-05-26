@@ -257,24 +257,24 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 		binThreshold2 += 3;
 		binThreshold2Negation = binThreshold2 * 0.85;
 
-		System.out.println("Circles step...");
+		// System.out.println("Circles step...");
 
 		featureMatches.clear();
 
 		matchingIndex = 0;
 
-		System.out.println("Bin merge count: " + binMergeCount);
+		// System.out.println("Bin merge count: " + binMergeCount);
 
 		List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
 		List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
 
 		binMergeCount++;
 
-		System.out.println("Circles step done.");
-		System.out.println("Feature matching step...");
+		// System.out.println("Circles step done.");
+		// System.out.println("Feature matching step...");
 
 		long startTimeDistinctiveness = System.currentTimeMillis();
-		
+
 		mod = 0.35;
 
 		do {
@@ -285,13 +285,13 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 			for (i = 0; i < hrlist.size(); ++i) {
 				HistResultList hr = hrlist.get(i);
 				sumOneHr = 0.0;
-				
+
 				for (HistResult h : hr.histResults) {
 					sum += h.mDistinctiveness;
 					sumOneHr += h.mDistinctiveness;
 					count++;
 				}
-				
+
 				hr.distinctivenessAverage = sumOneHr / 4;
 			}
 
@@ -328,13 +328,13 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 			for (i = 0; i < hrlist2.size(); ++i) {
 				HistResultList hr = hrlist2.get(i);
 				sumOneHr = 0.0;
-				
+
 				for (HistResult h : hr.histResults) {
 					sum += h.mDistinctiveness;
 					sumOneHr += h.mDistinctiveness;
 					count++;
 				}
-				
+
 				hr.distinctivenessAverage = sumOneHr / 4;
 			}
 
@@ -363,7 +363,7 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 
 		long estimatedTimeDistinctiveness = System.currentTimeMillis() - startTimeDistinctiveness;
 		TimeData.distinctivenessAlignmentTimes.add(estimatedTimeDistinctiveness);
-		
+
 		while (hrlist.size() > 20000) {
 			int randomIndex = ThreadLocalRandom.current().nextInt(0, hrlist.size());
 			hrlist.remove(randomIndex);
@@ -398,7 +398,8 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 			}
 		}
 
-		System.out.println("Histogram result counts: " + hrlist.size() + ", " + hrlist2.size());
+		// System.out.println("Histogram result counts: " + hrlist.size() + ", " +
+		// hrlist2.size());
 
 		for (HistResultList hr : hrlist) {
 			for (HistResultList hr2 : hrlist2) {
@@ -435,32 +436,17 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 							val = distancesFirst[i];
 							val2 = distancesSecond[i];
 
-							/*
-							valLow = (val * binLowerBoundPercent);
-							valThresholdCheck = Math.abs(val - valLow);
-							if (valThresholdCheck > maximumDifferenceThreshold)
-								valLow = val - maximumDifferenceThreshold;
-							valHigh = (val * binUpperBoundPercent);
-							valThresholdCheckHigh = Math.abs(val - valHigh);
-							if (valThresholdCheckHigh > maximumDifferenceThreshold)
-								valHigh = val + maximumDifferenceThreshold;
-							*/
-							valLow = val - maximumDifferenceThreshold;
-							valHigh = val + maximumDifferenceThreshold;
-							
-							if (val2 < valLow || val2 > valHigh) {
+							binDistance++;
+							roughBinDistance++;
+
+							if (Math.abs(val2 - val) < binThreshold2Negation) {
+								binDistance--;
+							} else {
 								binDistance++;
-								roughBinDistance++;
+							}
 
-								if (Math.abs(val2 - val) < binThreshold2Negation) {
-									binDistance--;
-								} else {
-									binDistance++;
-								}
-
-								if (binDistance >= binThreshold) {
-									break;
-								}
+							if (binDistance >= binThreshold) {
+								break;
 							}
 						}
 
@@ -468,32 +454,17 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 							val = dist21[i];
 							val2 = dist22[i];
 
-							/*
-							valLow = (val * binLowerBoundPercent);
-							valThresholdCheck = Math.abs(val - valLow);
-							if (valThresholdCheck > maximumDifferenceThreshold)
-								valLow = val - maximumDifferenceThreshold;
-							valHigh = (val * binUpperBoundPercent);
-							valThresholdCheckHigh = Math.abs(val - valHigh);
-							if (valThresholdCheckHigh > maximumDifferenceThreshold)
-								valHigh = val + maximumDifferenceThreshold;
-							*/
-							valLow = val - maximumDifferenceThreshold;
-							valHigh = val + maximumDifferenceThreshold;
-							
-							if (val2 < valLow || val2 > valHigh) {
+							binDistance++;
+							roughBinDistance++;
+
+							if (Math.abs(val2 - val) < binThreshold2Negation) {
+								binDistance--;
+							} else {
 								binDistance++;
-								roughBinDistance++;
+							}
 
-								if (Math.abs(val2 - val) < binThreshold2Negation) {
-									binDistance--;
-								} else {
-									binDistance++;
-								}
-
-								if (binDistance >= binThreshold) {
-									break;
-								}
+							if (binDistance >= binThreshold) {
+								break;
 							}
 						}
 
@@ -522,7 +493,7 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 
 					featureMatches.add(f);
 
-					g2d.setColor(Color.RED);
+					// g2d.setColor(Color.RED);
 					// g2d.drawString(String.valueOf(hr.histResults.get(0).mDistinctiveness),
 					// hr.histResults.get(0).getX() + 10, hr2.histResults.get(0).getY());
 					// g2d.drawString(String.valueOf(hr2.histResults.get(0).mDistinctiveness),
@@ -532,9 +503,10 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 
 			matchingIndex++;
 
-			if (matchingIndex % 1000 == 0) {
-				System.out.println("Features compared: " + matchingIndex + "/" + hrlist.size());
-			}
+			// if (matchingIndex % 1000 == 0) {
+			// System.out.println("Features compared: " + matchingIndex + "/" +
+			// hrlist.size());
+			// }
 		}
 
 		rotationIndexMap.clear();
@@ -605,7 +577,7 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 //					featureMatches.remove(featureMatches.size() - 1);
 //				}
 
-		System.out.println("Feature matching done.");
+		// System.out.println("Feature matching done.");
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
 
@@ -661,7 +633,7 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 	}
 
 	public static double evaluateFeatureMatchCloseness(final List<FeatureMatch> featureMatches, int width, int height) {
-		System.out.println("Evaluating feature match closeness...");
+		// System.out.println("Evaluating feature match closeness...");
 
 		int minx = Integer.MAX_VALUE, maxx = 0, miny = Integer.MAX_VALUE, maxy = 0;
 
@@ -696,7 +668,7 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 
 		double matchPercent = (double) area / (double) area2;
 
-		System.out.println("Feature match closeness: " + matchPercent);
+		// System.out.println("Feature match closeness: " + matchPercent);
 
 		return matchPercent;
 	}
@@ -726,10 +698,9 @@ public class MainCoifV6PanoramaSingleRunExperimental {
 			process(files1[i], files2[i], i);
 		}
 
-		final long distictivenessTimeSum = TimeData.distinctivenessAlignmentTimes.stream()
-                .mapToLong(Long::longValue)
-                .sum();
-		
+		final long distictivenessTimeSum = TimeData.distinctivenessAlignmentTimes.stream().mapToLong(Long::longValue)
+				.sum();
+
 		System.out.println((double) TimeData.imageLoad / 1000.0 + "s loading images");
 		System.out.println((double) TimeData.moravec / 1000.0 + "s finding corners");
 		System.out.println((double) TimeData.matching / 1000.0 + "s matching features");

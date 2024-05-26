@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,9 +221,6 @@ public class MainCoifV6 {
 
 		double binThreshold2Negation;
 
-		final double binLowerBoundPercent = 0.98;
-		final double binUpperBoundPercent = 1.02;
-
 		int matchingIndex;
 		int[] distancesFirst;
 		int[] distancesSecond;
@@ -230,15 +228,13 @@ public class MainCoifV6 {
 		int[] dist22;
 		int binDistance;
 
-		final int maximumDifferenceThreshold = 40;
-
 		int circleSize = 30;
 
 		double mod;
 		long count;
 		double sum, sumOneHr, high, quart;
 
-		double val, val2, valLow, valThresholdCheck, valHigh, valThresholdCheckHigh;
+		double val, val2;
 		int i, roughBinDistance;
 
 		int[][] compareIndexArray = { { 0, 1, 2, 3 }, { 1, 2, 3, 0 }, { 2, 3, 0, 1 }, { 3, 0, 1, 2 }, };
@@ -292,13 +288,13 @@ public class MainCoifV6 {
 					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
 						sumOneHr = 0.0;
-						
+
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
 							sumOneHr += h.mDistinctiveness;
 							count++;
 						}
-						
+
 						hr.distinctivenessAverage = sumOneHr / 4;
 					}
 
@@ -335,13 +331,13 @@ public class MainCoifV6 {
 					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
 						sumOneHr = 0.0;
-						
+
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
 							sumOneHr += h.mDistinctiveness;
 							count++;
 						}
-						
+
 						hr.distinctivenessAverage = sumOneHr / 4;
 					}
 
@@ -439,28 +435,17 @@ public class MainCoifV6 {
 									val = distancesFirst[i];
 									val2 = distancesSecond[i];
 
-									valLow = (val * binLowerBoundPercent);
-									valThresholdCheck = Math.abs(val - valLow);
-									if (valThresholdCheck > maximumDifferenceThreshold)
-										valLow = val - maximumDifferenceThreshold;
-									valHigh = (val * binUpperBoundPercent);
-									valThresholdCheckHigh = Math.abs(val - valHigh);
-									if (valThresholdCheckHigh > maximumDifferenceThreshold)
-										valHigh = val + maximumDifferenceThreshold;
+									binDistance++;
+									roughBinDistance++;
 
-									if (val2 < valLow || val2 > valHigh) {
+									if (Math.abs(val2 - val) < binThreshold2Negation) {
+										binDistance--;
+									} else {
 										binDistance++;
-										roughBinDistance++;
+									}
 
-										if (Math.abs(val2 - val) < binThreshold2Negation) {
-											binDistance--;
-										} else {
-											binDistance++;
-										}
-
-										if (binDistance >= binThreshold) {
-											break;
-										}
+									if (binDistance >= binThreshold) {
+										break;
 									}
 								}
 
@@ -468,28 +453,17 @@ public class MainCoifV6 {
 									val = dist21[i];
 									val2 = dist22[i];
 
-									valLow = (val * binLowerBoundPercent);
-									valThresholdCheck = Math.abs(val - valLow);
-									if (valThresholdCheck > maximumDifferenceThreshold)
-										valLow = val - maximumDifferenceThreshold;
-									valHigh = (val * binUpperBoundPercent);
-									valThresholdCheckHigh = Math.abs(val - valHigh);
-									if (valThresholdCheckHigh > maximumDifferenceThreshold)
-										valHigh = val + maximumDifferenceThreshold;
+									binDistance++;
+									roughBinDistance++;
 
-									if (val2 < valLow || val2 > valHigh) {
+									if (Math.abs(val2 - val) < binThreshold2Negation) {
+										binDistance--;
+									} else {
 										binDistance++;
-										roughBinDistance++;
+									}
 
-										if (Math.abs(val2 - val) < binThreshold2Negation) {
-											binDistance--;
-										} else {
-											binDistance++;
-										}
-
-										if (binDistance >= binThreshold) {
-											break;
-										}
+									if (binDistance >= binThreshold) {
+										break;
 									}
 								}
 

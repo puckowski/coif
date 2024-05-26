@@ -431,28 +431,17 @@ public class MainCoifV6MinimalImageRotation {
 								val = distancesFirst[i];
 								val2 = distancesSecond[i];
 
-								valLow = (val * binLowerBoundPercent);
-								valThresholdCheck = Math.abs(val - valLow);
-								if (valThresholdCheck > maximumDifferenceThreshold)
-									valLow = val - maximumDifferenceThreshold;
-								valHigh = (val * binUpperBoundPercent);
-								valThresholdCheckHigh = Math.abs(val - valHigh);
-								if (valThresholdCheckHigh > maximumDifferenceThreshold)
-									valHigh = val + maximumDifferenceThreshold;
+								binDistance++;
+								roughBinDistance++;
 
-								if (val2 < valLow || val2 > valHigh) {
+								if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
+									binDistance--;
+								} else {
 									binDistance++;
-									roughBinDistance++;
+								}
 
-									if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
-										binDistance--;
-									} else {
-										binDistance++;
-									}
-
-									if (binDistance >= binThreshold) {
-										break;
-									}
+								if (binDistance >= binThreshold) {
+									break;
 								}
 							}
 
@@ -460,28 +449,17 @@ public class MainCoifV6MinimalImageRotation {
 								val = dist21[i];
 								val2 = dist22[i];
 
-								valLow = (val * binLowerBoundPercent);
-								valThresholdCheck = Math.abs(val - valLow);
-								if (valThresholdCheck > maximumDifferenceThreshold)
-									valLow = val - maximumDifferenceThreshold;
-								valHigh = (val * binUpperBoundPercent);
-								valThresholdCheckHigh = Math.abs(val - valHigh);
-								if (valThresholdCheckHigh > maximumDifferenceThreshold)
-									valHigh = val + maximumDifferenceThreshold;
+								binDistance++;
+								roughBinDistance++;
 
-								if (val2 < valLow || val2 > valHigh) {
+								if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
+									binDistance--;
+								} else {
 									binDistance++;
-									roughBinDistance++;
+								}
 
-									if (Math.abs(val2 - val) < (binThreshold2 * 0.85)) {
-										binDistance--;
-									} else {
-										binDistance++;
-									}
-
-									if (binDistance >= binThreshold) {
-										break;
-									}
+								if (binDistance >= binThreshold) {
+									break;
 								}
 							}
 
@@ -507,7 +485,7 @@ public class MainCoifV6MinimalImageRotation {
 							// hr2.histResults.get(0).getX() + 10 + width, hr2.histResults.get(0).getY());
 						}
 					}
-					
+
 					matchingIndex++;
 
 					if (matchingIndex % 1000 == 0) {

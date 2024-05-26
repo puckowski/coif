@@ -446,28 +446,17 @@ public class MainCoifV6Panorama {
 									val = distancesFirst[i];
 									val2 = distancesSecond[i];
 
-									valLow = (val * binLowerBoundPercent);
-									valThresholdCheck = Math.abs(val - valLow);
-									if (valThresholdCheck > maximumDifferenceThreshold)
-										valLow = val - maximumDifferenceThreshold;
-									valHigh = (val * binUpperBoundPercent);
-									valThresholdCheckHigh = Math.abs(val - valHigh);
-									if (valThresholdCheckHigh > maximumDifferenceThreshold)
-										valHigh = val + maximumDifferenceThreshold;
+									binDistance++;
+									roughBinDistance++;
 
-									if (val2 < valLow || val2 > valHigh) {
+									if (Math.abs(val2 - val) < binThreshold2Negation) {
+										binDistance--;
+									} else {
 										binDistance++;
-										roughBinDistance++;
+									}
 
-										if (Math.abs(val2 - val) < binThreshold2Negation) {
-											binDistance--;
-										} else {
-											binDistance++;
-										}
-
-										if (binDistance >= binThreshold) {
-											break;
-										}
+									if (binDistance >= binThreshold) {
+										break;
 									}
 								}
 
@@ -475,28 +464,17 @@ public class MainCoifV6Panorama {
 									val = dist21[i];
 									val2 = dist22[i];
 
-									valLow = (val * binLowerBoundPercent);
-									valThresholdCheck = Math.abs(val - valLow);
-									if (valThresholdCheck > maximumDifferenceThreshold)
-										valLow = val - maximumDifferenceThreshold;
-									valHigh = (val * binUpperBoundPercent);
-									valThresholdCheckHigh = Math.abs(val - valHigh);
-									if (valThresholdCheckHigh > maximumDifferenceThreshold)
-										valHigh = val + maximumDifferenceThreshold;
+									binDistance++;
+									roughBinDistance++;
 
-									if (val2 < valLow || val2 > valHigh) {
+									if (Math.abs(val2 - val) < binThreshold2Negation) {
+										binDistance--;
+									} else {
 										binDistance++;
-										roughBinDistance++;
+									}
 
-										if (Math.abs(val2 - val) < binThreshold2Negation) {
-											binDistance--;
-										} else {
-											binDistance++;
-										}
-
-										if (binDistance >= binThreshold) {
-											break;
-										}
+									if (binDistance >= binThreshold) {
+										break;
 									}
 								}
 
@@ -725,8 +703,8 @@ public class MainCoifV6Panorama {
 				"Test1502.jpg", "Test1503.jpg", "Test83.jpg", "Test84.jpg", "Test3031.jpg", "Test1032.jpg",
 				"Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg",
 				"Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test1501.jpg", "Test5.jpg",
-				"Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg", "Test71.jpg", "Test100.jpg",
-				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+				"Test7.jpg", "Test22.jpg", "Test38.jpg", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test241.jpg",
+				"Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
