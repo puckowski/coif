@@ -53,7 +53,7 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 
 | Average Matching Time | Median Matching Time | Image Pair Count | Pixels Processed Count |
 |-----------------------|----------------------|------------------|------------------------|
-| 7,589 milliseconds    | 3,162 milliseconds   | 55               | 30,612,480             |
+| 5,536 milliseconds    | 2,323 milliseconds   | 55               | 30,612,480             |
 
 Matching times include time to identify corners, time to generate descriptors, and time for feature matching.
 
