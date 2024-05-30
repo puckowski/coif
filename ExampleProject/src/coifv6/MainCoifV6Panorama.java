@@ -728,6 +728,11 @@ public class MainCoifV6Panorama {
 
 		List<Double> moravecTimes = TimeData.moravecTimes.stream().map(Double::valueOf).collect(Collectors.toList());
 		List<Double> matchingTimes = TimeData.matchingTimes.stream().map(Double::valueOf).collect(Collectors.toList());
+		System.out.print("Matching times: ");
+		matchingTimes.stream().sorted().forEach(time -> {
+			System.out.print(time + ", ");
+		});
+		System.out.println();
 		final Set<Double> moravecOutliers = eliminateOutliers(moravecTimes, 2f).stream().collect(Collectors.toSet());
 		final Set<Double> matchingOutliers = eliminateOutliers(matchingTimes, 2f).stream().collect(Collectors.toSet());
 		System.out.println("Corner outliers: " + moravecOutliers.toString());

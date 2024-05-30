@@ -43,11 +43,12 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 
 ## Impact of Environmental Factors on Measurement Accuracy
 
-| Effect                     | Accuracy Range |
-|----------------------------|----------------|
-| Light Variation            | +/- 10%        |
-| Perspective Transformation | 25%            |
-| Scale Change               | +/- 50%        |
+| Effect                     | Accuracy Range  |
+|----------------------------|-----------------|
+| Light Variation            | +/- 10%         |
+| Perspective Transformation | 25%             |
+| Scale Change               | +/- 50%         |
+| Guassian Blur              | +3 pixel radius |
 
 ## Performance Metrics and Distribution Statistics for Image Matching Operations
 
