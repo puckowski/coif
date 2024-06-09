@@ -196,14 +196,15 @@ public class MainCoifV6MinimalImageRotation {
 		System.out.println("Misc drawing step...");
 
 		BufferedImage newImage3 = new BufferedImage(width + width2, height, BufferedImage.TYPE_INT_RGB);
-
+		Color newColor;
+		
 		for (int x = 0; x < width + width2; ++x) {
 			for (int y = 0; y < height; ++y) {
 				if (x < width) {
-					Color newColor = new Color(image[x][y], image[x][y], image[x][y]);
+					newColor = new Color(image[x][y], image[x][y], image[x][y]);
 					newImage3.setRGB(x, y, newColor.getRGB());
 				} else {
-					Color newColor = new Color(image2[x - width][y], image2[x - width][y], image2[x - width][y]);
+					newColor = new Color(image2[x - width][y], image2[x - width][y], image2[x - width][y]);
 					newImage3.setRGB(x, y, newColor.getRGB());
 				}
 			}
@@ -433,13 +434,9 @@ public class MainCoifV6MinimalImageRotation {
 								val = distancesFirst[i];
 								val2 = distancesSecond[i];
 
-								binDistance++;
-
-								if (Math.abs(val2 - val) < binThreshold2Negation) {
-									binDistance--;
-								} else {
-									binDistance++;
-								}
+								if (Math.abs(val2 - val) >= binThreshold2Negation) {
+									binDistance += 2;
+								} 
 
 								if (binDistance >= binThreshold) {
 									break;
@@ -450,13 +447,9 @@ public class MainCoifV6MinimalImageRotation {
 								val = dist21[i];
 								val2 = dist22[i];
 
-								binDistance++;
-
-								if (Math.abs(val2 - val) < binThreshold2Negation) {
-									binDistance--;
-								} else {
-									binDistance++;
-								}
+								if (Math.abs(val2 - val) >= binThreshold2Negation) {
+									binDistance += 2;
+								} 
 
 								if (binDistance >= binThreshold) {
 									break;
