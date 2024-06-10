@@ -41,6 +41,14 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 | 84-80%         | 0     |
 | 79-75%         | 1     |
 
+## Image Stitching Dataset Performance
+
+| Dataset                                                  | COIFv6 Success | COIFv6 Failure | SIFT Success | SIFT Failure | COIFv6 vs. SIFT |
+|----------------------------------------------------------|----------------|----------------|--------------|--------------|-----------------|
+| SPW Dataset (2020)                                       | 88.373%        | 11.627%        | 95.455%      | 4.545%       | -7.082%         |
+| Dataset for Stitching with Multiple Registrations (2018) | 65.286%        | 35.714%        | 50.000%      | 50.000%      | +15.286%        |
+| VPG Dataset (2020)                                       | 90.910%        | 9.090%         | 44.455%      | 54.545%      | +46.455%        |
+
 ## Impact of Environmental Factors on Measurement Accuracy
 
 | Effect                     | Accuracy Range  |
