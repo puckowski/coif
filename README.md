@@ -55,7 +55,7 @@ In this paper, I present a novel quasi-rotation invariant interest point descrip
 |----------------------------|-----------------|
 | Light Variation            | +/- 10%         |
 | Perspective Transformation | 25%             |
-| Scale Change               | +/- 50%         |
+| Scale Change               | +/- 20%         |
 | Guassian Blur              | +3 pixel radius |
 
 ## Performance Metrics and Distribution Statistics for Image Matching Operations
