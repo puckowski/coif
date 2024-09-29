@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class Compare7 {
+public class CompareCoifV7 {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MainCoifV6Panorama {
+public class MainCoifV7Panorama {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,
@@ -181,14 +181,14 @@ public class MainCoifV6Panorama {
 
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				int val = (int) Math.ceil((double) image[x][y] * 0.5);
+				int val = (int) Math.round((double) image[x][y] * 0.5);
 				image[x][y] = val;
 			}
 		}
 
 		for (int x = 0; x < width2; ++x) {
 			for (int y = 0; y < height2; ++y) {
-				int val = (int) Math.ceil((double) image2[x][y] * 0.5);
+				int val = (int) Math.round((double) image2[x][y] * 0.5);
 				image2[x][y] = val;
 			}
 		}

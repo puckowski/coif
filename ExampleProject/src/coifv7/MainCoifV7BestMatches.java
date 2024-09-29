@@ -11,18 +11,16 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
-public class MainCoifV6 {
+public class MainCoifV7BestMatches {
 	public static int pixelCount = 0;
 
 	public static List<HistResultList> performCircles2(int[][] image, int radius, List<MoravecResult> results,
@@ -154,7 +152,7 @@ public class MainCoifV6 {
 		try {
 			moravecProcessor.process(file1);
 			moravecProcessor2.process(file2);
-			
+
 			moravecProcessor.process2();
 			moravecProcessor2.process2();
 
@@ -199,7 +197,7 @@ public class MainCoifV6 {
 
 		BufferedImage newImage3 = new BufferedImage(width + width2, height, BufferedImage.TYPE_INT_RGB);
 		Color newColor;
-
+		
 		for (int x = 0; x < width + width2; ++x) {
 			for (int y = 0; y < height; ++y) {
 				if (x < width) {
@@ -233,7 +231,7 @@ public class MainCoifV6 {
 
 		double mod;
 		long count;
-		double sum, sumOneHr, high, quart;
+		double sum, high, quart;
 
 		double val, val2;
 		int i;
@@ -255,8 +253,6 @@ public class MainCoifV6 {
 			binThreshold += 2;
 			binThreshold2 += 3;
 			binThreshold2Negation = binThreshold2 * 0.85;
-
-			TimeData.iterationCountUsage[Math.abs(16 - (56 - binThreshold)) / 2]++;
 
 			do {
 				System.out.println("Circles step...");
@@ -288,15 +284,10 @@ public class MainCoifV6 {
 
 					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
-						sumOneHr = 0.0;
-
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
-							sumOneHr += h.mDistinctiveness;
 							count++;
 						}
-
-						hr.distinctivenessAverage = sumOneHr / 4;
 					}
 
 					sum /= count;
@@ -306,8 +297,13 @@ public class MainCoifV6 {
 
 					for (i = 0; i < hrlist.size(); ++i) {
 						HistResultList hr = hrlist.get(i);
+						sum = 0.0;
+						for (HistResult h : hr.histResults) {
+							sum += h.mDistinctiveness;
+						}
+						sum /= hr.histResults.size();
 
-						if (hr.distinctivenessAverage < high) {
+						if (sum < high) {
 							count++;
 						}
 					}
@@ -315,8 +311,13 @@ public class MainCoifV6 {
 
 				for (i = 0; i < hrlist.size(); ++i) {
 					HistResultList hr = hrlist.get(i);
+					sum = 0.0;
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+					}
+					sum /= hr.histResults.size();
 
-					if (hr.distinctivenessAverage < high) {
+					if (sum < high) {
 						hrlist.remove(i);
 						--i;
 					}
@@ -331,15 +332,10 @@ public class MainCoifV6 {
 
 					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
-						sumOneHr = 0.0;
-
 						for (HistResult h : hr.histResults) {
 							sum += h.mDistinctiveness;
-							sumOneHr += h.mDistinctiveness;
 							count++;
 						}
-
-						hr.distinctivenessAverage = sumOneHr / 4;
 					}
 
 					sum /= count;
@@ -349,8 +345,13 @@ public class MainCoifV6 {
 
 					for (i = 0; i < hrlist2.size(); ++i) {
 						HistResultList hr = hrlist2.get(i);
+						sum = 0.0;
+						for (HistResult h : hr.histResults) {
+							sum += h.mDistinctiveness;
+						}
+						sum /= hr.histResults.size();
 
-						if (hr.distinctivenessAverage < high) {
+						if (sum < high) {
 							count++;
 						}
 					}
@@ -358,8 +359,13 @@ public class MainCoifV6 {
 
 				for (i = 0; i < hrlist2.size(); ++i) {
 					HistResultList hr = hrlist2.get(i);
+					sum = 0.0;
+					for (HistResult h : hr.histResults) {
+						sum += h.mDistinctiveness;
+					}
+					sum /= hr.histResults.size();
 
-					if (hr.distinctivenessAverage < high) {
+					if (sum < high) {
 						hrlist2.remove(i);
 						--i;
 					}
@@ -436,7 +442,7 @@ public class MainCoifV6 {
 
 									if (Math.abs(val2 - val) >= binThreshold2Negation) {
 										binDistance += 2;
-									}
+									} 
 
 									if (binDistance >= binThreshold) {
 										break;
@@ -449,7 +455,7 @@ public class MainCoifV6 {
 
 									if (Math.abs(val2 - val) >= binThreshold2Negation) {
 										binDistance += 2;
-									}
+									} 
 
 									if (binDistance >= binThreshold) {
 										break;
@@ -523,60 +529,50 @@ public class MainCoifV6 {
 					}
 				}
 
-//				Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance - o2.mRoughBinDistance);
-//
-//				int fmi = featureMatches.size() - 1;
-//
-//				while (featureMatches.size() > 25 && fmi >= 0) {
-//					FeatureMatch fm = featureMatches.get(fmi);
-//
-//					int x = fm.getX1();
-//					int y = fm.getY1();
-//
-//					for (int io = 0; io < featureMatches.size(); ++io) {
-//						if (io == fmi)
-//							continue;
-//
-//						FeatureMatch fm2 = featureMatches.get(io);
-//
-//						if (fm2.getX1() >= (x - 15) && fm2.getX1() <= (x + 15)) {
-//							if (fm2.getY1() >= (y - 15) && fm2.getY1() <= (y + 15)) {
-//								featureMatches.remove(io);
-//
-//								if (fmi > io) {
-//									fmi--;
-//								}
-//
-//								io--;
-//
-//								if (featureMatches.size() == 25) {
-//									fmi = -1;
-//									break;
-//								}
-//							}
-//						}
-//					}
-//
-//					fmi--;
-//				}
-//				while (featureMatches.size() > 25) {
-//					featureMatches.remove(featureMatches.size() - 1);
-//				}
+				Collections.sort(featureMatches, (o1, o2) -> o1.mRoughBinDistance - o2.mRoughBinDistance);
+
+				int fmi = featureMatches.size() - 1;
+
+				while (featureMatches.size() > 25 && fmi >= 0) {
+					FeatureMatch fm = featureMatches.get(fmi);
+
+					int x = fm.getX1();
+					int y = fm.getY1();
+
+					for (int io = 0; io < featureMatches.size(); ++io) {
+						if (io == fmi)
+							continue;
+
+						FeatureMatch fm2 = featureMatches.get(io);
+
+						if (fm2.getX1() >= (x - 15) && fm2.getX1() <= (x + 15)) {
+							if (fm2.getY1() >= (y - 15) && fm2.getY1() <= (y + 15)) {
+								featureMatches.remove(io);
+
+								if (fmi > io) {
+									fmi--;
+								}
+
+								io--;
+
+								if (featureMatches.size() == 25) {
+									fmi = -1;
+									break;
+								}
+							}
+						}
+					}
+
+					fmi--;
+				}
+				while (featureMatches.size() > 25) {
+					featureMatches.remove(featureMatches.size() - 1);
+				}
 
 				System.out.println("Feature matching done.");
 			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
 		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007)
 				&& binThreshold < 56);
-
-		if (TimeData.iterationCountUsageMap.containsKey(binMergeCount - 1)) {
-			final List<Integer> list = TimeData.iterationCountUsageMap.get(binMergeCount - 1);
-			list.add(Math.abs(16 - (56 - binThreshold)) / 2);
-			TimeData.iterationCountUsageMap.put(binMergeCount - 1, list);
-		} else {
-			final List<Integer> list = new ArrayList<>();
-			list.add(Math.abs(16 - (56 - binThreshold)) / 2);
-			TimeData.iterationCountUsageMap.put(binMergeCount - 1, list);
-		}
 
 		TimeData.binDistanceUsage[binMergeCount - 1]++;
 
@@ -673,33 +669,15 @@ public class MainCoifV6 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "S13_01.png", "S14_01.png", "S15_01.png", "S16_01.png",
-				"S17_01.png", "S18_01.png", "S19_01.png", "S22_01.png", "S23_01.png", "S24_01.png", "S25_01.png",
-				"S26_01.png", "S27_01.png", "S28_01.png", "S29_01.png", "S30_01.png", "S31_01.png", "S32_01.png",
-				"S33_01.png", "S34_01.png", "S35_01.png", "S36_01.png", "biker_mural_1_candidate.jpg",
-				"cars_1_candidate.jpg", "coke_190_candidate.jpg", "cup_tree_1_candidate.jpg",
-				"graffiti_building_1_candidate.jpg", "graffiti_car_1_candidate.jpg",
-				"no_contractor_parking_1_candidate.jpg", "P2_front_of_window_candidate.jpg", "plant_1_candidate.jpg",
-				"rental_office_1_candidate.jpg", "ski_left_candidate.jpg", "stop_sign_1_candidate.jpg",
-				"theory_left_candidate.jpg", "traffic_cones_1_candidate.jpg", "0_0_l.jpg", "1_1_l.jpg", "2_2_l.jpg",
-				"3_3_l.jpg", "4_4_l.jpg", "5_5_l.jpg", "6_6_l.jpg", "7_7_l.jpg", "8_8_l.jpg", "9_9_l.jpg",
-				"10_10_l.jpg", "11_11_l.jpg", "12_12_l.jpg", "13_13_l.jpg", "14_14_l.jpg", "15_15_l.jpg", "16_16_l.jpg",
-				"17_17_l.jpg", "18_18_l.jpg", "19_19_l.jpg", "20_20_l.jpg", "21_21_l.jpg", "22_22_l.jpg", "23_23_l.jpg",
-				"24_24_l.jpg", "25_25_l.jpg", "26_26_l.jpg", "27_27_l.jpg", "28_28_l.jpg", "29_29_l.jpg", "30_30_l.jpg",
-				"31_31_l.jpg", "32_32_l.jpg", "33_33_l.jpg", "34_34_l.jpg", "35_35_l.jpg", "36_36_l.jpg", "37_37_l.jpg",
-				"38_38_l.jpg", "39_39_l.jpg", "40_40_l.jpg", "41_41_l.jpg", "42_42_l.jpg", "Test1501_blur1.jpg",
-				"Test1501_blur2.jpg", "Test1501_blur3.jpg", "Test1501_blur4.jpg", "Test1501_blur5.jpg",
-				"paris_invalides_000662_sm_1.jpg", "paris_invalides_000662_sm_2.jpg", "paris_invalides_000662_sm_3.jpg",
-				"paris_invalides_000662_sm_4.jpg", "paris_invalides_000662_sm_5.jpg", "paris_invalides_000662_sm_6.jpg",
-				"paris_invalides_000662_sm_7.jpg", "paris_invalides_000662_sm_8.jpg", "paris_invalides_000662_sm_9.jpg",
-				"paris_invalides_000662_sm_10.jpg", "paris_invalides_000662_pt_1.png",
-				"paris_invalides_000662_pt_2.png", "paris_invalides_000662_pt_3.png", "paris_invalides_000662_pt_4.png",
-				"paris_invalides_000662_pt_5.png", "paris_invalides_000662_pt_6.png", "paris_invalides_000662_pt_7.png",
-				"paris_invalides_000662_pt_8.png", "paris_invalides_000662_pt_9.png",
-				"paris_invalides_000662_pt_10.png", "paris_invalides_000662_lt_1.jpg",
+		final String[] files1 = { "paris_invalides_000662_sm_1.jpg", "paris_invalides_000662_sm_2.jpg",
+				"paris_invalides_000662_sm_3.jpg", "paris_invalides_000662_sm_4.jpg", "paris_invalides_000662_sm_5.jpg",
+				"paris_invalides_000662_sm_6.jpg", "paris_invalides_000662_sm_7.jpg", "paris_invalides_000662_sm_8.jpg",
+				"paris_invalides_000662_sm_9.jpg", "paris_invalides_000662_sm_10.jpg",
+				"paris_invalides_000662_pt_1.png", "paris_invalides_000662_pt_2.png", "paris_invalides_000662_pt_3.png",
+				"paris_invalides_000662_pt_4.png", "paris_invalides_000662_pt_5.png", "paris_invalides_000662_pt_6.png",
+				"paris_invalides_000662_pt_7.png", "paris_invalides_000662_pt_8.png", "paris_invalides_000662_pt_9.png",
+				"paris_invalides_000662_pt_10.png", "paris_invalides_000662_pt_11.png",
+				"paris_invalides_000662_pt_12.png", "paris_invalides_000662_lt_1.jpg",
 				"paris_invalides_000662_lt_2.jpg", "paris_invalides_000662_lt_3.jpg", "paris_invalides_000662_lt_4.jpg",
 				"paris_invalides_000662_lt_5.jpg", "paris_invalides_000662_lt_6.jpg", "paris_invalides_000662_lt_7.jpg",
 				"paris_invalides_000662_lt_8.jpg", "paris_invalides_000662_lt_9.jpg", "paris_invalides_000662_1.jpg",
@@ -723,26 +701,7 @@ public class MainCoifV6 {
 				"Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png", "Test123_rot.jpg",
 				"Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg",
 				"Test800.jpg" };
-		final String[] files2 = { "Test1501_sm_1.jpg", "Test1501_sm_2.jpg", "Test1501_sm_3.jpg", "Test1501_sm_4.jpg",
-				"Test1501_sm_5.jpg", "Test1501_sm_6.jpg", "Test1501_sm_7.jpg", "Test1501_sm_8.jpg", "Test1501_sm_9.jpg",
-				"Test1501_sm_10.jpg", "Test1501_lg_1.jpg", "Test1501_lg_2.jpg", "Test1501_lg_3.jpg",
-				"Test1501_lg_4.jpg", "Test1501_lg_5.jpg", "Test1501_lg_6.jpg", "Test1501_lg_7.jpg", "Test1501_lg_8.jpg",
-				"Test1501_lg_9.jpg", "Test1501_lg_10.jpg", "S13_02.png", "S14_02.png", "S15_02.png", "S16_02.png",
-				"S17_02.png", "S18_02.png", "S19_02.png", "S22_02.png", "S23_02.png", "S24_02.png", "S25_02.png",
-				"S26_02.png", "S27_02.png", "S28_02.png", "S29_02.png", "S30_02.png", "S31_02.png", "S32_02.png",
-				"S33_02.png", "S34_02.png", "S35_02.png", "S36_02.png", "biker_mural_1_reference.jpg",
-				"cars_1_reference.jpg", "coke_190_reference.jpg", "cup_tree_1_reference.jpg",
-				"graffiti_building_1_reference.jpg", "graffiti_car_1_reference.jpg",
-				"no_contractor_parking_1_reference.jpg", "P2_front_of_window_reference.jpg", "plant_1_reference.jpg",
-				"rental_office_1_reference.jpg", "ski_left_reference.jpg", "stop_sign_1_reference.jpg",
-				"theory_left_reference.jpg", "traffic_cones_1_reference.jpg", "0_0_r.jpg", "1_1_r.jpg", "2_2_r.jpg",
-				"3_3_r.jpg", "4_4_r.jpg", "5_5_r.jpg", "6_6_r.jpg", "7_7_r.jpg", "8_8_r.jpg", "9_9_r.jpg",
-				"10_10_r.jpg", "11_11_r.jpg", "12_12_r.jpg", "13_13_r.jpg", "14_14_r.jpg", "15_15_r.jpg", "16_16_r.jpg",
-				"17_17_r.jpg", "18_18_r.jpg", "19_19_r.jpg", "20_20_r.jpg", "21_21_r.jpg", "22_22_r.jpg", "23_23_r.jpg",
-				"24_24_r.jpg", "25_25_r.jpg", "26_26_r.jpg", "27_27_r.jpg", "28_28_r.jpg", "29_29_r.jpg", "30_30_r.jpg",
-				"31_31_r.jpg", "32_32_r.jpg", "33_33_r.jpg", "34_34_r.jpg", "35_35_r.jpg", "36_36_r.jpg", "37_37_r.jpg",
-				"38_38_r.jpg", "39_39_r.jpg", "40_40_r.jpg", "41_41_r.jpg", "42_42_r.jpg", "Test1500.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "paris_invalides_000663.jpg",
+		final String[] files2 = { "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
@@ -759,19 +718,20 @@ public class MainCoifV6 {
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"all_souls_000051.jpg", "all_souls_000066.jpg", "pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG",
-				"S5.jpg", "c.jpg", "P1011371.JPG", "P1011070.JPG", "P1010373.JPG", "grail04.jpg", "DSC_0179.jpg",
-				"bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg",
-				"Test85.jpg", "Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg",
-				"Test67.jpg", "Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg",
-				"Test83.jpg", "Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg",
-				"Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg",
-				"Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg",
-				"Test3001_rot.jpg", "Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg",
-				"Test2121_rot.jpg", "Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg",
-				"Test38.jpg", "Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg",
-				"Test124_rot.jpeg", "Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg",
-				"Test212_rot.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+				"paris_invalides_000663.jpg", "all_souls_000051.jpg", "all_souls_000066.jpg", "pano9.jpg", "pano7.jpg",
+				"2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg", "P1011371.JPG", "P1011070.JPG", "P1010373.JPG",
+				"grail04.jpg", "DSC_0179.jpg", "bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg",
+				"Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg", "Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg",
+				"Test1026_2.jpg", "Test70.jpg", "Test67.jpg", "Test23.jpg", "Test1029.jpg", "Test1030.jpg",
+				"Test1502.jpg", "Test1503.jpg", "Test83.jpg", "Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg",
+				"Test3031.jpg", "Test1032.jpg", "Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg",
+				"Test508.jpg", "Test405.jpg", "Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg",
+				"Test5001_rot.jpg", "Test3001_rot.jpg", "Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG",
+				"Test1001_rot.jpg", "Test2121_rot.jpg", "Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg",
+				"Test35_rot.jpg", "Test38.jpg", "Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg",
+				"Test100.jpg", "Test124_rot.jpeg", "Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg",
+				"Test201_rot.jpg", "Test212_rot.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg",
+				"Test810.jpg" };
 
 		for (int i = 0; i < files1.length; ++i) {
 			System.out.println("Processing " + files1[i] + " and " + files2[i]);
@@ -809,9 +769,6 @@ public class MainCoifV6 {
 
 		List<Double> moravecTimes = TimeData.moravecTimes.stream().map(Double::valueOf).collect(Collectors.toList());
 		List<Double> matchingTimes = TimeData.matchingTimes.stream().map(Double::valueOf).collect(Collectors.toList());
-		System.out.print("Matching times: ");
-		matchingTimes.forEach(time -> System.out.print(time + " "));
-		System.out.println();
 		final Set<Double> moravecOutliers = eliminateOutliers(moravecTimes, 2f).stream().collect(Collectors.toSet());
 		final Set<Double> matchingOutliers = eliminateOutliers(matchingTimes, 2f).stream().collect(Collectors.toSet());
 		System.out.println("Corner outliers: " + moravecOutliers.toString());
@@ -833,26 +790,6 @@ public class MainCoifV6 {
 		System.out.println("Merge distances used:");
 		for (int i = 1; i < TimeData.binDistanceUsage.length; ++i) {
 			System.out.println(i + " used " + TimeData.binDistanceUsage[i] + " times");
-		}
-
-		System.out.println("Iteration counts used:");
-		for (int i = 0; i < TimeData.iterationCountUsage.length; ++i) {
-			// i is zero-indexed
-			System.out.println((i + 1) + " used " + TimeData.iterationCountUsage[i] + " times");
-		}
-
-		System.out.println("Additional iteration data:");
-		for (Map.Entry<Integer, List<Integer>> entry : TimeData.iterationCountUsageMap.entrySet()) {
-			final List<Integer> list = entry.getValue();
-			final Map<Object, Long> countMap = list.stream()
-					// Zero-indexed iterations
-					.map(count -> count + 1).collect(Collectors.groupingBy(number -> number, Collectors.counting()));
-
-			System.out.print("Bin merge count: " + entry.getKey() + "\n");
-			for (Map.Entry<Object, Long> e : countMap.entrySet()) {
-				System.out.print("Iteration: " + e.getKey() + " count: " + e.getValue() + "\n");
-			}
-			System.out.println();
 		}
 
 		System.out.println("Feature matches: " + TimeData.featureMatches);
