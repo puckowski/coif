@@ -1,0 +1,2 @@
+coke_190_candidate.jpg
+coke_190_reference.jpg

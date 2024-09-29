@@ -1,0 +1,2 @@
+theory_left_candidate.jpg
+theory_left_reference.jpg
