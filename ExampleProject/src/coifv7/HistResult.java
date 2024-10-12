@@ -62,8 +62,8 @@ public class HistResult {
 		}
 
 		mDistinctiveness = 256 - score;
-		mMinDistinctiveness = mDistinctiveness - 10;// 2; // or 4 or 10;
-		mMaxDistinctiveness = mDistinctiveness + 10;//2; // or 4 or 10;
+		mMinDistinctiveness = mDistinctiveness - 15;//10;// 2; // or 4 or 10;
+		mMaxDistinctiveness = mDistinctiveness + 15;//10;//2; // or 4 or 10;
 
 		int longestSequence = 0;
 		int count = 0;

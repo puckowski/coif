@@ -140,12 +140,15 @@ public class MoravecProcessor {
 		if (endY >= mGrayscaleData[0].length)
 			endY = mGrayscaleData[0].length - 1;
 
+		List<String> values = new ArrayList<String>();
 		int n = 0;
 		Map<Integer, Integer> occ = new HashMap<>();
 		for (int i = y; i < endY; i++) {
 			for (int j = x; j < endX; j++) {
 				int pixel = mGrayscaleData[j][i];
 
+				if (!values.contains(String.valueOf(pixel)))
+					values.add(String.valueOf(pixel));
 				if (occ.containsKey(pixel)) {
 					occ.put(pixel, occ.get(pixel) + 1);
 				} else {
@@ -172,10 +175,10 @@ public class MoravecProcessor {
 
 		List<LocalMaximumList> localMaximumLists = new ArrayList<LocalMaximumList>();
 
-		for (int x = 0; x < width; x +=4) {
-			for (int y = 0; y < height; y +=4) {
-				int targetEndX = x + 5;//localWidth;
-				int targetEndY = y + 5;//localWidth;
+		for (int x = 0; x < width; x += localWidth) {
+			for (int y = 0; y < height; y += localWidth) {
+				int targetEndX = x + localWidth;
+				int targetEndY = y + localWidth;
 
 				if (targetEndX >= width) {
 					targetEndX = width - 1;
@@ -184,21 +187,10 @@ public class MoravecProcessor {
 				if (targetEndY >= height) {
 					targetEndY = height - 1;
 				}
-				
-				int targetStartX = x - 5;//localWidth;
-				int targetStartY = y - 5;//localWidth;
 
-				if  (targetStartX <  0) {
-					targetStartX = 0;
-				}
-				
-				if (targetStartY <  0 ) {
-					targetStartY = 0;
-				}
-				
-				double entropy = getShannonEntropyImage(targetStartX, targetStartY, targetEndX, targetEndY);
+				double entropy = getShannonEntropyImage(x, y, targetEndX, targetEndY);
 
-				if (entropy <5.5) {
+				if (entropy < 6) {
 					LocalMaximumList newList = new LocalMaximumList(x, y, targetEndX, targetEndY, mLocalFeatureCount);
 					localMaximumLists.add(newList);
 				}

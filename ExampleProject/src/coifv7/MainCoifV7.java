@@ -673,7 +673,7 @@ public class MainCoifV7 {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
+		final String[] files1 = { "plant_1_candidate.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
 				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
 				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
 				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "S13_01.png", "S14_01.png", "S15_01.png", "S16_01.png",
@@ -682,7 +682,7 @@ public class MainCoifV7 {
 				"S33_01.png", "S34_01.png", "S35_01.png", "S36_01.png", "biker_mural_1_candidate.jpg",
 				"cars_1_candidate.jpg", "coke_190_candidate.jpg", "cup_tree_1_candidate.jpg",
 				"graffiti_building_1_candidate.jpg", "graffiti_car_1_candidate.jpg",
-				"no_contractor_parking_1_candidate.jpg", "P2_front_of_window_candidate.jpg", "plant_1_candidate.jpg",
+				"no_contractor_parking_1_candidate.jpg", "P2_front_of_window_candidate.jpg",
 				"rental_office_1_candidate.jpg", "ski_left_candidate.jpg", "stop_sign_1_candidate.jpg",
 				"theory_left_candidate.jpg", "traffic_cones_1_candidate.jpg", "0_0_l.jpg", "1_1_l.jpg", "2_2_l.jpg",
 				"3_3_l.jpg", "4_4_l.jpg", "5_5_l.jpg", "6_6_l.jpg", "7_7_l.jpg", "8_8_l.jpg", "9_9_l.jpg",
@@ -723,7 +723,7 @@ public class MainCoifV7 {
 				"Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png", "Test123_rot.jpg",
 				"Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg",
 				"Test800.jpg" };
-		final String[] files2 = { "Test1501_sm_1.jpg", "Test1501_sm_2.jpg", "Test1501_sm_3.jpg", "Test1501_sm_4.jpg",
+		final String[] files2 = { "plant_1_reference.jpg", "Test1501_sm_1.jpg", "Test1501_sm_2.jpg", "Test1501_sm_3.jpg", "Test1501_sm_4.jpg",
 				"Test1501_sm_5.jpg", "Test1501_sm_6.jpg", "Test1501_sm_7.jpg", "Test1501_sm_8.jpg", "Test1501_sm_9.jpg",
 				"Test1501_sm_10.jpg", "Test1501_lg_1.jpg", "Test1501_lg_2.jpg", "Test1501_lg_3.jpg",
 				"Test1501_lg_4.jpg", "Test1501_lg_5.jpg", "Test1501_lg_6.jpg", "Test1501_lg_7.jpg", "Test1501_lg_8.jpg",
@@ -733,7 +733,7 @@ public class MainCoifV7 {
 				"S33_02.png", "S34_02.png", "S35_02.png", "S36_02.png", "biker_mural_1_reference.jpg",
 				"cars_1_reference.jpg", "coke_190_reference.jpg", "cup_tree_1_reference.jpg",
 				"graffiti_building_1_reference.jpg", "graffiti_car_1_reference.jpg",
-				"no_contractor_parking_1_reference.jpg", "P2_front_of_window_reference.jpg", "plant_1_reference.jpg",
+				"no_contractor_parking_1_reference.jpg", "P2_front_of_window_reference.jpg", 
 				"rental_office_1_reference.jpg", "ski_left_reference.jpg", "stop_sign_1_reference.jpg",
 				"theory_left_reference.jpg", "traffic_cones_1_reference.jpg", "0_0_r.jpg", "1_1_r.jpg", "2_2_r.jpg",
 				"3_3_r.jpg", "4_4_r.jpg", "5_5_r.jpg", "6_6_r.jpg", "7_7_r.jpg", "8_8_r.jpg", "9_9_r.jpg",
