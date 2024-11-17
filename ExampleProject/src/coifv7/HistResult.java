@@ -57,7 +57,7 @@ public class HistResult {
 	public void computeDistinctiveness(final int modifier) {
 		int score = 0;
 		for (int n = 0; n < mHist.length; ++n) {
-			if (mHist[n] < modifier)
+			if (mHist[n] > modifier)
 				score++;
 		}
 
