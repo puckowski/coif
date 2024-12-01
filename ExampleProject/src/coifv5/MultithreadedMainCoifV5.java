@@ -248,11 +248,11 @@ public class MultithreadedMainCoifV5 {
 
 			List<Future<List<HistResultList>>> futures2 = new ArrayList<>();
 
-			// Submit the callable task to the executor
+			// Submit the callable task to the f
 			Future<List<HistResultList>> futurec1 = executor
 					.submit(new CircleBuilderCallable(image, circleSize, morResults, binMergeCount));
 			Future<List<HistResultList>> futurec2 = executor
-					.submit(new CircleBuilderCallable(image2, circleSize, morResults, binMergeCount));
+					.submit(new CircleBuilderCallable(image2, circleSize, morResults2, binMergeCount));
 			futures2.add(futurec1);
 			futures2.add(futurec2);
 
