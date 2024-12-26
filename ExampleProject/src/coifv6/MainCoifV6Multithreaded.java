@@ -145,8 +145,7 @@ public class MainCoifV6Multithreaded {
 	}
 
 	public static void process(final String file1, final String file2, final int fileIndex, ExecutorService executor,
-			ExecutorService executor2)
-			throws FileNotFoundException, UnsupportedEncodingException {
+			ExecutorService executor2) throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println("Moravec step...");
 
 		int thresholdmor = 100;
@@ -233,6 +232,7 @@ public class MainCoifV6Multithreaded {
 		int[] dist21;
 		int[] dist22;
 		int binDistance;
+		int maxKeyFinal = 0;
 
 		int circleSize = 30;
 
@@ -276,11 +276,13 @@ public class MainCoifV6Multithreaded {
 
 				System.out.println("Bin merge count: " + binMergeCount);
 
-				//List<HistResultList> hrlist = performCircles2(image, circleSize, morResults, binMergeCount);
-				//List<HistResultList> hrlist2 = performCircles2(image2, circleSize, morResults2, binMergeCount);
+				// List<HistResultList> hrlist = performCircles2(image, circleSize, morResults,
+				// binMergeCount);
+				// List<HistResultList> hrlist2 = performCircles2(image2, circleSize,
+				// morResults2, binMergeCount);
 				List<HistResultList> hrlist = new ArrayList<>();
 				List<HistResultList> hrlist2 = new ArrayList<>();
-				
+
 				List<Future<List<HistResultList>>> futures2 = new ArrayList<>();
 
 				// Submit the callable task to the f
@@ -290,7 +292,7 @@ public class MainCoifV6Multithreaded {
 						.submit(new CircleBuilderCallable(image2, circleSize, morResults2, binMergeCount));
 				futures2.add(futurec1);
 				futures2.add(futurec2);
-				
+
 				int cbindex = 0;
 
 				for (Future<List<HistResultList>> future : futures2) {
@@ -307,7 +309,7 @@ public class MainCoifV6Multithreaded {
 						e.printStackTrace();
 					}
 				}
-				
+
 				binMergeCount++;
 
 				System.out.println("Circles step done.");
@@ -446,7 +448,8 @@ public class MainCoifV6Multithreaded {
 				final List<HistResultListMatcher> matchers = new ArrayList<>();
 
 				for (List<HistResultList> sublist : sublists) {
-					final HistResultListMatcher matcher = new HistResultListMatcher(sublist, hrlist2, g2d, binThreshold2, binThreshold);
+					final HistResultListMatcher matcher = new HistResultListMatcher(sublist, hrlist2, g2d,
+							binThreshold2, binThreshold);
 					matchers.add(matcher);
 				}
 
@@ -467,7 +470,7 @@ public class MainCoifV6Multithreaded {
 						e.printStackTrace();
 					}
 				}
-				
+
 				rotationIndexMap.clear();
 
 				for (i = 0; i < featureMatches.size(); ++i) {
@@ -496,10 +499,18 @@ public class MainCoifV6Multithreaded {
 					}
 				}
 
+				maxKeyFinal = maxKey;
+
 				System.out.println("Feature matching done.");
 			} while (featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007);
 		} while ((featureMatches.size() < 5 || evaluateFeatureMatchCloseness(featureMatches, width, height) < 0.007)
 				&& binThreshold < 56);
+
+		if (TimeData.rotationMap.containsKey(maxKeyFinal)) {
+			TimeData.rotationMap.replace(maxKeyFinal, TimeData.rotationMap.get(maxKeyFinal) + 1);
+		} else {
+			TimeData.rotationMap.put(maxKeyFinal, 1);
+		}
 
 		if (TimeData.iterationCountUsageMap.containsKey(binMergeCount - 1)) {
 			final List<Integer> list = TimeData.iterationCountUsageMap.get(binMergeCount - 1);
@@ -606,15 +617,17 @@ public class MainCoifV6Multithreaded {
 	}
 
 	public static void main(String[] args) throws IOException {
-		final String[] files1 = { "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
+		final String[] files1 = { "brick0.png", "image_1409.jpg", "image_1564.jpg", "image_1827.jpg", "image_1880.jpg",
+				"image_2051.jpg", "image_0748.jpg", "image_3146.jpg", "image_3060.jpg", "image_2944.jpg",
+				"image_2849.jpg", "image_2740.jpg", "image_2633.jpg", "image_0090.jpg", "Test1500.jpg", "Test1500.jpg",
 				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
 				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "S13_01.png", "S14_01.png", "S15_01.png", "S16_01.png",
-				"S17_01.png", "S18_01.png", "S19_01.png", "S22_01.png", "S23_01.png", "S24_01.png", "S25_01.png",
-				"S26_01.png", "S27_01.png", "S28_01.png", "S29_01.png", "S30_01.png", "S31_01.png", "S32_01.png",
-				"S33_01.png", "S34_01.png", "S35_01.png", "S36_01.png", "biker_mural_1_candidate.jpg",
-				"cars_1_candidate.jpg", "coke_190_candidate.jpg", "cup_tree_1_candidate.jpg",
-				"graffiti_building_1_candidate.jpg", "graffiti_car_1_candidate.jpg",
+				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
+				"S13_01.png", "S14_01.png", "S15_01.png", "S16_01.png", "S17_01.png", "S18_01.png", "S19_01.png",
+				"S22_01.png", "S23_01.png", "S24_01.png", "S25_01.png", "S26_01.png", "S27_01.png", "S28_01.png",
+				"S29_01.png", "S30_01.png", "S31_01.png", "S32_01.png", "S33_01.png", "S34_01.png", "S35_01.png",
+				"S36_01.png", "biker_mural_1_candidate.jpg", "cars_1_candidate.jpg", "coke_190_candidate.jpg",
+				"cup_tree_1_candidate.jpg", "graffiti_building_1_candidate.jpg", "graffiti_car_1_candidate.jpg",
 				"no_contractor_parking_1_candidate.jpg", "P2_front_of_window_candidate.jpg", "plant_1_candidate.jpg",
 				"rental_office_1_candidate.jpg", "ski_left_candidate.jpg", "stop_sign_1_candidate.jpg",
 				"theory_left_candidate.jpg", "traffic_cones_1_candidate.jpg", "0_0_l.jpg", "1_1_l.jpg", "2_2_l.jpg",
@@ -656,26 +669,29 @@ public class MainCoifV6Multithreaded {
 				"Test99.jpg", "Test120_rot.jpeg", "Test121_rot.png", "Test122_rot.png", "Test123_rot.jpg",
 				"Test200_rot.jpg", "Test211_rot.jpg", "Test240.jpg", "Test300.jpg", "Test400.jpg", "Test600.jpg",
 				"Test800.jpg" };
-		final String[] files2 = { "Test1501_sm_1.jpg", "Test1501_sm_2.jpg", "Test1501_sm_3.jpg", "Test1501_sm_4.jpg",
-				"Test1501_sm_5.jpg", "Test1501_sm_6.jpg", "Test1501_sm_7.jpg", "Test1501_sm_8.jpg", "Test1501_sm_9.jpg",
-				"Test1501_sm_10.jpg", "Test1501_lg_1.jpg", "Test1501_lg_2.jpg", "Test1501_lg_3.jpg",
-				"Test1501_lg_4.jpg", "Test1501_lg_5.jpg", "Test1501_lg_6.jpg", "Test1501_lg_7.jpg", "Test1501_lg_8.jpg",
-				"Test1501_lg_9.jpg", "Test1501_lg_10.jpg", "S13_02.png", "S14_02.png", "S15_02.png", "S16_02.png",
-				"S17_02.png", "S18_02.png", "S19_02.png", "S22_02.png", "S23_02.png", "S24_02.png", "S25_02.png",
-				"S26_02.png", "S27_02.png", "S28_02.png", "S29_02.png", "S30_02.png", "S31_02.png", "S32_02.png",
-				"S33_02.png", "S34_02.png", "S35_02.png", "S36_02.png", "biker_mural_1_reference.jpg",
-				"cars_1_reference.jpg", "coke_190_reference.jpg", "cup_tree_1_reference.jpg",
-				"graffiti_building_1_reference.jpg", "graffiti_car_1_reference.jpg",
-				"no_contractor_parking_1_reference.jpg", "P2_front_of_window_reference.jpg", "plant_1_reference.jpg",
-				"rental_office_1_reference.jpg", "ski_left_reference.jpg", "stop_sign_1_reference.jpg",
-				"theory_left_reference.jpg", "traffic_cones_1_reference.jpg", "0_0_r.jpg", "1_1_r.jpg", "2_2_r.jpg",
-				"3_3_r.jpg", "4_4_r.jpg", "5_5_r.jpg", "6_6_r.jpg", "7_7_r.jpg", "8_8_r.jpg", "9_9_r.jpg",
-				"10_10_r.jpg", "11_11_r.jpg", "12_12_r.jpg", "13_13_r.jpg", "14_14_r.jpg", "15_15_r.jpg", "16_16_r.jpg",
-				"17_17_r.jpg", "18_18_r.jpg", "19_19_r.jpg", "20_20_r.jpg", "21_21_r.jpg", "22_22_r.jpg", "23_23_r.jpg",
-				"24_24_r.jpg", "25_25_r.jpg", "26_26_r.jpg", "27_27_r.jpg", "28_28_r.jpg", "29_29_r.jpg", "30_30_r.jpg",
-				"31_31_r.jpg", "32_32_r.jpg", "33_33_r.jpg", "34_34_r.jpg", "35_35_r.jpg", "36_36_r.jpg", "37_37_r.jpg",
-				"38_38_r.jpg", "39_39_r.jpg", "40_40_r.jpg", "41_41_r.jpg", "42_42_r.jpg", "Test1500.jpg",
-				"Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg", "paris_invalides_000663.jpg",
+		final String[] files2 = { "brick1.png", "image_1410.jpg", "image_1565.jpg", "image_1828.jpg", "image_1881.jpg",
+				"image_2052.jpg", "image_0747.jpg", "image_3144.jpg", "image_3059.jpg", "image_2943.jpg",
+				"image_2848.jpg", "image_2739.jpg", "image_2632.jpg", "image_0089.jpg", "Test1501_sm_1.jpg",
+				"Test1501_sm_2.jpg", "Test1501_sm_3.jpg", "Test1501_sm_4.jpg", "Test1501_sm_5.jpg", "Test1501_sm_6.jpg",
+				"Test1501_sm_7.jpg", "Test1501_sm_8.jpg", "Test1501_sm_9.jpg", "Test1501_sm_10.jpg",
+				"Test1501_lg_1.jpg", "Test1501_lg_2.jpg", "Test1501_lg_3.jpg", "Test1501_lg_4.jpg", "Test1501_lg_5.jpg",
+				"Test1501_lg_6.jpg", "Test1501_lg_7.jpg", "Test1501_lg_8.jpg", "Test1501_lg_9.jpg",
+				"Test1501_lg_10.jpg", "S13_02.png", "S14_02.png", "S15_02.png", "S16_02.png", "S17_02.png",
+				"S18_02.png", "S19_02.png", "S22_02.png", "S23_02.png", "S24_02.png", "S25_02.png", "S26_02.png",
+				"S27_02.png", "S28_02.png", "S29_02.png", "S30_02.png", "S31_02.png", "S32_02.png", "S33_02.png",
+				"S34_02.png", "S35_02.png", "S36_02.png", "biker_mural_1_reference.jpg", "cars_1_reference.jpg",
+				"coke_190_reference.jpg", "cup_tree_1_reference.jpg", "graffiti_building_1_reference.jpg",
+				"graffiti_car_1_reference.jpg", "no_contractor_parking_1_reference.jpg",
+				"P2_front_of_window_reference.jpg", "plant_1_reference.jpg", "rental_office_1_reference.jpg",
+				"ski_left_reference.jpg", "stop_sign_1_reference.jpg", "theory_left_reference.jpg",
+				"traffic_cones_1_reference.jpg", "0_0_r.jpg", "1_1_r.jpg", "2_2_r.jpg", "3_3_r.jpg", "4_4_r.jpg",
+				"5_5_r.jpg", "6_6_r.jpg", "7_7_r.jpg", "8_8_r.jpg", "9_9_r.jpg", "10_10_r.jpg", "11_11_r.jpg",
+				"12_12_r.jpg", "13_13_r.jpg", "14_14_r.jpg", "15_15_r.jpg", "16_16_r.jpg", "17_17_r.jpg", "18_18_r.jpg",
+				"19_19_r.jpg", "20_20_r.jpg", "21_21_r.jpg", "22_22_r.jpg", "23_23_r.jpg", "24_24_r.jpg", "25_25_r.jpg",
+				"26_26_r.jpg", "27_27_r.jpg", "28_28_r.jpg", "29_29_r.jpg", "30_30_r.jpg", "31_31_r.jpg", "32_32_r.jpg",
+				"33_33_r.jpg", "34_34_r.jpg", "35_35_r.jpg", "36_36_r.jpg", "37_37_r.jpg", "38_38_r.jpg", "39_39_r.jpg",
+				"40_40_r.jpg", "41_41_r.jpg", "42_42_r.jpg", "Test1500.jpg", "Test1500.jpg", "Test1500.jpg",
+				"Test1500.jpg", "Test1500.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
@@ -691,20 +707,20 @@ public class MainCoifV6Multithreaded {
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
 				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "paris_invalides_000663.jpg",
-				"all_souls_000051.jpg", "all_souls_000066.jpg", "pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG",
-				"S5.jpg", "c.jpg", "P1011371.JPG", "P1011070.JPG", "P1010373.JPG", "grail04.jpg", "DSC_0179.jpg",
-				"bike2.png", "Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg",
-				"Test85.jpg", "Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg",
-				"Test67.jpg", "Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg",
-				"Test83.jpg", "Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg",
-				"Test1028.jpg", "Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg",
-				"Test706.jpg", "Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg",
-				"Test3001_rot.jpg", "Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg",
-				"Test2121_rot.jpg", "Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg",
-				"Test38.jpg", "Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg",
-				"Test124_rot.jpeg", "Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg",
-				"Test212_rot.jpg", "Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
+				"paris_invalides_000663.jpg", "paris_invalides_000663.jpg", "all_souls_000051.jpg",
+				"all_souls_000066.jpg", "pano9.jpg", "pano7.jpg", "2Hill.JPG", "3Hill.JPG", "S5.jpg", "c.jpg",
+				"P1011371.JPG", "P1011070.JPG", "P1010373.JPG", "grail04.jpg", "DSC_0179.jpg", "bike2.png",
+				"Yosemite2.jpg", "img3.png", "h2.jpg", "base2.jpg", "Test1026_4.jpg", "Test1028_3.jpg", "Test85.jpg",
+				"Test1028_2.jpg", "Test1026_3.jpg", "Test82_2.jpg", "Test1026_2.jpg", "Test70.jpg", "Test67.jpg",
+				"Test23.jpg", "Test1029.jpg", "Test1030.jpg", "Test1502.jpg", "Test1503.jpg", "Test83.jpg",
+				"Test84.jpg", "Test3002_rot.jpg", "Test49_rot.jpg", "Test3031.jpg", "Test1032.jpg", "Test1028.jpg",
+				"Test1026.jpg", "Test1023.jpg", "Test507.jpg", "Test508.jpg", "Test405.jpg", "Test706.jpg",
+				"Test707.jpg", "Test767.jpg", "Test768.jpg", "Test81.jpg", "Test5001_rot.jpg", "Test3001_rot.jpg",
+				"Test1501.jpg", "Test1311_rot.PNG", "Test1200_rot.PNG", "Test1001_rot.jpg", "Test2121_rot.jpg",
+				"Test2000_rot.jpg", "Test5.jpg", "Test7.jpg", "Test22.jpg", "Test35_rot.jpg", "Test38.jpg",
+				"Test48_rot.jpg", "Test49_rot.png", "Test66.jpg", "Test71.jpg", "Test100.jpg", "Test124_rot.jpeg",
+				"Test125_rot.png", "Test126_rot.png", "Test127_rot.jpg", "Test201_rot.jpg", "Test212_rot.jpg",
+				"Test241.jpg", "Test310.jpg", "Test410.jpg", "Test610.jpg", "Test810.jpg" };
 
 		int cpuCoreCount = Runtime.getRuntime().availableProcessors();
 
@@ -797,6 +813,9 @@ public class MainCoifV6Multithreaded {
 		}
 
 		System.out.println("Feature matches: " + TimeData.featureMatches);
+		for (Map.Entry<Integer, Integer> e : TimeData.rotationMap.entrySet()) {
+			System.out.println("Rotation: " + e.getKey() + " " + e.getValue());
+		}
 	}
 
 	protected static double getMean(List<Double> values) {

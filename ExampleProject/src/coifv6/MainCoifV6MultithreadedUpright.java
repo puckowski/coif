@@ -477,6 +477,12 @@ public class MainCoifV6MultithreadedUpright {
 						maxValue = e.getValue();
 					}
 				}
+				
+				if (TimeData.rotationMap.containsKey(maxKey)) {
+					TimeData.rotationMap.replace(maxKey, TimeData.rotationMap.get(maxKey) + 1);
+				} else {
+					TimeData.rotationMap.put(maxKey, 1);
+				}
 
 				for (i = 0; i < featureMatches.size(); ++i) {
 					if (featureMatches.get(i).rotationArrayIndex != maxKey) {
@@ -504,6 +510,13 @@ public class MainCoifV6MultithreadedUpright {
 
 		long estimatedTime = System.currentTimeMillis() - startTime;
 		TimeData.matching += estimatedTime;
+		
+		if (estimatedTime <= 1000) {
+			TimeData.quickFiles.add(file1);
+			TimeData.quickFiles.add(file2);
+			TimeData.quickFiles.add(estimatedTime + " :===");
+		}
+		
 		TimeData.matchingTimes.add(estimatedTime);
 
 		System.out.println("Finalizing montage...");
@@ -786,6 +799,13 @@ public class MainCoifV6MultithreadedUpright {
 		}
 
 		System.out.println("Feature matches: " + TimeData.featureMatches);
+		System.out.println("Quick files: ");
+		TimeData.quickFiles.forEach(System.out::println);
+
+		System.out.println("Feature matches: " + TimeData.featureMatches);
+		for (Map.Entry<Integer, Integer> e : TimeData.rotationMap.entrySet()) {
+			System.out.println("Rotation: " + e.getKey() + " " + e.getValue());
+		}
 	}
 
 	protected static double getMean(List<Double> values) {
