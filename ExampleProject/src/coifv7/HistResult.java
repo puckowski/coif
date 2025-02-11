@@ -57,13 +57,13 @@ public class HistResult {
 	public void computeDistinctiveness(final int modifier) {
 		int score = 0;
 		for (int n = 0; n < mHist.length; ++n) {
-			if (mHist[n] > modifier)
+			if (mHist[n] < modifier)
 				score++;
 		}
 
 		mDistinctiveness = 256 - score;
-		mMinDistinctiveness = mDistinctiveness - 15;//10;// 2; // or 4 or 10;
-		mMaxDistinctiveness = mDistinctiveness + 15;//10;//2; // or 4 or 10;
+		mMinDistinctiveness = mDistinctiveness - 10;// 2; // or 4 or 10;
+		mMaxDistinctiveness = mDistinctiveness + 10;//2; // or 4 or 10;
 
 		int longestSequence = 0;
 		int count = 0;

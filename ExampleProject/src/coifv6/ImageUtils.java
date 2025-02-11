@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +65,20 @@ public class ImageUtils {
 		return dimg;
 	}
 
+	public static BufferedImage rotateCcw(BufferedImage img) {
+		int width = img.getWidth();
+		int height = img.getHeight();
+		BufferedImage newImage = new BufferedImage(height, width, img.getType());
+
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				newImage.setRGB(j, width - 1 - i, img.getRGB(i, j));
+			}
+		}
+
+		return newImage;
+	}
+
 	private BufferedImage resize(BufferedImage src, int targetSize) {
 		if (targetSize <= 0) {
 			return src;
@@ -92,7 +107,11 @@ public class ImageUtils {
 
 	public int[][] localGrayscaleArray(final String absoluteFileName) throws IOException {
 		BufferedImage image = ImageIO.read(new File(absoluteFileName));
-
+		
+		if (image.getHeight() > image.getWidth()) {
+			//image = rotateCcw(image);
+		}
+		
 		image = resize(image, 640);
 
 		int[][] redValues = new int[image.getWidth()][image.getHeight()];

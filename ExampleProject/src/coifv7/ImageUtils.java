@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +65,20 @@ public class ImageUtils {
 		return dimg;
 	}
 
+	public static BufferedImage rotateCcw(BufferedImage img) {
+		int width = img.getWidth();
+		int height = img.getHeight();
+		BufferedImage newImage = new BufferedImage(height, width, img.getType());
+
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				newImage.setRGB(j, width - 1 - i, img.getRGB(i, j));
+			}
+		}
+
+		return newImage;
+	}
+
 	private BufferedImage resize(BufferedImage src, int targetSize) {
 		if (targetSize <= 0) {
 			return src;
@@ -90,65 +105,12 @@ public class ImageUtils {
 		return bi;
 	}
 
-	 private static double getLuminance(Color color) {
-	        return 0.299 * color.getRed() + 0.114 * color.getGreen() + 0.587 * color.getBlue();
-	    }
-	 
-	 // Compute the current average luminance of a BufferedImage
-    public static double computeAverageLuminance(BufferedImage image) {
-        double totalLuminance = 0.0;
-        int width = image.getWidth();
-        int height = image.getHeight();
-        
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                Color color = new Color(image.getRGB(x, y));
-                totalLuminance += getLuminance(color);
-            }
-        }
-
-        return totalLuminance / (width * height);
-    }
-    
-    private static int clamp(int value) {
-        return Math.max(0, Math.min(255, value));
-    }
-    
-	 public static BufferedImage adjustLuminance(BufferedImage image, double targetLuminance) {
-	        double currentLuminance = computeAverageLuminance(image);
-	        double scaleFactor = targetLuminance / currentLuminance;
-
-	        int width = image.getWidth();
-	        int height = image.getHeight();
-	        BufferedImage outputImage = new BufferedImage(width, height, image.getType());
-
-	        for (int x = 0; x < width; x++) {
-	            for (int y = 0; y < height; y++) {
-	                Color color = new Color(image.getRGB(x, y));
-	                int newRed = clamp((int)(color.getRed() * scaleFactor));
-	                int newGreen = clamp((int)(color.getGreen() * scaleFactor));
-	                int newBlue = clamp((int)(color.getBlue() * scaleFactor));
-	                
-	                Color newColor = new Color(newRed, newGreen, newBlue);
-	                outputImage.setRGB(x, y, newColor.getRGB());
-	            }
-	        }
-
-	        return outputImage;
-	    }
-	 
-		public BufferedImage localGrayscaleArray2(final String absoluteFileName) throws IOException {
-			BufferedImage image = ImageIO.read(new File(absoluteFileName));
-			//image = adjustLuminance(image, 59.45);
-			
-			image = resize(image, 640);
-			
-			return image;
-		}
-		
 	public int[][] localGrayscaleArray(final String absoluteFileName) throws IOException {
 		BufferedImage image = ImageIO.read(new File(absoluteFileName));
-		//image = adjustLuminance(image, 59.45);
+		
+		if (image.getHeight() > image.getWidth()) {
+			//image = rotateCcw(image);
+		}
 		
 		image = resize(image, 640);
 

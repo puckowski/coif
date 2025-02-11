@@ -2,7 +2,10 @@ package coifv7;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TimeData {
 
@@ -17,6 +20,10 @@ public class TimeData {
 	public static int[] binDistanceUsage = new int[6];
 	public static int[] iterationCountUsage = new int[10];
 	public static HashMap<Integer, List<Integer>> iterationCountUsageMap = new HashMap<>();
+	
+	public static final List<String> quickFiles = new ArrayList<>();
+	
+	public static final Map<Integer, Integer> rotationMap = new HashMap<>();
 	
 	public static int featureMatches = 0;
 

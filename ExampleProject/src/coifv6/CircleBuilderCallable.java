@@ -2,7 +2,9 @@ package coifv6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class CircleBuilderCallable implements Callable {
@@ -85,7 +87,8 @@ public class CircleBuilderCallable implements Callable {
 		CircleResult cr, crSec, crThird, crFourth;
 		HistResult hr, hrSec, hrThird, hrFth;
 		int[] hist, hist2, center, histSec, hist2Sec, centerSec, histThird, hist2Third, centerThird, histFourth, hist2Fourth, centerFourth;
-		
+		Map<HistResultList, HistResult> all = new HashMap<>();
+
 		for (MoravecResult mr : results) {
 			x = mr.getX();
 			y = mr.getY();
@@ -133,10 +136,17 @@ public class CircleBuilderCallable implements Callable {
 				histResultList.histResults.add(hrThird);
 				histResultList.histResults.add(hrFth);
 
+				//all.put(histResultList, histResultList.histResults.get(0));
+
+				
 				resultList.add(histResultList);
 			}
 		}
 
+		//Map<HistResultList, HistResult> filtered = HistResultFilter.filterHistResults(all, 15, 50, 1);//20, 1);//15, 20, 1);
+		//System.err.println("#####: " + all.size() + " " + filtered.size());
+		//return new ArrayList<>(filtered.keySet());//resultList;
+		
 		return resultList;
 	}
 }

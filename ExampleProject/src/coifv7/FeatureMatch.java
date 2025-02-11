@@ -1,6 +1,5 @@
 package coifv7;
 
-
 public class FeatureMatch {
 
 	public int mX1;
