@@ -142,7 +142,9 @@ public class CircleBuilderCallable implements Callable {
 			}
 		}
 
-		Map<HistResultList, HistResult> filtered = HistResultFilter.filterHistResults(all, 15, 50, 1);//20, 1);//15, 20, 1);
+		Map<HistResultList, HistResult> filtered = HistResultFilter.filterHistResults(all, 15, 50, 1);
+		// 20, 1 also tried; worse than 50, 1
+		// 15, 1 also tried; worse than 20, 1
 		System.err.println("#####: " + all.size() + " " + filtered.size());
 		
 		return new ArrayList<>(filtered.keySet());
