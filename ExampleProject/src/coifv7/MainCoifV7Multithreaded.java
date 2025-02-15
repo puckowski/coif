@@ -90,10 +90,7 @@ public class MainCoifV7Multithreaded {
 			}
 		}
 		Map<HistResultList, HistResult> filtered = HistResultFilter.filterHistResults(all, 15, 50);
-				System.out.println("#####: " + all.size() + " " + filtered.size());
-				return new ArrayList<>(filtered.keySet());//resultList;
-
-		//return resultList;
+		return new ArrayList<>(filtered.keySet());
 	}
 
 	public static CircleResult circles3(int[][] image, final int circleX, final int circleY, final int radius) {
