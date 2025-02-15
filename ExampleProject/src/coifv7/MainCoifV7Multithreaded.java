@@ -89,7 +89,7 @@ public class MainCoifV7Multithreaded {
 				resultList.add(histResultList);
 			}
 		}
-		Map<HistResultList, HistResult> filtered = HistResultFilter.filterHistResults(all, 15, 50, 1);
+		Map<HistResultList, HistResult> filtered = HistResultFilter.filterHistResults(all, 15, 50);
 				System.out.println("#####: " + all.size() + " " + filtered.size());
 				return new ArrayList<>(filtered.keySet());//resultList;
 

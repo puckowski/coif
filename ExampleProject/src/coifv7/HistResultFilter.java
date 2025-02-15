@@ -28,8 +28,7 @@ public class HistResultFilter {
 	public static Map<HistResultList, HistResult> filterHistResults(
 	        Map<HistResultList, HistResult> histResults,
 	        int pixelRange,
-	        int clusterThreshold,
-	        int regionTolerance) {
+	        int clusterThreshold) {
 
 	    // Convert the map entries to a list to allow index-based iteration.
 	    List<Map.Entry<HistResultList, HistResult>> entries = new ArrayList<>(histResults.entrySet());
